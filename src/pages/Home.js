@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 const Home = () => {
   const { t, i18n } = useTranslation();
   return (
-    <View>
+    <View style={{ justifyContent: "center" }}>
       <Text>{t("main_title")}</Text>
       <Button
         onPress={() => {
