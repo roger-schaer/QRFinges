@@ -1,17 +1,16 @@
 import React from "react";
 import { StatusBar, View, Button, Text } from "react-native";
-import I18n from "../services/i18n";
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
+  const { t, i18n } = useTranslation();
   return (
     <View>
-      <Text>{I18n.t("main_title")}</Text>
+      <Text>{t("main_title")}</Text>
       <Button
         onPress={() => {
-          I18n.locale = "en";
-          console.log(I18n.t("main_title"));
-          I18n.locale = "fr";
-          console.log(I18n.t("main_title"));
+          i18n.changeLanguage(i18n.language == "fr" ? "en" : "fr");
+          console.log(t("main_title"));
         }}
         title="Change language"
       />
