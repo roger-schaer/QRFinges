@@ -1,8 +1,9 @@
 import React from "react";
-import { TranslationView } from "../views/TranslationView";
+import { SafeAreaView, StyleSheet } from "react-native";
+import HomeView from "../views/HomeView";
 
 const Home = () => {
-  return <TranslationView />;
+  return <HomeView />;
 };
 
 export default Home;

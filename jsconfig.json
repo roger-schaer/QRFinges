@@ -1,9 +1,10 @@
 {
-
+  "exclude": ["/node_modules"],
+  "noEmit": true,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "checkJs": true,
     "jsx": "react"
   },
-  "exclude": ["node_modules"]
+  "include": ["src/**/*"]
 }
