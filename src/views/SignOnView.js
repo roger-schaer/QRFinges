@@ -11,16 +11,7 @@ import {
   Image,
 } from "react-native";
 import { Logo } from "../component/Logo";
-// import {
-//   NavigationContext
-// } from '@react-navigation/native';
-
-// import { Navigation } from "../component/Navigation";
-// import { Navigation } from "../component/Nav_test";
-
-// import LocationRecording from "pages/LocationRecording";
-
-// const navigation = React.useContext(NavigationContext);
+//import { Navigation } from "../component/Navigation";
 
 const styles = StyleSheet.create({
   container: {
@@ -36,8 +27,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-
-const HomeView = ({navigation}) => {
+const SignOnView = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />
@@ -58,28 +48,19 @@ const HomeView = ({navigation}) => {
         <View style={styles.container}>
           <View style={{ marginBottom: 50 }}>
             <Logo />
+            <Text style={styles.buttonText}>SIGN ON VIEW</Text>
           </View>
           <View>
-          <Button
-        onPress={() => navigation.navigate('SignIn')}
-        title="Sign In"
-      />
-      <Button
-        onPress={() => navigation.navigate('SignOn')}
-        title="Sign On"
-      />
-          <Button
-        onPress={() => navigation.navigate('Location')}
-        title="Go to Record Location"
-      />
-      
-            {/* <Text style={styles.buttonText}>Finges</Text> */}
-            <Text style={styles.buttonText}>Map</Text>
-            <Text style={styles.buttonText}>Experience</Text>
+            <Text style={styles.buttonText}>Finges</Text>
+            <Text style={styles.buttonText}>PAM</Text>
+            <Text style={styles.buttonText}>Ex</Text>
+
+            <Button title="Go back" onPress={() => navigation.goBack() } />
+
           </View>
         </View>
       </View>
     </SafeAreaView>
   );
 };
-export default HomeView;
+export default SignOnView;

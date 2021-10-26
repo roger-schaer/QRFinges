@@ -1,9 +1,14 @@
-import React from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
-import HomeView from "../views/HomeView";
+// import React from "react";
+// import { SafeAreaView, StyleSheet } from "react-native";
+// import HomeView from "../views/HomeView";
+// import {
+//   NavigationContext
+// } from '@react-navigation/native';
 
-const Home = () => {
-  return <HomeView />;
-};
+// //const navigation = React.useContext(NavigationContext);
 
-export default Home;
+// const Home = () => {
+//   return HomeView ;
+// };
+
+// export default Home;
