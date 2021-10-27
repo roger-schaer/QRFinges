@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Logo } from "../component/Logo";
 import { Navigation } from "../component/Navigation";
+import Button from "react-native-web/dist/exports/Button";
 
 const styles = StyleSheet.create({
   container: {
@@ -26,15 +27,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-const HomeView = () => {
+const HomeView = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />
       <View style={{ flex: 1 }}>
         <TouchableOpacity
-          onPress={() => {
-            console.log("Hamburger");
-          }}
+          onPress={() =>
+            console.log("Hamburger")
+          }
         >
           <Image
             source={{
@@ -49,6 +50,10 @@ const HomeView = () => {
             <Logo />
           </View>
           <View>
+            <Button
+                onPress={()=> props.navigation.navigate('Profile')}
+                title="Go to Profile"
+            />
             <Text style={styles.buttonText}>Finges</Text>
             <Text style={styles.buttonText}>Map</Text>
             <Text style={styles.buttonText}>Experience</Text>
