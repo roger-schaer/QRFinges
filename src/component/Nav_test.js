@@ -13,6 +13,7 @@ import HomeView from "../views/HomeView";
 import LocationRecordingView from "../views/LocationRecordingView";
 import SignInView from "../views/SignInView";
 import SignOnView from "../views/SignOnView";
+import {Profile} from "../pages/Profile";
 
 // import MainPage from "pages/LocationRecording";
 // import Home from "pages/Home";
@@ -91,6 +92,7 @@ import SignOnView from "../views/SignOnView";
               <StackNav.Screen name="SignIn" component={SignInView} />
               <StackNav.Screen name="SignOn" component={SignOnView} />
               <StackNav.Screen name="Location" component={LocationRecordingView} />
+              <StackNav.Screen name="Profile" component={Profile}/>
             </StackNav.Navigator>
             {/* <AppStack/> */}
           </NavigationContainer>
