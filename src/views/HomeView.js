@@ -3,14 +3,12 @@ import {
   Text,
   View,
   StyleSheet,
-  Platform,
   SafeAreaView,
   StatusBar,
   TouchableOpacity,
   Image,
 } from "react-native";
 import { Logo } from "../component/Logo";
-import { Navigation } from "../component/Navigation";
 
 const styles = StyleSheet.create({
   container: {

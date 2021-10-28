@@ -1,8 +1,8 @@
 import React from "react";
-import Home from "./src/pages/Home";
+import {LocationPage} from "./src/pages/LocationPage";
 import "./src/services/i18n";
 const App = () => {
-  return <Home />;
+  return <LocationPage />;
 };
 
 export default App;
