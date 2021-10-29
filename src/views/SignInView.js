@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -7,11 +7,15 @@ import {
   Platform,
   SafeAreaView,
   StatusBar,
+  Switch,
   TouchableOpacity,
   Image,
 } from "react-native";
+// import ToggleSwitch from 'toggle-switch-react-native'
 import { Logo } from "../component/Logo";
+import HomeView from "./HomeView";
 //import { Navigation } from "../component/Navigation";
+// import {isLoggedIn} from "../component/Nav_test"
 
 const styles = StyleSheet.create({
   container: {
@@ -27,7 +31,23 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-const SignInView = ({ navigation }) => {
+
+// const [isEnabled, setIsEnabled] = useState(false);
+// const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+// function useToggle(initialValue = false) {
+//   const [isEnable, setIsEnabled] = React.useState(initialValue);
+//   const [value, setValue] = React.useState(initialValue);
+//   const toggle = React.useCallback(() => {
+//     setValue(v => !v);
+//   }, []);
+//   return [value, toggle];
+// }
+
+const SignIn = (props) => {
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />
@@ -52,13 +72,29 @@ const SignInView = ({ navigation }) => {
           </View>
           <View>
             <Text style={styles.buttonText}>Finges</Text>
+
+            {console.log("isEnabled ", isEnabled)},
+           
+            <Text>Connexion</Text>           
+            <Switch
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+              // onChange={isLoggedIn == isEnabled}
+            />
             <Text style={styles.buttonText}>Map</Text>
+            <Button
+              onPress={() => props.navigation.navigate('Home', {screen : HomeView }) }
+              title="Go to HomeView"
+            />
             <Text style={styles.buttonText}>Experience</Text>
-            <Button title="Go back" onPress={() => navigation.goBack() } />
+            {/* <Button title="Go back" onPress={() => navigation.goBack() } /> */}
           </View>
         </View>
       </View>
     </SafeAreaView>
   );
 };
-export default SignInView;
+export default SignIn;

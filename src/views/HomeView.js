@@ -2,6 +2,7 @@ import React from "react";
 import {
   Text,
   View,
+  Button,
   StyleSheet,
   Platform,
   SafeAreaView,
@@ -10,8 +11,8 @@ import {
   Image,
 } from "react-native";
 import { Logo } from "../component/Logo";
-import { Navigation } from "../component/Navigation";
-import Button from "react-native-web/dist/exports/Button";
+//import { Navigation } from "../component/Navigation";
+// import Button from "react-native-web/dist/exports/Button";
 
 const styles = StyleSheet.create({
   container: {
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-const HomeView = (props) => {
+const Home = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />
@@ -63,4 +64,4 @@ const HomeView = (props) => {
     </SafeAreaView>
   );
 };
-export default HomeView;
+export default Home;

@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-const SignOnView = ({ navigation }) => {
+const SignUp = ({ props }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />
@@ -55,7 +55,7 @@ const SignOnView = ({ navigation }) => {
             <Text style={styles.buttonText}>PAM</Text>
             <Text style={styles.buttonText}>Ex</Text>
 
-            <Button title="Go back" onPress={() => navigation.goBack() } />
+            <Button title="Go back" onPress={() => props.navigation.goBack() } />
 
           </View>
         </View>
@@ -63,4 +63,4 @@ const SignOnView = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-export default SignOnView;
+export default SignUp;

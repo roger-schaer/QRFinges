@@ -1,9 +1,9 @@
-import React from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
-import SignOnView from "../views/SignOnView";
+// import React from "react";
+// import { SafeAreaView, StyleSheet } from "react-native";
+// import SignUp from "../views/SignUpView";
 
-const SignOn = () => {
-  return <SignOnView />;
-};
+// const SignOn = (props) => {
+//   return <SignUp />;
+// };
 
-export default SignOn;
+// export default SignOn;

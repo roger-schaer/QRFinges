@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {View, Text, StyleSheet} from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, Button, StyleSheet, Linking } from "react-native";
 import Header from "../component/Header";
 import { useTranslation } from "react-i18next";
 import { AntDesign } from '@expo/vector-icons';
@@ -10,6 +10,11 @@ import Time from "../component/Time";
 
 export const Profile = () => {
     const { t, i18n } = useTranslation();
+    const [clickableText, setClickableText] = useState("ça clic vers google ?");
+    const onPressText = () => {
+        // setClickableText("Bird's Nest [pressed]");
+        Linking.openURL('https://google.com');
+      };
 
     i18n.changeLanguage(i18n.language == "fr" ? "en" : "fr");
 
@@ -54,6 +59,12 @@ export const Profile = () => {
         <View>
             <Text style = {styles.title}> {t("scanQR")}</Text>
             <AntDesign style={styles.iconContainer} name = {"qrcode"} size={50} />
+            <Text style={styles.title} onPress={onPressText}>
+        {clickableText}
+        {"\n"}
+        {"\n"}
+      </Text>
+            
         </View>
         <View>
             <Text style = {styles.title}> {t("syncData")}</Text>
