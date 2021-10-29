@@ -17,6 +17,7 @@ import HomeView from "./HomeView";
 //import { Navigation } from "../component/Navigation";
 // import {isLoggedIn} from "../component/Nav_test"
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -71,10 +72,7 @@ const SignIn = (props) => {
             <Text style={styles.buttonText}>SIGN IN VIEW</Text>
           </View>
           <View>
-            <Text style={styles.buttonText}>Finges</Text>
-
-            {console.log("isEnabled ", isEnabled)},
-           
+            <Text style={styles.buttonText}>Finges</Text>        
             <Text>Connexion</Text>           
             <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}
@@ -82,7 +80,6 @@ const SignIn = (props) => {
               ios_backgroundColor="#3e3e3e"
               onValueChange={toggleSwitch}
               value={isEnabled}
-              // onChange={isLoggedIn == isEnabled}
             />
             <Text style={styles.buttonText}>Map</Text>
             <Button

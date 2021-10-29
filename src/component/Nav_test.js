@@ -13,29 +13,18 @@ import Home from "../views/HomeView";
 import LocationRecordingView from "../views/LocationRecordingView";
 import SignIn from "../views/SignInView";
 import SignUp from "../views/SignUpView";
-//import SignUp from "pages/SignUp";
 
 
  const StackNav = createNativeStackNavigator();
  const Drawer = createDrawerNavigator();
 // const [isLoggedIn, setIsLoggedIn] = useState(isLogged);
- // export const [isLoggedIn, setIsLoggedIn] = useState(true);
 
 
     export const Navigation = () => {
-      const [isLoggedIn, setIsLoggedIn] = useState(true);
+      const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-      // function setIsLogged(isEnabled){
-      //   setIsLoggedIn(isEnabled);
-      // }
-
-      // useEffect((isLoggedIn) => {
-      //   setIsLoggedIn(isEnabled);
-      // });
-    
        return (
     <NavigationContainer>
-          {console.log("isloggedIn ", isLoggedIn)},
       <StackNav.Navigator>
         { isLoggedIn ? (
           // Screens for logged in users 
@@ -47,7 +36,7 @@ import SignUp from "../views/SignUpView";
         ) : (
           // Auth screens
           <StackNav.Group /*screenOptions={{ headerShown: false }}*/ >
-            <StackNav.Screen name="SignIn" component={SignIn} />
+            <StackNav.Screen name="SignIn" component={SignIn}/>
             <StackNav.Screen name="SignUp" component={SignUp} />
           </StackNav.Group>
         )}
