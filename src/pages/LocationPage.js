@@ -1,30 +1,46 @@
 import React, { useState, useEffect } from "react";
 import { Switch, Text, View } from "react-native";
 import * as Location from "expo-location";
+import * as TaskManager from "expo-task-manager";
+const BACKGROUND_LOCATION_UPDATES_TASK = "START_LOCATION";
+const handleLocationUpdate = ({ data, error }) => {
+  console.log("location update", data);
+};
+TaskManager.defineTask(BACKGROUND_LOCATION_UPDATES_TASK, handleLocationUpdate);
 
 export const LocationPage = () => {
-  const [currentLocation, setCurrentLocation] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState({});
   const [errorMsg, setErrorMsg] = useState(null);
-  const [locations, setLocations] = useState([]);
-  const [timer, setTimer] = useState(0);
-  const [isEnabled, setIsEnabled] = useState(false);
 
+  const [locations, setLocations] = useState([]);
+  const [isEnabled, setIsEnabled] = useState(false);
+  let watch;
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-      if (isEnabled) {
-        /* await Location.watchPositionAsync({ timeInterval: 100 }, (l) => {
+    Location.requestForegroundPermissionsAsync();
+    /* let { status } = await Location.requestBackgroundPermissionsAsync(); */
+    /* if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    } */
+    if (isEnabled) {
+      /* Location.startLocationUpdatesAsync("START_LOCATION", {
+        accuracy: 4,
+        timeInterval: 3000,
+      }); */
+
+      watch = Location.watchPositionAsync(
+        { distanceInterval: 5, accuracy: Location.Accuracy.Highest },
+        (l) => {
           console.log(l);
           setCurrentLocation(l);
-          setLocations((old) => [...old, l]);
+          setLocations((old) => [l, ...old]);
+        }
+      );
+      /* const location = await Location.getCurrentPositionAsync({
+          accuracy: 1,
         }); */
-
-        const location = await Location.getCurrentPositionAsync({
-          accuracy: 100,
+      /* const location = await Location.getCurrentPositionAsync({
+          accuracy: 1,
         });
         console.log(location);
         setCurrentLocation(location);
@@ -32,10 +48,12 @@ export const LocationPage = () => {
         locations.push(location);
         setTimeout(() => {
           setTimer(timer + 1);
-        }, 1000);
-      }
-    })();
-  }, [isEnabled, timer]);
+        }, 1000); */
+    } else {
+      setLocations([]);
+      // Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_UPDATES_TASK);
+    }
+  }, [isEnabled]);
 
   let text = "Waiting..";
   if (errorMsg) {
@@ -53,10 +71,12 @@ export const LocationPage = () => {
         onValueChange={setIsEnabled}
         value={isEnabled}
       />
-      <Text>Timer: {timer}</Text>
+      <Text>Number of locations: {locations.length}</Text>
 
       {isEnabled ? (
-        <Text>Current location: {text}</Text>
+        <>
+          <Text>Current location: {text}</Text>
+        </>
       ) : (
         <Text>Feature desactivée</Text>
       )}
