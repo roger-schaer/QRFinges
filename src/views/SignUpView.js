@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-const SignUp = ({ props }) => {
+const SignUp = ( props ) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />
