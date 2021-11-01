@@ -11,9 +11,9 @@ export const HelpView = (props) => {
             <Button
                 onPress={() => props.navigation.navigate('Contact') }
                 title={"N'hésitez pas à nous contacter"}/>
-            <footer>
+            <View>
                 <Button title="Go back" onPress={() => props.navigation.goBack() } />
-            </footer>
+            </View>
         </View>
     );
 };

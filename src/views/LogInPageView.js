@@ -17,9 +17,9 @@ export const LoginPageView = (props) => {
                 onPress={()=> { props.navigation.navigate('InfoNonRegisteredUser'),
                  console.log("go to CreateProfilePage")} }
                 title={"S'inscrire"}/>
-            <footer>
+            <View>
                 <Button title="Go back" onPress={() => props.navigation.goBack() } />
-            </footer>
+            </View>
         </View>
     );
 };

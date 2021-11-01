@@ -2,8 +2,6 @@ import React, {useEffect, useState} from "react";
 import {View, Text, Button, StyleSheet} from "react-native";
 import Header from "../component/Header";
 import { useTranslation } from "react-i18next";
-import {NavigationContext } from '@react-navigation/native';
-import Profile from "../pages/Profile";
 
 
 export const InfoRegisteredUserView = (props) => {
@@ -17,9 +15,9 @@ export const InfoRegisteredUserView = (props) => {
             <Button
                 onPress={() => props.navigation.navigate('Contact') }
                 title={"Nous contacter"}/>
-            <footer>
+            <View>
                 <Button title="Go back" onPress={() => props.navigation.goBack() } />
-            </footer>
+            </View>
         </View>
     );
 };

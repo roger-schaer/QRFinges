@@ -12,9 +12,9 @@ export const CreateProfilePageView = (props) => {
                 onPress={() => { props.navigation.navigate("Profile"),
                                     console.log("Go to Profile")} }
                 title={"Valider & se connecter"}/>
-        <footer>
+        <View>
             <Button title="Go back" onPress={() => props.navigation.goBack() } />
-        </footer>
+        </View>
         </View>
     );
 };

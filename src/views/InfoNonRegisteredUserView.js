@@ -17,9 +17,9 @@ export const InfoNonRegisteredUserView = (props) => {
                    onPress={() => { props.navigation.navigate('Contact'),
                     console.log("Contact page")} }
                    title={"J'ai encore des questions > nous contacter"}/>
-            <footer>
+            <View>
                 <Button title="Go back" onPress={() => props.navigation.goBack() } />
-            </footer>
+            </View>
         </View>
     );
 };

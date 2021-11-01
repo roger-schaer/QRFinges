@@ -6,7 +6,6 @@ import { AntDesign } from '@expo/vector-icons';
 import moment from 'moment';
 import { LinearProgress } from 'react-native-elements';
 import Time from "../component/Time";
-import {NavigationContext } from '@react-navigation/native';
 
 
 
@@ -53,10 +52,10 @@ export const ProfileView = (props) => {
         <View>
             <AntDesign style={styles.iconSyncContainer} name={"sync"} size={30} />
         </View>
-        <footer>
+        <View>
             <Button title="Go to Home" onPress={() => props.navigation.navigate("Home") } />
             <Button title="FAQ" onPress={() => props.navigation.navigate("Help")} />
-        </footer>
+        </View>
     </View>
   );
 };

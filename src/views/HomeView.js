@@ -11,8 +11,7 @@ import {
   Image,
 } from "react-native";
 import { Logo } from "../component/Logo";
-//import { Navigation } from "../component/Navigation";
-// import Button from "react-native-web/dist/exports/Button";
+
 
 const styles = StyleSheet.create({
   container: {

@@ -12,9 +12,9 @@ export const ContactPageView = (props) => {
             <AntDesign name={"phone"} size={30}/>
             <AntDesign name={"mail"} size={30}/>
             <FontAwesome name={"address-book"} size={30}/>
-            <footer>
+            <View>
                 <Button title="Go back" onPress={() => props.navigation.goBack() } />
-            </footer>
+            </View>
         </View>
     );
 };
