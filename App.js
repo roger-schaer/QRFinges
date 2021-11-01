@@ -7,11 +7,13 @@ import { NavigationContainer, createNativeStackNavigator } from '@react-navigati
 // } from '@react-navigation/native';
 // import Navigation from 'component/Nav_test';
 
- import { Navigation } from "./src/component/Nav_test"
+ import { Navigation } from "./src/component/Navigation"
+import Profile from "./src/pages/Profile";
 
 const App = () => {
    return (
     < Navigation />
+   //  < Profile />
    );
 };
 

@@ -4,46 +4,35 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SideMenu from "./SideMenu";
 
-import Home from "../views/HomeView";
-import { Profile } from "../pages/Profile";
-import LocationRecordingView from "../views/LocationRecordingView";
-import SignIn from "../views/SignInView";
-import SignUp from "../views/SignUpView";
+import InfoRegisteredUserView from "../views/InfoRegisteredUserView";
+import ProfileView from "../views/ProfileView";
+import ContactPageView from "../views/ContactPageView";
+import InfoNonRegisteredUserView from "../views/InfoNonRegisteredUserView";
+import LoginPageView from "../views/LogInPageView";
+import QRcodeView from "../views/QRcodePageView";
+import CreateProfilePageView from "../views/CreateProfilePageView";
+import HomeView from "../views/HomeView";
+import HelpView from "../views/HelpView";
 
 
  const StackNav = createNativeStackNavigator();
 
-// const Drawer = createDrawerNavigator();
 
 export const Navigation = () => {
   return (
     <NavigationContainer>
       <StackNav.Navigator>
-        {/* { isLoggedIn ? (
-          // Screens for logged in users 
-          <StackNav.Group>
-            <StackNav.Screen name="Home" component={Home} />
-            {/* <StackNav.Screen name="Location" component={LocationRecordingView} /> */}
-            {/* <StackNav.Screen name="Profile" component={Profile} />
-          </StackNav.Group> */}
-        {/* ) : ( */} 
-          {/* // Auth screens */}
-          {/* <StackNav.Group /*screenOptions={{ headerShown: false }} > */}
-          <StackNav.Screen name="SignIn" component={SignIn}/>
-            <StackNav.Screen name="SignUp" component={SignUp} />
-            <StackNav.Screen name="Home" component={Home} />
-            {/* <StackNav.Screen name="Location" component={LocationRecordingView} /> */}
-            <StackNav.Screen name="Profile" component={Profile} />
-            
-          {/* </StackNav.Group> */}
-        {/* )} */}
-        {/* Common modal screens */}
-        {/* <StackNav.Group screenOptions={{ presentation: 'modal' }}>
-        <StackNav.Screen name="Help" component={Help} />
-        <StackNav.Screen name="Invite" component={Invite} />
-        </StackNav.Group> */}
+        <StackNav.Screen name="Home" component={HomeView} />
+        <StackNav.Screen name="LoginPage" component={LoginPageView}/>
+        <StackNav.Screen name="CreateProfile" component={CreateProfilePageView} />
+        <StackNav.Screen name="InfoNonRegisteredUser" component={ InfoNonRegisteredUserView }/>
+        <StackNav.Screen name="Profile" component={ProfileView} />
+        <StackNav.Screen name="QRcodePage" component={QRcodeView}/>
+        <StackNav.Screen name="InfoRegisteredUser" component={InfoRegisteredUserView} />
+        <StackNav.Screen name="Contact" component={ContactPageView}/>
+        <StackNav.Screen name="Help" component={HelpView}/>
       </StackNav.Navigator>
-//     </NavigationContainer>
+    </NavigationContainer>
   );
 };
 

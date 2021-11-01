@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-const Home = (props) => {
+const HomeView = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />
@@ -52,8 +52,8 @@ const Home = (props) => {
           </View>
           <View>
             <Button
-                onPress={()=> props.navigation.navigate('Profile')}
-                title="Go to Profile"
+                onPress={()=> props.navigation.navigate('LoginPage')}
+                title="Login"
             />
             <Text style={styles.buttonText}>Finges</Text>
             <Text style={styles.buttonText}>Map</Text>
@@ -64,4 +64,4 @@ const Home = (props) => {
     </SafeAreaView>
   );
 };
-export default Home;
+export default HomeView;
