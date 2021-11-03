@@ -1,9 +1,9 @@
 import React from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
-import HomeView from "../views/HomeView";
 
-const Home = () => {
-  return <HomeView />;
+import { InfoRegisteredUserView } from "../views/InfoRegisteredUserView";
+
+export const Home = () => {
+  return <InfoRegisteredUserView />;
 };
 
 export default Home;
