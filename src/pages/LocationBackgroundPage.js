@@ -9,7 +9,7 @@ const BACKGROUND_LOCATION_UPDATES_TASK = "START_LOCATION";
 export const storeData = async( value ) => {
     try {
         const jsonValue = JSON.stringify(value)
-        await AsyncStorage.setItem('@locations', jsonValue)
+        await AsyncStorage.setItem('@currentLocation', jsonValue)
     } catch (e) {
         console.log('error saving data to AsyncStorage', e)
     }
@@ -17,8 +17,8 @@ export const storeData = async( value ) => {
 
 export const getData = async() => {
     try {
-        const jsonValue = await AsyncStorage.getItem('@locations')
-        return jsonValue != null ? JSON.parse(jsonValue) : null;
+        const jsonValue = await AsyncStorage.getItem('@currentLocation')
+        return jsonValue != null ? JSON.parse(jsonValue) : "";
     } catch(e) {
         console.log('error reading data from AsyncStorage', e)
     }
@@ -30,26 +30,47 @@ TaskManager.defineTask(BACKGROUND_LOCATION_UPDATES_TASK, ({ data: { locations },
         console.log('An error occured', error)
     }
 
-    getData().then(previousLocations => {
+/*    getData().then(previousLocations => {
         console.log('previousLocations: ', previousLocations)
         console.log('new location: ', locations)
 
         if(previousLocations != null){
             locations = previousLocations.concat(locations)
-        }
+        }*/
 
-        storeData(locations).then(r => console.log('data saved'))
-    })
+        console.log(locations)
+        storeData(locations).then(r => console.log('data saved', r))
+  //  })
 });
 
 
 
 export const LocationBackgroundPage = () => {
-    const [currentLocation, setCurrentLocation] = useState({});
+    const [currentLocation, setCurrentLocation] = useState("");
     const [errorMsg, setErrorMsg] = useState(null);
 
     const [locations, setLocations] = useState([]);
     const [isEnabled, setIsEnabled] = useState(false);
+    const [timer, setTimer] = useState(0);
+
+
+    useEffect(() => {
+        if (isEnabled) {
+            if (timer <= 36000) {
+                (async () => {
+                    const data = await getData();
+                    setCurrentLocation(data);
+                    setTimeout(() => {
+                        setTimer(timer + 1);
+                    }, 1000);
+                })();
+            }
+            else {
+                setIsEnabled(false);
+            }
+        }
+    }, [isEnabled, timer]);
+
 
     useEffect(() => {
 
@@ -65,8 +86,8 @@ export const LocationBackgroundPage = () => {
                         return;
                     }
 
-                    let location = await Location.getCurrentPositionAsync({});
-                    setCurrentLocation(location);
+                   // let location = await Location.getCurrentPositionAsync({});
+                   // setCurrentLocation(location);
 
                 } catch (e) {
                     console.log('error with foreground permissions')
@@ -120,7 +141,9 @@ export const LocationBackgroundPage = () => {
                 onValueChange={setIsEnabled}
                 value={isEnabled}
             />
-            <Text>Number of locations: {locations.length}</Text>
+            {/* <Text>Number of locations: {locations.length}</Text> */}
+
+            <Text>Timers: {timer}</Text>
 
             {isEnabled ? (
                 <>
@@ -129,9 +152,9 @@ export const LocationBackgroundPage = () => {
             ) : (
                 <Text>Feature desactivée</Text>
             )}
-            {locations.map((l, i) => (
+         {/*   {locations.map((l, i) => (
                 <Text key={`text-${i}`}>{JSON.stringify(l)}</Text>
-            ))}
+            ))}*/}
         </View>
     );
 };
