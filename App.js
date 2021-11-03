@@ -1,23 +1,26 @@
 import React from "react";
 // import Home from "./src/pages/Home";
 import "./src/services/i18n";
-import { NavigationContainer, createNativeStackNavigator } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  createNativeStackNavigator,
+} from "@react-navigation/native";
 // import {
 //   NavigationContext
 // } from '@react-navigation/native';
 // import Navigation from 'component/Nav_test';
 
- import { Navigation } from "./src/component/Navigation"
+import { Navigation } from "./src/component/Navigation";
 import Profile from "./src/pages/Profile";
 
 const App = () => {
-   return (
-    < Navigation />
-   //  < Profile />
-   );
+  return (
+    <Navigation />
+    //  < Profile />
+  );
 };
 
- export default App;
+export default App;
 
 // const App = () => {
 //   return navigator;
