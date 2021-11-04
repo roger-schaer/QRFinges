@@ -17,7 +17,14 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.hevsedhea.qrfinges",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.0",
+      "infoPlist": {
+        "UIBackgroundModes": ["location", "fetch"],
+        "NSLocationWhenInUseUsageDescription": "App requires geolocation to improve recolting data when in the \"bois de Finges\"",
+        "NSLocationUsageDescription": "App requires geolocation to improve recolting data when in the \"bois de Finges\"",
+        "NSLocationAlwaysUsageDescription": "App requires geolocation to improve recolting data when in the \"bois de Finges\"",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "App requires geolocation to improve the quality of the service"
+      }
     },
     "android": {
       "package": "com.hevsedhea.qrfinges",
