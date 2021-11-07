@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {View, Text, Button, StyleSheet} from "react-native";
+import React from "react";
+import {View, Text, Button} from "react-native";
 import Header from "../component/Header";
 import { useTranslation } from "react-i18next";
 

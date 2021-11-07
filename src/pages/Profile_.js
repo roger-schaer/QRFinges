@@ -18,21 +18,6 @@ export const Profile = () => {
 
     i18n.changeLanguage(i18n.language == "fr" ? "en" : "fr");
 
-  /*  const [time, setTime] = useState('');
-
-   // const now = moment().format('LTS');
-
-    useEffect(() => {
-
-        var hours = new Date().getHours(); //Current Hours
-        var min = new Date().getMinutes(); //Current Minutes
-        var sec = new Date().getSeconds(); //Current Seconds
-        setTime(
-         hours + ':' + min + ':' + sec
-        );
-    }, []); */
-
-
     return (
     <View style={styles.screen}>
         <Header />
