@@ -1,7 +1,6 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import { createNativeStackNavigator} from '@react-navigation/native-stack';
 import InfoRegisteredUserView from "../views/InfoRegisteredUserView";
 import ProfileView from "../views/ProfileView";
 import ContactPageView from "../views/ContactPageView";
@@ -11,12 +10,27 @@ import QRcodeView from "../views/QRcodePageView";
 import CreateProfilePageView from "../views/CreateProfilePageView";
 import HomeView from "../views/HomeView";
 import HelpView from "../views/HelpView";
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
- const StackNav = createNativeStackNavigator();
+const StackNav = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
+
+function OverMenu() {
+    return (
+        <Drawer.Navigator>
+            <Drawer.Screen name="Home" component={HomeView} />
+            <Drawer.Screen name="Info" component={InfoRegisteredUserView} />
+            <Drawer.Screen name="Contact" component={ContactPageView}/>
+            <StackNav.Screen name="LoginPage" component={LoginPageView}/>
+            <StackNav.Screen name="CreateProfile" component={CreateProfilePageView} />
+            <StackNav.Screen name="Profile" component={ProfileView} />
+        </Drawer.Navigator>
+    );
+}
 
 
-export const Navigation = () => {
+const Navigation = () => {
   return (
     <NavigationContainer>
       <StackNav.Navigator>
@@ -34,4 +48,13 @@ export const Navigation = () => {
   );
 };
 
- export default Navigation;
+const NavWithMenu = () => {
+    return (
+        <NavigationContainer>
+            <OverMenu/>
+        </NavigationContainer>
+    );
+};
+
+
+ export default NavWithMenu;

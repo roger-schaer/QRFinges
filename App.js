@@ -1,13 +1,13 @@
 import React from "react";
 import "./src/services/i18n";
+import 'react-native-gesture-handler';
 
-
-import { Navigation } from "./src/component/Navigation";
+import NavWithMenu from "./src/component/Navigation";
 
 
 const App = () => {
   return (
-    <Navigation />
+    <NavWithMenu />
   );
 };
 

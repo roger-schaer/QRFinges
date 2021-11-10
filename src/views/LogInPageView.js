@@ -1,22 +1,23 @@
-import React from "react";
+import React, {useState} from "react";
 import {View, Text, TextInput, StyleSheet} from "react-native";
 import Header from "../component/Header";
 import { useTranslation } from "react-i18next";
 import {Logo} from "../component/Logo";
 import {CustomButton} from "../component/CustomButton";
 import {CustomButtonNoBorders} from "../component/CustomButtonNoBorders";
-
+import {HeaderButton, HeaderButtons, Item} from 'react-navigation-header-buttons';
 
 
 
 export const LoginPageView = (props) => {
-    const { t, i18n } = useTranslation();
 
+    // Translation
+    const { t, i18n } = useTranslation();
     i18n.changeLanguage(i18n.language == "fr" ? "en" : "fr");
 
+
+
     return (
-        <View >
-            <Header/>
             <View style={styles.screen}>
                 <Logo style={styles.logoContainer}/>
             <Text style={styles.text}>{t("welcomePhrase")}</Text>
@@ -27,9 +28,16 @@ export const LoginPageView = (props) => {
 
                 <CustomButtonNoBorders onPress={(event)=> props.navigation.navigate('CreateProfile')}>{t("subscribe")}</CustomButtonNoBorders>
             </View>
-        </View>
+
     );
 };
+
+LoginPageView.navigationOptions = {
+    headerTitle : "Login",
+    headerLeft : <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item title="Menu" iconName='menu-sharp' onPress={() => {}}/>
+    </HeaderButtons>
+}
 
 const styles = StyleSheet.create({
     screen: {

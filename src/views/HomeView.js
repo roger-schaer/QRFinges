@@ -27,34 +27,19 @@ const styles = StyleSheet.create({
 });
 const HomeView = (props) => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar />
-      <View style={{ flex: 1 }}>
-        <TouchableOpacity onPress={() => console.log("Hamburger")}>
-          <Image
-            source={{
-              uri: "https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png",
-            }}
-            style={{ width: 35, height: 35, marginLeft: 15 }}
-          />
-        </TouchableOpacity>
-
         <View style={styles.container}>
           <View style={{ marginBottom: 50 }}>
             <Logo />
           </View>
           <View>
-            <Button
-              onPress={() => props.navigation.navigate("LoginPage")}
-              title="Login"
-            />
-            <Text style={styles.buttonText}>Finges</Text>
-            <Text style={styles.buttonText}>Map</Text>
-            <Text style={styles.buttonText}>Experience</Text>
+            <TouchableOpacity onPress={() => props.navigation.navigate("LoginPage")}>
+              <Text style={styles.buttonText}>Finges</Text>
+              <Text style={styles.buttonText}>Map</Text>
+              <Text style={styles.buttonText}>Experience</Text>
+            </TouchableOpacity>
+
           </View>
         </View>
-      </View>
-    </SafeAreaView>
   );
 };
 export default HomeView;
