@@ -2,7 +2,7 @@
   "expo": {
     "name": "QRF",
     "slug": "QRF",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -13,17 +13,23 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.hevsedhea.qrfinges",
-      "buildNumber": "1.0.0"
+      "buildNumber": "3.0.0",
+      "infoPlist": {
+        "UIBackgroundModes": ["location", "fetch"],
+        "NSLocationWhenInUseUsageDescription": "App requires geolocation to improve recolting data when in the \"bois de Finges\"",
+        "NSLocationUsageDescription": "App requires geolocation to improve recolting data when in the \"bois de Finges\"",
+        "NSLocationAlwaysUsageDescription": "App requires geolocation to improve recolting data when in the \"bois de Finges\"",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "App requires geolocation to improve the quality of the service"
+      }
     },
     "android": {
       "package": "com.hevsedhea.qrfinges",
-        "versionCode": 1,
+      "permissions": [ "ACCESS_BACKGROUND_LOCATION","ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION", "FOREGROUND_SERVICE" ],
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

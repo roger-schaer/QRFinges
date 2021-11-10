@@ -3,7 +3,8 @@ import { initReactI18next } from "react-i18next";
 import { DEFAULT_LANGUAGE } from "../constant/contants";
 import { TranslationEN } from "../locales/en";
 import { TranslationFR } from "../locales/fr";
-import { FR } from "../locales/fr.json";
+
+
 
 // the translations
 // (tip move them in a JSON file and import them,
@@ -11,20 +12,12 @@ import { FR } from "../locales/fr.json";
 const resources = {
     en: {
         translation: {
-           main_title: "QRFinges title in english",
-
+          ...TranslationEN
         },
     },
     fr: {
-        translation: {
-           
-            main_title: "Le titre de QRFinges en français",
-            profileHead : "Suivez moi",
-            scanQR : "Scannez QR code",
-            syncData : "Vos données sont syncronisés",
-            start : "debut",
-            end : "fin",
-        },
+        translation: TranslationFR,
+       
     },
 
 };

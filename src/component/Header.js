@@ -6,7 +6,7 @@ const Header = props => {
        <View>
            <Text>              </Text>
            <TouchableOpacity
-               onPress={() =>
+               onPress={(event) =>
                    console.log("Hamburger")
                }
            >

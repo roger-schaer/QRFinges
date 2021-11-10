@@ -2,17 +2,21 @@ import React, {useEffect, useState} from "react";
 import {View, Text, StyleSheet} from "react-native";
 import Header from "../component/Header";
 import { useTranslation } from "react-i18next";
-import Button from "react-native-web/dist/exports/Button";
+import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
+import CreateProfilePageView from "../views/CreateProfilePageView";
 
-
-export const CreateProfilePage = () => {
+export const CreateProfilePage = (props) => {
     return (
-        <View>
-            <Header/>
-            <Button
-                onPress={() => console.log("Go to Profile")}
-                title={"Créer"}/>
+        <CreateProfilePageView/>
+        // <View>
+        //     <Header/>
+        //     <AntDesign name={"phone"} size={30}/>
+        //     <AntDesign name={"mail"} size={30}/>
+        //     <FontAwesome name={"address-book"} size={30}/>
 
-        </View>
+        // </View>
     );
 };
+
+export default CreateProfilePage;

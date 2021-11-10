@@ -1,8 +1,15 @@
 import React from "react";
-import Home from "./src/pages/Home";
 import "./src/services/i18n";
+
+
+import { Navigation } from "./src/component/Navigation";
+
+
 const App = () => {
-  return <Home />;
+  return (
+    <Navigation />
+  );
 };
 
 export default App;
+
