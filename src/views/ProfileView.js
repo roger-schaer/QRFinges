@@ -9,11 +9,8 @@ import { LocationBackgroundView } from "./LocationBackgroundView";
 const ProfileView = (props) => {
   const { t, i18n } = useTranslation();
 
-  i18n.changeLanguage(i18n.language == "fr" ? "en" : "fr");
-
   return (
     <View style={styles.screen}>
-
       <Button
         title="Mes Infos"
         onPress={() => props.navigation.navigate("InfoRegisteredUser")}

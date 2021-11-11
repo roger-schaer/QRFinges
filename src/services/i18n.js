@@ -4,22 +4,16 @@ import { DEFAULT_LANGUAGE } from "../constant/contants";
 import { TranslationEN } from "../locales/en";
 import { TranslationFR } from "../locales/fr";
 
-
-
 // the translations
 // (tip move them in a JSON file and import them,
 // or even better, manage them separated from your code: https://react.i18next.com/guides/multiple-translation-files)
 const resources = {
-    en: {
-        translation: {
-          ...TranslationEN
-        },
-    },
-    fr: {
-        translation: TranslationFR,
-       
-    },
-
+  en: {
+    translation: TranslationEN,
+  },
+  fr: {
+    translation: TranslationFR,
+  },
 };
 
 i18n
