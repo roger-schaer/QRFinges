@@ -31,6 +31,7 @@ const CustomDrawerView = (props) => {
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
       <DrawerItem
+        onPress={() => {}}
         label={() => (
           <View style={{ flexDirection: "row" }}>
             <Text>Language: {i18n.language}</Text>
@@ -39,10 +40,12 @@ const CustomDrawerView = (props) => {
               thumbColor={i18n.language == "fr" ? "#f5dd4b" : "#f4f3f4"}
               ios_backgroundColor="#3e3e3e"
               value={i18n.language === "fr"}
+              onChange={() => {
+                i18n.changeLanguage(i18n.language == "fr" ? "en" : "fr");
+              }}
             />
           </View>
         )}
-        onPress={() => i18n.changeLanguage(i18n.language == "fr" ? "en" : "fr")}
       />
     </DrawerContentScrollView>
   );
