@@ -10,6 +10,7 @@ import {
   Image,
 } from "react-native";
 import { Logo } from "../component/Logo";
+import { FirebaseView } from "./FirebaseView";
 
 const styles = StyleSheet.create({
   container: {
@@ -44,6 +45,8 @@ const HomeView = (props) => {
             <Logo />
           </View>
           <View>
+            <FirebaseView />
+
             <Button
               onPress={() => props.navigation.navigate("LoginPage")}
               title="Login"

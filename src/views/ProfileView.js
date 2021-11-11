@@ -7,6 +7,7 @@ import moment from "moment";
 import { LinearProgress } from "react-native-elements";
 import Time from "../component/Time";
 import { LocationBackgroundView } from "./LocationBackgroundView";
+import { LocationView } from "./LocationView";
 
 export const ProfileView = (props) => {
   const { t, i18n } = useTranslation();
@@ -31,7 +32,7 @@ export const ProfileView = (props) => {
           name={"playcircleo"}
           size={30}
         />
-        {Platform.OS !== "web" ? <LocationBackgroundView /> : null}
+        {Platform.OS !== "web" ? <LocationBackgroundView /> : <LocationView />}
         <View style={styles.timerContainer}>
           <View style={styles.timerLine}>
             <Text style={styles.timerText}> {t("start")} </Text>
