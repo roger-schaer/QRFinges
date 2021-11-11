@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     screen: {
         padding: 50,
        paddingTop : 0,
+        backgroundColor : "#f5f5f5",
     },
     inputContainer: {
         flexDirection: 'row',

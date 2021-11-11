@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {View, Text, Button, StyleSheet, TextInput} from "react-native";
-import Header from "../component/Header";
 import { useTranslation } from "react-i18next";
 import {CustomButton} from "../component/CustomButton";
 
@@ -13,7 +12,7 @@ export const CreateProfilePageView = (props) => {
 
     return (
         <View>
-            <Header/>
+
             <View style={styles.screen}>
                 <Text style={styles.title}>createAccount</Text>
                 <TextInput placeholder={"pseudo"} placeholderTextColor={"darkgreen"} style={styles.input}/>

@@ -9,7 +9,7 @@ export const TranslationFR =  {
   subscribe: "S'inscrire",
   wrongPass : "Votre e-mail ou le mot de pass ne sont pas correct",
   createProfileHead : "Create your profile",
-  createAccount : "Créez votre profil ",
+  createAccount : "Créez votre compte ",
   pseudo : "Pseudo",
   confirmPass : "Confirmez votre mot de pass ",
   create: "Créer",

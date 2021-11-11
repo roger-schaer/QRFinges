@@ -11,7 +11,8 @@ import CreateProfilePageView from "../views/CreateProfilePageView";
 import HomeView from "../views/HomeView";
 import HelpView from "../views/HelpView";
 import { createDrawerNavigator } from '@react-navigation/drawer';
-
+import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 const StackNav = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -20,11 +21,14 @@ function OverMenu() {
     return (
         <Drawer.Navigator>
             <Drawer.Screen name="Home" component={HomeView} />
-            <Drawer.Screen name="Info" component={InfoRegisteredUserView} />
+            <Drawer.Screen name="InfoRegistered" component={InfoRegisteredUserView} />
+            <StackNav.Screen name="InfoNonRegistered" component={ InfoNonRegisteredUserView }/>
             <Drawer.Screen name="Contact" component={ContactPageView}/>
             <StackNav.Screen name="LoginPage" component={LoginPageView}/>
             <StackNav.Screen name="CreateProfile" component={CreateProfilePageView} />
             <StackNav.Screen name="Profile" component={ProfileView} />
+            <StackNav.Screen name="QRcodePage" component={QRcodeView}/>
+            <StackNav.Screen name="Help" component={HelpView}/>
         </Drawer.Navigator>
     );
 }
