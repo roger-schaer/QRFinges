@@ -5,7 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { styles } from "../component/styles";
 
-export const ContactPageView = (props) => {
+const ContactPageView = (props) => {
     return (
         <View style={contactPageStyle.screen}>
             <View style={contactPageStyle.row}>

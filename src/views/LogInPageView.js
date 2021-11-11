@@ -9,7 +9,7 @@ import {CustomButtonNoBorders} from "../component/CustomButtonNoBorders";
 
 
 
-export const LoginPageView = (props) => {
+const LoginPageView = (props) => {
 
     // Translation
     const { t, i18n } = useTranslation();

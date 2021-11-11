@@ -3,7 +3,7 @@ import {View, Text, Button} from "react-native";
 
 
 
-export const HelpView = (props) => {
+const HelpView = (props) => {
     return (
         <View>
 

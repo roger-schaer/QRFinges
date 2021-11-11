@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { styles } from "../component/styles";
 import {CustomButton} from "../component/CustomButton";
 
-export const InfoRegisteredUserView = (props) => {
+const InfoRegisteredUserView = (props) => {
     return (
         <View style={styles.screen}>
             <Text style={styles.title}>helpCenterHead</Text>

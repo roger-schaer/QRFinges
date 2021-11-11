@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { styles } from "../component/styles";
 import { MaterialIcons } from '@expo/vector-icons';
 
-export const QRcodeView = (props) => {
+const QRcodeView = (props) => {
     return (
         <View style={styles.screen}>
 

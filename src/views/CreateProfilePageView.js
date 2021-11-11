@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import {CustomButton} from "../component/CustomButton";
 
 
-export const CreateProfilePageView = (props) => {
+const CreateProfilePageView = (props) => {
 
    /* const { t, i18n } = useTranslation();
 

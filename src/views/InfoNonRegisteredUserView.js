@@ -5,7 +5,7 @@ import { styles } from "../component/styles";
 import {CustomButton} from "../component/CustomButton";
 
 
-export const InfoNonRegisteredUserView = (props) => {
+const InfoNonRegisteredUserView = (props) => {
     return (
         <View style={styles.screen}>
             <Text style={styles.title}>infoHead</Text>
