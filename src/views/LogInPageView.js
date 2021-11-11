@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import {Logo} from "../component/Logo";
 import {CustomButton} from "../component/CustomButton";
 import {CustomButtonNoBorders} from "../component/CustomButtonNoBorders";
-import {HeaderButton, HeaderButtons, Item} from 'react-navigation-header-buttons';
+
 
 
 
@@ -32,12 +32,7 @@ export const LoginPageView = (props) => {
     );
 };
 
-LoginPageView.navigationOptions = {
-    headerTitle : "Login",
-    headerLeft : <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item title="Menu" iconName='menu-sharp' onPress={() => {}}/>
-    </HeaderButtons>
-}
+
 
 const styles = StyleSheet.create({
     screen: {
