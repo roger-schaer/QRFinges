@@ -1,16 +1,13 @@
 import React from "react";
 import "./src/services/i18n";
-import {
-  NavigationContainer,
-  createNativeStackNavigator,
-} from "@react-navigation/native";
+import 'react-native-gesture-handler';
 
-import { Navigation } from "./src/component/Navigation";
-import Profile from "./src/pages/Profile";
+import NavWithMenu from "./src/component/Navigation";
+
 
 const App = () => {
   return (
-    <Navigation />
+    <NavWithMenu />
   );
 };
 

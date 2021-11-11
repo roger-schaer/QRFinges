@@ -1,21 +1,16 @@
 import React from "react";
 import { View, Text, Button, StyleSheet, Platform } from "react-native";
-import Header from "../component/Header";
 import { useTranslation } from "react-i18next";
 import { AntDesign } from "@expo/vector-icons";
 import moment from "moment";
 import { LinearProgress } from "react-native-elements";
-import Time from "../component/Time";
 import { LocationBackgroundView } from "./LocationBackgroundView";
 
-export const ProfileView = (props) => {
+const ProfileView = (props) => {
   const { t, i18n } = useTranslation();
-
-  i18n.changeLanguage(i18n.language == "fr" ? "en" : "fr");
 
   return (
     <View style={styles.screen}>
-      <Header />
       <Button
         title="Mes Infos"
         onPress={() => props.navigation.navigate("InfoRegisteredUser")}
