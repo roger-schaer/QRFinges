@@ -1,8 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Button, StyleSheet, TextInput } from "react-native";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { CustomButton } from "../component/CustomButton";
+import { auth } from "../services/firebase";
 
 const CreateProfilePageView = (props) => {
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSignup = async () => {
+    console.log("sign up method called ")
+    try{
+    const user = await createUserWithEmailAndPassword(auth, email, password)
+      console.log(user)
+    } catch (e) {
+      console.log(e.message)
+    }
+  }
+
   return (
     <View>
       <View style={styles.screen}>
@@ -13,11 +29,16 @@ const CreateProfilePageView = (props) => {
           style={styles.input}
         />
         <TextInput
+          value={password}
+          onChangeText={text => setPassword(text)}
           placeholder={"pass"}
           placeholderTextColor={"darkgreen"}
           style={styles.input}
+          secureTextEntry
         />
         <TextInput
+          value={email}
+          onChangeText={text => setEmail(text)}
           placeholder={"email"}
           placeholderTextColor={"darkgreen"}
           style={styles.input}
@@ -27,9 +48,16 @@ const CreateProfilePageView = (props) => {
           placeholderTextColor={"darkgreen"}
           style={styles.input}
         />
-        <CustomButton onPress={(event) => props.navigation.navigate("Profile")}>
+        
+        <CustomButton onPress={handleSignup}>
           create
         </CustomButton>
+
+        {/*<CustomButton onPress={(event) => {handleSignup; props.navigation.navigate("Profile")}}>
+          create
+        </CustomButton>*/}
+        
+        <Button onPress={handleSignup} title="btn"></Button>
       </View>
     </View>
   );

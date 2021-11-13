@@ -20,6 +20,7 @@ const LoginPageView = (props) => {
         style={styles.input}
       />
       <TextInput
+        secureTextEntry={true}
         placeholder={t("pass")}
         placeholderTextColor={"darkgreen"}
         style={styles.input}
