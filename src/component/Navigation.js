@@ -9,7 +9,7 @@ import LoginPageView from "../views/LogInPageView";
 import QRcodeView from "../views/QRcodePageView";
 import CreateProfilePageView from "../views/CreateProfilePageView";
 import HomeView from "../views/HomeView";
-import HelpView from "../views/HelpView";
+import { styles } from "../component/styles";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -34,14 +34,14 @@ const CustomDrawerView = (props) => {
         onPress={() => {}}
         label={() => (
           <View style={{ flexDirection: "row" }}>
-            <Text>Language: {i18n.language}</Text>
+            <Text style={styles.textMenu}>{i18n.language}</Text>
             <Switch
-              trackColor={{ false: "#767577", true: "#81b0ff" }}
-              thumbColor={i18n.language == "fr" ? "#f5dd4b" : "#f4f3f4"}
+              trackColor={{ false: "#43a047", true: "#00695c" }}
+              thumbColor={i18n.language == "FR" ? "#43a047" : "#00695c"}
               ios_backgroundColor="#3e3e3e"
-              value={i18n.language === "fr"}
+              value={i18n.language === "FR"}
               onChange={() => {
-                i18n.changeLanguage(i18n.language == "fr" ? "en" : "fr");
+                i18n.changeLanguage(i18n.language == "FR" ? "EN" : "FR");
               }}
             />
           </View>
@@ -56,52 +56,45 @@ function OverMenu() {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerView {...props} />}
+      screenOptions={(props) => ({
+          tabBarIcon: (props) => {
+              const icons = {
+                  home: "home",
+                  ProfileView: 'profile',
+              };
+
+              return (
+                  <AntDesign
+                      name={icons[props.name()]}
+                      style={styles.iconContainer}
+                      size={30}
+                  />
+              );
+          },
+          title: (props) => {
+              return ( <Text style={styles.textMenu}/>);
+          }
+      })}
     >
-      <Drawer.Screen name={t("home")} component={HomeView} />
+      <Drawer.Screen name="home" component={HomeView} screenOptions={{tabBarIcon : "home", title : t("home")}}/>
       <Drawer.Screen
-        name={t("infoRegistered")}
-        component={InfoRegisteredUserView}
+        name="infoRegistered"
+        component={InfoRegisteredUserView} options={{title :t("infoRegistered") }}
       />
       <StackNav.Screen
-        name="InfoNonRegistered"
-        component={InfoNonRegisteredUserView}
+        name="infoNonRegistered"
+        component={InfoNonRegisteredUserView} options={{title :t("infoNonRegistered") }}
       />
-      <Drawer.Screen name="Contact" component={ContactPageView} />
-      <StackNav.Screen name="LoginPage" component={LoginPageView} />
-      <StackNav.Screen name="CreateProfile" component={CreateProfilePageView} />
-      <StackNav.Screen name="Profile" component={ProfileView} />
-      <StackNav.Screen name="QRcodePage" component={QRcodeView} />
-      <StackNav.Screen name="Help" component={HelpView} />
+      <Drawer.Screen name="contact" component={ContactPageView} options={{title: t("contact")}}/>
+      <StackNav.Screen name="LoginPage" component={LoginPageView} options={{title: t("connect")}}/>
+      <StackNav.Screen name="subscribe" component={CreateProfilePageView} options={{title: t("subscribe"), tabBarIcon: 'profile'}} />
+      <StackNav.Screen name="Profile" component={ProfileView} options={{title: t("profile")}} />
+      <StackNav.Screen name="QRcodePage" component={QRcodeView} options={{title: t("scanQR")}} />
+
     </Drawer.Navigator>
   );
 }
 
-/* const Navigation = () => {
-  return (
-    <NavigationContainer>
-      <StackNav.Navigator>
-        <StackNav.Screen name="Home" component={HomeView} />
-        <StackNav.Screen name="LoginPage" component={LoginPageView} />
-        <StackNav.Screen
-          name="CreateProfile"
-          component={CreateProfilePageView}
-        />
-        <StackNav.Screen
-          name="InfoNonRegisteredUser"
-          component={InfoNonRegisteredUserView}
-        />
-        <StackNav.Screen name="Profile" component={ProfileView} />
-        <StackNav.Screen name="QRcodePage" component={QRcodeView} />
-        <StackNav.Screen
-          name="InfoRegisteredUser"
-          component={InfoRegisteredUserView}
-        />
-        <StackNav.Screen name="Contact" component={ContactPageView} />
-        <StackNav.Screen name="Help" component={HelpView} />
-      </StackNav.Navigator>
-    </NavigationContainer>
-  );
-}; */
 
 const NavWithMenu = () => {
   return (
