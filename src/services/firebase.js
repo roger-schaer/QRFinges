@@ -1,4 +1,5 @@
 import { firebaseDb } from "../config/firebaseDb";
+import { CURRENT_USER_ID } from "../constant/contants";
 
 const getCollection = (key, currentRef = null) => {
   if (currentRef) {
@@ -15,9 +16,7 @@ export const getUsers = async () => {
 export const getUserScannedQrCodes = (ref) => {
   return getCollection("scannedQrCodes", ref);
 };
-export const startRecordLocations = async (
-  currentUser = "SGH0SGAqsdcvRttub8WXRWc4eKu1"
-) => {
+export const startRecordLocations = async (currentUser = CURRENT_USER_ID) => {
   return await getCollection("users")
     .doc(currentUser)
     .collection("walkRecord")
@@ -26,7 +25,7 @@ export const startRecordLocations = async (
 export const addLocationToCurrentWalkRecord = (
   currentDoc,
   location,
-  currentUser = "SGH0SGAqsdcvRttub8WXRWc4eKu1"
+  currentUser = CURRENT_USER_ID
 ) => {
   console.log(currentDoc, location);
   getCollection("users")
