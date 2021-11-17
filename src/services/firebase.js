@@ -1,12 +1,12 @@
 import { firebaseDb } from "../config/firebaseDb";
-import { getFirestore, setDoc, doc } from "firebase/firestore";
+import { getFirestore, setDoc, doc, getDoc } from "firebase/firestore";
 import { CURRENT_USER_ID } from "../constant/contants";
 
 const getCollection = (key, currentRef = null) => {
   if (currentRef) {
     return currentRef.collection(key);
   } else {
-    return firebaseDb.firestore().collection(key);
+    return doc(firebaseDb, key);
   }
 };
 
@@ -17,11 +17,14 @@ export const getUsers = async () => {
 export const getUserScannedQrCodes = (ref) => {
   return getCollection("scannedQrCodes", ref);
 };
-export const startRecordLocations = async (currentUser = CURRENT_USER_ID) => {
-  return await setDoc(doc(firebaseDb, "users", "test"), {
-    firstname: "test",
-    outfitColor: "test",
-    specialAttack: "test",
+export const startRecordLocations = async (
+  location,
+  currentUser = CURRENT_USER_ID
+) => {
+  return await setDoc(doc(firebaseDb, "records"), {
+    startDate: new Date(),
+    endDate: null,
+    locations: [location],
   });
   /*   return await getCollection("users")
     .doc(currentUser)

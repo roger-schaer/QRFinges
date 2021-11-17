@@ -20,7 +20,7 @@ const ProfileView = (props) => {
           name={"playcircleo"}
           size={30}
         />
-        {Platform.OS !== "web" ? <LocationBackgroundView /> : <LocationView />}
+        <LocationBackgroundView />
         <View style={styles.timerContainer}>
           <View style={styles.timerLine}>
             <Text style={styles.timerText}> {t("start")} </Text>
