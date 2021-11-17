@@ -4,10 +4,12 @@ export const TranslationEN = {
   welcomeInstruction: "Enter your login and password ",
   email: "E-mail address",
   pass: "Password",
+  name: "Lastname",
+  firstname: "Firstname",
   forgotPass: "Forgotten ?",
   connect: "Log in",
   subscribe: "Sign up",
-  wrongPass: "Your e-mail or password are not correct",
+  wrongPass: "Email or password incorrect",
   createProfileHead: "Create your profile",
   createAccount: "Create your account",
   pseudo: "Pseudo",
@@ -30,4 +32,13 @@ export const TranslationEN = {
   contactCity: "Sierre",
   home: "Home",
   infoRegistered: "Info registered",
+  LoginPage: "Login",
+  CreateProfile: "Sign up",
+  emailAlreadyInUse: "Email already used",
+  weakPassword : "Password should be at least 6 characters",
+  invalidEmail : "please enter a valid email",
+  allFieldRequired : "Please complete all the fields",
+  passwordDoNotMatch : "Password do not match"
+
+
 };

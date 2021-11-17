@@ -21,17 +21,30 @@ import {FontAwesome} from "@expo/vector-icons";
 import {Switch, View, Text} from "react-native";
 import {useTranslation} from "react-i18next";
 import {handleSignOut} from "../services/firebase";
+import {useUserContext} from '../services/user-context';
 
 const StackNav = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
-const logout = (e) => {
-    e.preventDefault();
-    dispatch({ type: "IS_LOGGED_OFF" });
-    handleSignOut();
-};
+
+
 
 const CustomDrawerView = (props) => {
+
+    const { state, dispatch } = useUserContext();
+
+    const out = async() => {
+        handleSignOut();
+        dispatch({ type: "IS_LOGGED_OFF" });
+
+        props.navigation.navigate("LoginPage")
+    }
+
+    const logout = (e) => {
+        e.preventDefault();
+        out();
+    };
+
     const {t, i18n} = useTranslation();
 
     return (
@@ -55,6 +68,7 @@ const CustomDrawerView = (props) => {
                     </View>
                 )}
             />
+            {state.isLoggedIn &&
             <DrawerItem
                 label={() => (
                     <View style={{flexDirection: "row"}}>
@@ -64,24 +78,23 @@ const CustomDrawerView = (props) => {
                 )}
 
                 onPress={(event) => {
-                    logout(event).then(() => {
-                        props.navigation.navigate("LoginPage")
-                        console.log("you're logged out")
-                    }).catch(e => {
-                        console.log(e)
-                    })
+                    logout(event)
                 }}/>
+            }
         </DrawerContentScrollView>
+
     );
 };
 
 function OverMenu() {
     const {t, i18n} = useTranslation();
+    const { state, dispatch } = useUserContext();
     return (
         <Drawer.Navigator
             drawerContent={(props) => <CustomDrawerView {...props} />}
         >
             <Drawer.Screen name={t("home")} component={HomeView}/>
+            {/*
             <Drawer.Screen
                 name={t("infoRegistered")}
                 component={InfoRegisteredUserView}
@@ -90,12 +103,21 @@ function OverMenu() {
                 name="InfoNonRegistered"
                 component={InfoNonRegisteredUserView}
             />
+            */}
+            {!state.isLoggedIn &&
+            <>
+            <StackNav.Screen name={t("LoginPage")} component={LoginPageView}/> 
+            <StackNav.Screen name={t("CreateProfile")} component={CreateProfilePageView}/>
+            </>
+            }
+            {state.isLoggedIn && 
+            <>
             <Drawer.Screen name="Contact" component={ContactPageView}/>
-            <StackNav.Screen name="LoginPage" component={LoginPageView}/>
-            <StackNav.Screen name="CreateProfile" component={CreateProfilePageView}/>
             <StackNav.Screen name="Profile" component={ProfileView}/>
             <StackNav.Screen name="QRcodePage" component={QRcodeView}/>
             <StackNav.Screen name="Help" component={HelpView}/>
+            </>
+            }
         </Drawer.Navigator>
     );
 }
@@ -135,4 +157,7 @@ const NavWithMenu = () => {
     );
 };
 
+
 export default NavWithMenu;
+
+

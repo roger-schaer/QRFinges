@@ -22,10 +22,7 @@ const LoginPageView = (props) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    const dispatchValue = () => {
-        dispatch({type: "SET_LOGIN", userId: 'test', isLoggedIn: true});
-    }
+    const [error, setError] = useState('');
 
     const login = async() => {
         try {
@@ -47,6 +44,19 @@ const LoginPageView = (props) => {
                 type: "IS_LOGGED_ERROR",
                 error: "Error with API on login",
             });
+            var errorCode = e.code;
+            switch(errorCode){
+                case "auth/invalid-email":
+                setError(t("invalidEmail"))
+                break;
+                case "auth/user-not-found" :
+                case "auth/wrong-password" :
+                setError(t("wrongPass"))
+                break;
+                default :
+                setError("An error occurred")
+            }
+            //setError(e.message)
             console.error(e);
         }
     }
@@ -77,7 +87,15 @@ const LoginPageView = (props) => {
                 style={styles.input}
             />
 
+                {error && (
+                    <Text style={styles.errors}> {error}</Text>
+                    
+                )}
+
             <CustomButton onPress={(event) => {
+                if(email == '' || password == ''){
+                    return setError(t("allFieldRequired"))
+                }
                 handleSubmit(event)
             }}>
                 {t("connect")}
@@ -98,6 +116,10 @@ const styles = StyleSheet.create({
         padding: 50,
         paddingTop: 0,
         backgroundColor: "#f5f5f5",
+    },
+    errors:{
+        paddingBottom: 15,
+        color: "red",
     },
     inputContainer: {
         flexDirection: "row",

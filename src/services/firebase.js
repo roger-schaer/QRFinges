@@ -1,5 +1,4 @@
 // Import the functions you need from the SDKs you need
-
 import {initializeApp} from 'firebase/app';
 import {doc, getFirestore, setDoc} from 'firebase/firestore';
 import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword} from "firebase/auth";
@@ -27,8 +26,7 @@ const app = initializeApp(firebaseConfig);
 export const firestore = getFirestore(app);
 export const auth = getAuth(app);
 
-
-export const handleSignup = async (email, password, name, firstname) => {
+export const handleSignup = async (email, password,name, firstname) => {
 
     const user = await createUserWithEmailAndPassword(auth, email, password)
     console.log('user id:', user.user.uid)
