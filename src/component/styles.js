@@ -16,10 +16,10 @@ export const styles = StyleSheet.create({
 
     textMenu: {
         fontSize: 16,
-        fontWeight: "700",
         color: "darkgreen",
         paddingTop: 10,
         paddingRight : 10,
+        paddingLeft : 15,
     },
 
     content: {

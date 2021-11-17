@@ -34,4 +34,5 @@ export const TranslationEN = {
   infoNonRegistered : "How is works ? ",
   contact : "Contacts",
   syncData : "Your data is synchronized",
+  logout : "Logout",
 };

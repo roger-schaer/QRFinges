@@ -20,17 +20,83 @@ import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Switch, View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
+import {createSwitchNavigator} from "react-navigation";
+import { useNavigation } from '@react-navigation/native';
+import {Logo} from "./Logo";
+import Button from "react-native-web/dist/exports/Button";
 
 const StackNav = createNativeStackNavigator();
+
 const Drawer = createDrawerNavigator();
+/*const MainNavigation = createSwitchNavigator({
+    Navigation : Navigation,
+    TopMenu : OverMenu,
+}); */
 
 const CustomDrawerView = (props) => {
   const { t, i18n } = useTranslation();
 
+  const navigation = useNavigation();
+
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
+
       <DrawerItem
+          label={() => (
+              <View style={{ flexDirection: "row" }}>
+                  <AntDesign name={"contacts"} style={styles.iconContainer} size={15}/>
+                  <Text style={styles.textMenu}>{t("contact")}</Text>
+              </View>
+          )}
+          onPress={() => navigation.navigate('Contact')}/>
+
+      <DrawerItem
+          label={() => (
+              <View style={{ flexDirection: "row" }}>
+                  <AntDesign name={"infocirlceo"} style={styles.iconContainer} size={15}/>
+                  <Text style={styles.textMenu}>{t("infoNonRegistered")}</Text>
+              </View>
+          )}
+          onPress={() => props.navigation.navigate('InfoNonRegisteredUser')}/>
+
+        <DrawerItem
+            label={() => (
+                <View style={{ flexDirection: "row" }}>
+                    <AntDesign name={"infocirlceo"} style={styles.iconContainer} size={15}/>
+                    <Text style={styles.textMenu}>{t("infoRegistered")}</Text>
+                </View>
+            )}
+            onPress={() => props.navigation.navigate('InfoRegisteredUser')}/>
+
+        <DrawerItem
+            label={() => (
+                <View style={{ flexDirection: "row" }}>
+                    <AntDesign name={"infocirlceo"} style={styles.iconContainer} size={15}/>
+                    <Text style={styles.textMenu}>{t("subscribe")}</Text>
+                </View>
+            )}
+            onPress={() => props.navigation.navigate('CreateProfile')}/>
+
+        <DrawerItem
+            label={() => (
+                <View style={{ flexDirection: "row" }}>
+                    <AntDesign name={"profile"} style={styles.iconContainer} size={15}/>
+                    <Text style={styles.textMenu}>{t("profile")}</Text>
+                </View>
+            )}
+            onPress={() => props.navigation.navigate('Profile')}/>
+
+        <DrawerItem
+            label={() => (
+                <View style={{ flexDirection: "row" }}>
+                    <AntDesign name={"qrcode"} style={styles.iconContainer} size={15}/>
+                    <Text style={styles.textMenu}>{t("scanQR")}</Text>
+                </View>
+            )}
+            onPress={() => props.navigation.navigate('QRcodePage')}/>
+
+        <DrawerItem
         onPress={() => {}}
         label={() => (
           <View style={{ flexDirection: "row" }}>
@@ -45,63 +111,61 @@ const CustomDrawerView = (props) => {
               }}
             />
           </View>
-        )}
-      />
+        )}/>
+        <DrawerItem
+            label={()=> (
+                <View style={{ flexDirection: "row" }}>
+                    <AntDesign name={"logout"} style={styles.iconContainer} size={15}/>
+                    <Text style={styles.textMenu}>{t("logout")}</Text>
+                </View>
+            )}
+            onPress={() => {console.log("Logout function here")}}/>
+        <DrawerItem
+            label={()=> (
+                <View style={{ flexDirection: "row" }}>
+                    <AntDesign name={"login"} style={styles.iconContainer} size={15}/>
+                    <Text style={styles.textMenu}>{t("connect")}</Text>
+                </View>
+            )}
+            onPress={() => props.navigation.navigate('LoginPage')}/>
     </DrawerContentScrollView>
   );
 };
 
-function OverMenu() {
+const OverMenu = () => {
   const { t, i18n } = useTranslation();
-  return (
-    <Drawer.Navigator
-      drawerContent={(props) => <CustomDrawerView {...props} />}
-      screenOptions={(props) => ({
-          tabBarIcon: (props) => {
-              const icons = {
-                  home: "home",
-                  ProfileView: 'profile',
-              };
-
-              return (
-                  <AntDesign
-                      name={icons[props.name()]}
-                      style={styles.iconContainer}
-                      size={30}
-                  />
-              );
-          },
-          title: (props) => {
-              return ( <Text style={styles.textMenu}/>);
-          }
-      })}
-    >
-      <Drawer.Screen name="home" component={HomeView} screenOptions={{tabBarIcon : "home", title : t("home")}}/>
-      <Drawer.Screen
-        name="infoRegistered"
-        component={InfoRegisteredUserView} options={{title :t("infoRegistered") }}
-      />
-      <StackNav.Screen
-        name="infoNonRegistered"
-        component={InfoNonRegisteredUserView} options={{title :t("infoNonRegistered") }}
-      />
-      <Drawer.Screen name="contact" component={ContactPageView} options={{title: t("contact")}}/>
-      <StackNav.Screen name="LoginPage" component={LoginPageView} options={{title: t("connect")}}/>
-      <StackNav.Screen name="subscribe" component={CreateProfilePageView} options={{title: t("subscribe"), tabBarIcon: 'profile'}} />
-      <StackNav.Screen name="Profile" component={ProfileView} options={{title: t("profile")}} />
-      <StackNav.Screen name="QRcodePage" component={QRcodeView} options={{title: t("scanQR")}} />
-
-    </Drawer.Navigator>
-  );
+  return <Drawer.Navigator drawerContent={(props) => <CustomDrawerView {...props} />} >
+      <Drawer.Screen name="Home" component={HomeView} screenOptions={{ title : t("home")}}/>
+  </Drawer.Navigator>;
 }
+
+const Navigation = () => {
+
+    return (
+            <StackNav.Navigator initialRouteName="OverMenu" screenOptions = {{headerShown : false}} >
+                <StackNav.Screen name="Home" component={HomeView}/>
+                <StackNav.Screen name="LoginPage" component={LoginPageView}/>
+                <StackNav.Screen name="CreateProfile" component={CreateProfilePageView} />
+                <StackNav.Screen name="InfoNonRegisteredUser" component={ InfoNonRegisteredUserView }/>
+                <StackNav.Screen name="Profile" component={ProfileView} />
+                <StackNav.Screen name="QRcodePage" component={QRcodeView}/>
+                <StackNav.Screen name="InfoRegisteredUser" component={InfoRegisteredUserView} />
+                <StackNav.Screen name="Contact" component={ContactPageView} screenOptions={{headerShown : true}}/>
+                <StackNav.Screen name="OverMenu" component={OverMenu} screenOptions = {{headerShown : false}}/>
+
+
+            </StackNav.Navigator>
+    );
+};
 
 
 const NavWithMenu = () => {
   return (
     <NavigationContainer>
-      <OverMenu />
+      <Navigation/>
     </NavigationContainer>
   );
 };
+
 
 export default NavWithMenu;

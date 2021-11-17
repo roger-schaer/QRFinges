@@ -23,7 +23,7 @@ const InfoRegisteredUserView = (props) => {
             <Text style={styles.text}>{t("personalData")}</Text>
             <Text style={styles.content}>bla-bla</Text>
 
-            <CustomButton onPress={() => props.navigation.navigate('contact')}>{t("refusalButton")}</CustomButton>
+            <CustomButton onPress={() => props.navigation.navigate('Contact')}>{t("refusalButton")}</CustomButton>
         </View>
     );
 };

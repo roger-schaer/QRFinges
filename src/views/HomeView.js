@@ -9,7 +9,10 @@ import { styles } from "../component/styles";
 
 
 const HomeView = (props) => {
+
+
   return (
+
         <View style={styles.container}>
           <View style={{ marginBottom: 50 }}>
             <Logo />
