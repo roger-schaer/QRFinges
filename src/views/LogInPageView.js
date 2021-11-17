@@ -6,13 +6,56 @@ import {Logo} from "../component/Logo";
 import {CustomButton} from "../component/CustomButton";
 import {CustomButtonNoBorders} from "../component/CustomButtonNoBorders";
 import {handleLogin} from "../services/firebase";
+import { USER_ID } from '../utils/request';
+import {useUserContext} from '../services/user-context';
+
+
+
 
 const LoginPageView = (props) => {
     // Translation
     const {t, i18n} = useTranslation();
 
+   // const dispatch = useDispatch();
+    const { state, dispatch } = useUserContext();
+
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const dispatchValue = () => {
+        dispatch({type: "SET_LOGIN", userId: 'test', isLoggedIn: true});
+    }
+
+    const login = async() => {
+        try {
+            let loginData = await handleLogin(email, password);
+            console.log('handleLogin successfull', loginData.user.uid);
+
+            localStorage.setItem(USER_ID, loginData.user.uid);
+            console.log('save to local storage successfull', localStorage.getItem(USER_ID));
+
+            dispatch({type: "SET_LOGIN", userId: loginData.user.uid, isLoggedIn: true});
+            console.log("dispatch successfull");
+            console.log(props);
+            console.log(state.userId);
+
+            props.navigation.navigate("Profile")
+
+        } catch (e) {
+            dispatch({
+                type: "IS_LOGGED_ERROR",
+                error: "Error with API on login",
+            });
+            console.error(e);
+        }
+    }
+
+    const handleSubmit = (e) => {
+        // Stop the browser from submitting in the "traditional" way
+        e.preventDefault();
+        login();
+    };
 
     return (
         <View style={styles.screen}>
@@ -35,11 +78,7 @@ const LoginPageView = (props) => {
             />
 
             <CustomButton onPress={(event) => {
-                handleLogin(email, password).then(() => {
-                    props.navigation.navigate("Profile")
-                }).catch(e => {
-                    console.log(e)
-                })
+                handleSubmit(event)
             }}>
                 {t("connect")}
             </CustomButton>

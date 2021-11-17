@@ -5,6 +5,7 @@ import {doc, getFirestore, setDoc} from 'firebase/firestore';
 import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword} from "firebase/auth";
 
 
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,6 +23,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
 export const firestore = getFirestore(app);
 export const auth = getAuth(app);
 
@@ -42,8 +44,18 @@ export const handleSignup = async (email, password, name, firstname) => {
 
 export const handleLogin = async (email, password) => {
 
-    const user = await signInWithEmailAndPassword(auth, email, password)
-    console.log('user id:', user.user.uid)
+    return await signInWithEmailAndPassword(auth, email, password)
+
+}
+
+
+export const handleSignOut = async () => {
+
+    try {
+        await auth.signOut();
+    } catch (e){
+        console.log(e);
+    }
 
 }
 
