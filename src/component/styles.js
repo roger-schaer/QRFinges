@@ -101,6 +101,27 @@ export const styles = StyleSheet.create({
         padding: 10,
         paddingBottom: 70,
     },
-
+    barcodeBox: {
+        marginVertical: 50,
+        marginBottom: 20,
+         alignItems: 'center',
+         justifyContent: 'center',
+         height: 250,
+         width: 250,
+         overflow: 'hidden',
+         borderRadius: 30,
+         borderStartColor: 'darkgreen'
+    },
+    customBtnGreen: {
+        marginBottom: 20,
+        backgroundColor: 'darkgreen',
+        paddingHorizontal: 30,
+        paddingVertical: 10,
+        borderRadius: 30,
+        fontSize: 16,
+        fontWeight: "700",
+        
+    },
+        
 
 });
