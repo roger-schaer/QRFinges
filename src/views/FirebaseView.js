@@ -1,18 +1,27 @@
-import React, { useEffect } from "react";
+import { doc, setDoc } from "@firebase/firestore";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { firebaseDb } from "../config/firebaseDb";
 import { getUsers, getUserScannedQrCodes } from "../services/firebase";
 
 export const FirebaseView = () => {
-  const dbRef = firebaseDb.firestore().collection("users");
-
+  //const dbRef = firebaseDb.firestore().collection("users");
+  const [name, setName] = useState("");
   useEffect(() => {
-    (async () => {
+    const asFunc = async () => {
+      await setDoc(doc(firebaseDb, "users", "test"), {
+        firstname: name,
+        name: "name2",
+        specialAttack: "test",
+      });
+    };
+    asFunc();
+    /* (async () => {
       const users = await getUsers();
       users.forEach((u) => {
         console.log(u.id, u.data());
       });
-    })();
+    })(); */
     /* getUsers()
       .get()
       .then((d) => {

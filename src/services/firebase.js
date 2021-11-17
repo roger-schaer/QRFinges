@@ -1,4 +1,5 @@
 import { firebaseDb } from "../config/firebaseDb";
+import { getFirestore, setDoc, doc } from "firebase/firestore";
 import { CURRENT_USER_ID } from "../constant/contants";
 
 const getCollection = (key, currentRef = null) => {
@@ -17,12 +18,17 @@ export const getUserScannedQrCodes = (ref) => {
   return getCollection("scannedQrCodes", ref);
 };
 export const startRecordLocations = async (currentUser = CURRENT_USER_ID) => {
-  return await getCollection("users")
+  return await setDoc(doc(firebaseDb, "users", "test"), {
+    firstname: "test",
+    outfitColor: "test",
+    specialAttack: "test",
+  });
+  /*   return await getCollection("users")
     .doc(currentUser)
     .collection("walkRecord")
-    .add({ startDate: new Date(), endDate: null, locations: [] });
+    .add({ startDate: new Date(), endDate: null, locations: [] }); */
 };
-export const addLocationToCurrentWalkRecord = (
+/* export const addLocationToCurrentWalkRecord = (
   currentDoc,
   location,
   currentUser = CURRENT_USER_ID
@@ -36,3 +42,4 @@ export const addLocationToCurrentWalkRecord = (
       locations: firebaseDb.firestore.FieldValue.arrayUnion(location),
     });
 };
+ */

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AsyncStorage, Switch, Text, View } from "react-native";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
+// import { addLocationToCurrentWalkRecord } from "../services/firebase";
 const BACKGROUND_LOCATION_UPDATES_TASK = "START_LOCATION";
 
 export const storeData = async (value) => {
@@ -28,7 +29,7 @@ TaskManager.defineTask(
     if (error) {
       console.log("An error occured", error);
     }
-
+    // addLocationToCurrentWalkRecord("lRID66c9kIMRKkperTbC", locations);
     /*    getData().then(previousLocations => {
         console.log('previousLocations: ', previousLocations)
         console.log('new location: ', locations)
@@ -37,8 +38,8 @@ TaskManager.defineTask(
             locations = previousLocations.concat(locations)
         }*/
 
-    console.log(locations);
-    storeData(locations).then((r) => console.log("data saved", r));
+    // console.log(locations);
+    // storeData(locations).then((r) => console.log("data saved", r));
     //  })
   }
 );

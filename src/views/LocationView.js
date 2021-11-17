@@ -1,53 +1,63 @@
 import React, { useState, useEffect } from "react";
-import { Switch, Text, View } from "react-native";
+import { Switch, Text, Touchable, View } from "react-native";
 import * as Location from "expo-location";
 import "../config/firebaseDb";
-import {
-  addLocationToCurrentWalkRecord,
-  startRecordLocations,
-} from "../services/firebase";
+import { startRecordLocations } from "../services/firebase";
+import { doc, setDoc } from "@firebase/firestore";
+import { firebaseDb } from "../config/firebaseDb";
 
 export const LocationView = () => {
+  let watch;
+
   const [currentLocation, setCurrentLocation] = useState({});
   const [currentFirebasebId, setCurrentFirebasebId] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-
   const [locations, setLocations] = useState([]);
-  const [isEnabled, setIsEnabled] = useState(false);
-  let watch;
-  useEffect(() => {
-    if (isEnabled) {
-      const startRecord = async () => {
-        Location.requestForegroundPermissionsAsync();
-        /*if (status !== "granted") {
-          setErrorMsg("Permission to access location was denied");
-          return;
-        } */
-        const res = await startRecordLocations();
-        setCurrentFirebasebId(res.id);
 
-        /*  */
-        watch = Location.watchPositionAsync(
-          { distanceInterval: 5, accuracy: Location.Accuracy.Balanced },
-          (l) => {
-            if (currentFirebasebId) {
-              console.log(l);
-              setCurrentLocation(l);
-              addLocationToCurrentWalkRecord(currentFirebasebId, l);
-              setLocations((old) => [l, ...old]);
-            }
-          }
-        );
-      };
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  const startRecord = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    }
+    if (!currentFirebasebId) {
+      const res = await startRecordLocations();
+      // setCurrentFirebasebId(res.id);
+
+      watch = Location.watchPositionAsync(
+        { distanceInterval: 5, accuracy: Location.Accuracy.Highest },
+        (location) => {
+          console.log(location);
+          setCurrentLocation(location);
+          // addLocationToCurrentWalkRecord(currentFirebasebId, location);
+
+          // setLocations((old) => [l, ...old]);
+        }
+      );
+    }
+    // let location = await Location.getCurrentPositionAsync({});
+    // setCurrentLocation(location);
+    // setLocations((old) => [location, ...old]);
+  };
+  useEffect(() => {
+    /* if (isEnabled) {
       startRecord();
     } else {
       setLocations([]);
       setCurrentFirebasebId(null);
       console.log(watch);
       watch ? watch.remove() : null;
-    }
+    } */
   }, [isEnabled]);
 
+  /* useEffect(() => {
+    if (currentFirebasebId) {
+      addLocationToCurrentWalkRecord(currentFirebasebId, location);
+      // startRecord();
+    }
+  }, [location]); */
   let text = "Waiting..";
   if (errorMsg) {
     text = errorMsg;
