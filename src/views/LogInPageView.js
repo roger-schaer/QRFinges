@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
-import Header from "../component/Header";
+import { View, Text, TextInput } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Logo } from "../component/Logo";
 import { CustomButton } from "../component/CustomButton";
 import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
+import { styles } from "../component/styles";
 
 const LoginPageView = (props) => {
-  // Translation
+
   const { t, i18n } = useTranslation();
 
   return (
     <View style={styles.screen}>
       <Logo style={styles.logoContainer} />
-      <Text style={styles.text}>{t("welcomePhrase")}</Text>
+      <Text style={styles.title}>{t("welcomePhrase")}</Text>
       <TextInput
         placeholder={t("email")}
         placeholderTextColor={"darkgreen"}
@@ -37,34 +37,5 @@ const LoginPageView = (props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    padding: 50,
-    paddingTop: 0,
-    backgroundColor: "#f5f5f5",
-  },
-  inputContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  input: {
-    height: 30,
-    borderBottomColor: "darkgreen",
-    borderBottomWidth: 1,
-    marginVertical: 10,
-    marginBottom: 20,
-    // placeholderTextColor : 'darkgreen',
-  },
-  text: {
-    color: "darkgreen",
-    fontSize: 20,
-  },
-  logoContainer: {
-    marginBottom: 20,
-    paddingBottom: 30,
-  },
-});
 
 export default LoginPageView;
