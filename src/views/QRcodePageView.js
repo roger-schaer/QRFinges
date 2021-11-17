@@ -1,20 +1,20 @@
-import React, {useEffect, useState} from "react";
-import {View, Text, Button, StyleSheet} from "react-native";
-import Header from "../component/Header";
+import React from "react";
+import {View, Text, Button, TouchableOpacity} from "react-native";
 import { useTranslation } from "react-i18next";
+import { styles } from "../component/styles";
+import { MaterialIcons } from '@expo/vector-icons';
 
-
-export const QRcodeView = (props) => {
+const QRcodeView = (props) => {
     return (
-        <View>
-            <Header/>
+        <View style={styles.screen}>
+
             <Text> Zone de scanning du QR code </Text>
-            <Button
-                onPress={() => console.log("go to external webpage")}
-                title={"lien htpps:// du QR code"}/>
-        <View>
-            <Button title="Go back" onPress={() => props.navigation.goBack() } />
-        </View>
+            <TouchableOpacity onPress={() => console.log("go to external webpage")}>
+             <Text>
+                 html_link_to_external_website
+             </Text>
+            </TouchableOpacity>
+            <MaterialIcons name="add-a-photo" size={24} style={styles.iconContainer} />
         </View>
     );
 };
