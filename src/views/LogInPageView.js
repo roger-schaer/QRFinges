@@ -7,6 +7,7 @@ import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
 import { handleLogin } from "../services/firebase";
 import { USER_ID } from "../utils/request";
 import { useUserContext } from "../services/user-context";
+import { getStorageData, setStorageData } from "../services/storage";
 
 const LoginPageView = (props) => {
   // Translation
@@ -21,11 +22,12 @@ const LoginPageView = (props) => {
     try {
       let loginData = await handleLogin(email, password);
       console.log("handleLogin successfull", loginData.user.uid);
-
-      localStorage.setItem(USER_ID, loginData.user.uid);
+      setStorageData(USER_ID, loginData.user.uid);
+      // localStorage.setItem(USER_ID, loginData.user.uid);
       console.log(
         "save to local storage successfull",
-        localStorage.getItem(USER_ID)
+        getStorageData(USER_ID)
+        // localStorage.getItem(USER_ID)
       );
 
       dispatch({
@@ -86,7 +88,7 @@ const LoginPageView = (props) => {
         style={styles.input}
       />
 
-      {error && <Text style={styles.errors}> {error}</Text>}
+      {error ? <Text style={styles.errors}> {error}</Text> : null}
 
       <CustomButton
         onPress={(event) => {

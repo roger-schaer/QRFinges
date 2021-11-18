@@ -57,7 +57,7 @@ const CreateProfilePageView = (props) => {
           style={styles.input}
           secureTextEntry
         />
-        {error && <Text style={styles.errors}> {error}</Text>}
+        {error ? <Text style={styles.errors}> {error}</Text> : null}
         <CustomButton
           onPress={(event) => {
             if (
