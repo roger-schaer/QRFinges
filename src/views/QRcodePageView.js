@@ -35,14 +35,13 @@ const QRcodeView = (props) => {
           const { status } = await BarCodeScanner.requestPermissionsAsync();
           setHasPermissionQR(status === 'granted');
     
-          if (status === 'granted') {
-            console.log('permission granted')
-            //setHasPermissionQR(BarCodeScanner.getPermissionsAsync);
-          }
+            if (status === 'granted') {
+              console.log('permission granted')
+            }
           } catch (e) {
               console.log(e);
           }
-        })();
+        })()
       }
   
       useEffect(() => {
@@ -53,10 +52,18 @@ const QRcodeView = (props) => {
         setScanned(true);
         alert(`Code QR has been scanned ! (click on the link to finish)`);
         setResultScanQR(data);
-      };
+      }
     
       if (hasPermissionQR === null) {
-        return <View style={styles.screen}><Text>Requesting for camera permission</Text></View>;
+        return (
+          <View style={styles.screen}>
+            <Text>Requesting for camera permission</Text>
+              <Button 
+                title={'Allow Camera'} 
+                onPress={() => askForPermission()} />
+          </View>
+
+              )
       }
       if (hasPermissionQR === false) {
         return (

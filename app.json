@@ -2,7 +2,7 @@
   "expo": {
     "name": "QRF",
     "slug": "QRF",
-    "version": "1.0.3",
+    "version": "3.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -17,7 +17,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.hevsedhea.qrfinges",
-      "buildNumber": "3.0.0",
+      "buildNumber": "3.0.1",
       "infoPlist": {
         "UIBackgroundModes": ["location", "fetch"],
         "NSLocationWhenInUseUsageDescription": "App requires geolocation to improve recolting data when in the \"bois de Finges\"",
@@ -29,7 +29,7 @@
     "android": {
       "package": "com.hevsedhea.qrfinges",
       "permissions": [ "ACCESS_BACKGROUND_LOCATION","ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION", "FOREGROUND_SERVICE" ],
-      "versionCode": 4,
+      "versionCode": 6,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
