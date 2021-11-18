@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import { styles } from "../component/styles";
 import { MaterialIcons } from '@expo/vector-icons';
 import { BarCodeScanner } from "expo-barcode-scanner";
+import { Camera } from 'expo-camera';
+
 
 const QRcodeView = (props) => {
     const [hasPermissionQR, setHasPermissionQR] = useState(null);
@@ -44,7 +46,9 @@ const QRcodeView = (props) => {
         })()
       }
   
+
       useEffect(() => {
+        requestCameraPermission();
         askForPermission();
       }, []);
     
@@ -77,7 +81,7 @@ const QRcodeView = (props) => {
       }
     
       return (
-          <View style={styles.screen}>
+         <View style={styles.screen}>
               <View style={styles.content}>
               <Text> Zone de scanning du QR code </Text>
                   <View style={styles.barcodeBox}>
@@ -108,4 +112,23 @@ const QRcodeView = (props) => {
       );
   };
   
+  function requestCameraPermission() {
+    const [hasPermission, setHasPermission] = useState(null);
+    const [type, setType] = useState(Camera.Constants.Type.back);
+  
+    useEffect(() => {
+      (async () => {
+        const { status } = await Camera.requestPermissionsAsync();
+        setHasPermission(status === 'granted');
+      })();
+    }, []);
+  
+    if (hasPermission === null) {
+      return <View />;
+    }
+    if (hasPermission === false) {
+      return <Text>No access to camera</Text>;
+    }
+  };
+
 export default QRcodeView;
