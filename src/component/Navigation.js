@@ -91,9 +91,9 @@ const CustomDrawerView = (props) => {
 
   const out = async () => {
     handleSignOut();
-    dispatch({ type: "IS_LOGGED_OFF" });
 
-    props.navigation.navigate("connect");
+    dispatch({ type: "IS_LOGGED_OFF" });
+    props.navigation.navigate("home");
   };
 
   const logout = (e) => {
@@ -118,6 +118,9 @@ const CustomDrawerView = (props) => {
               thumbColor={i18n.language == "fr" ? "#f5dd4b" : "#f4f3f4"}
               ios_backgroundColor="#3e3e3e"
               value={i18n.language === "FR"}
+              onChange={() => {
+                i18n.changeLanguage(i18n.language == "FR" ? "EN" : "FR");
+              }}
             />
           </View>
         )}
