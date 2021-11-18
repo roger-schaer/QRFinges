@@ -74,7 +74,7 @@ const CreateProfilePageView = (props) => {
             setError("");
             handleSignup(email, password, name, firstname)
               .then(() => {
-                props.navigation.navigate("Profile");
+                props.navigation.navigate("profile");
               })
               .catch((e) => {
                 var errorCode = e.code;

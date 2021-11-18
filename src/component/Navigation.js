@@ -32,49 +32,57 @@ const drawerUrls = [
     antIcon: "home",
     navigationScreen: HomeView,
     translateKey: "home",
-    shouldBeLogged: false,
+    displayWhenLogged: true,
+    displayWhenNotLogged: true,
   },
   {
     antIcon: "contacts",
     navigationScreen: ContactPageView,
     translateKey: "contact",
-    shouldBeLogged: false,
+    displayWhenLogged: true,
+    displayWhenNotLogged: true,
   },
   {
     antIcon: "infocirlceo",
     navigationScreen: InfoNonRegisteredUserView,
     translateKey: "infoNonRegistered",
-    shouldBeLogged: false,
+    displayWhenLogged: true,
+    displayWhenNotLogged: true,
   },
   {
     antIcon: "infocirlceo",
     navigationScreen: InfoRegisteredUserView,
     translateKey: "infoRegistered",
-    shouldBeLogged: false,
+    displayWhenLogged: true,
+    displayWhenNotLogged: false,
   },
   {
     antIcon: "infocirlceo",
     navigationScreen: CreateProfilePageView,
     translateKey: "subscribe",
-    shouldBeLogged: false,
+    displayWhenLogged: false,
+    displayWhenNotLogged: true,
   },
   {
     antIcon: "profile",
     navigationScreen: ProfileView,
     translateKey: "profile",
-    shouldBeLogged: false,
+    displayWhenLogged: true,
+    displayWhenNotLogged: false,
   },
   {
     antIcon: "qrcode",
     navigationScreen: QRcodeView,
     translateKey: "scanQR",
-    shouldBeLogged: false,
+    displayWhenLogged: true,
+    displayWhenNotLogged: false,
   },
   {
     antIcon: "login",
     navigationScreen: LoginPageView,
     translateKey: "connect",
-    shouldBeLogged: false,
+    displayWhenLogged: false,
+    displayWhenNotLogged: true,
   },
 ];
 
@@ -85,7 +93,7 @@ const CustomDrawerView = (props) => {
     handleSignOut();
     dispatch({ type: "IS_LOGGED_OFF" });
 
-    props.navigation.navigate("LoginPage");
+    props.navigation.navigate("connect");
   };
 
   const logout = (e) => {
@@ -99,18 +107,17 @@ const CustomDrawerView = (props) => {
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
       <DrawerItem
-        onPress={() => {}}
+        onPress={() => {
+          i18n.changeLanguage(i18n.language == "FR" ? "EN" : "FR");
+        }}
         label={() => (
           <View style={{ flexDirection: "row" }}>
-            <Text>Language: {i18n.language}</Text>
+            <Text style={styles.textMenu}>{i18n.language}</Text>
             <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}
               thumbColor={i18n.language == "fr" ? "#f5dd4b" : "#f4f3f4"}
               ios_backgroundColor="#3e3e3e"
-              value={i18n.language === "fr"}
-              onChange={() => {
-                i18n.changeLanguage(i18n.language == "fr" ? "en" : "fr");
-              }}
+              value={i18n.language === "FR"}
             />
           </View>
         )}
@@ -119,8 +126,15 @@ const CustomDrawerView = (props) => {
         <DrawerItem
           label={() => (
             <View style={{ flexDirection: "row" }}>
-              <AntDesign name={"logout"} size={20} />
-              <Text>{t("logout")}</Text>
+              <View style={{ flexDirection: "row" }}>
+                <AntDesign
+                  // @ts-ignore
+                  name={"logout"}
+                  style={styles.iconContainer}
+                  size={15}
+                />
+                <Text style={styles.textMenu}>{t("logout")}</Text>
+              </View>
             </View>
           )}
           onPress={(event) => {
@@ -134,34 +148,38 @@ const CustomDrawerView = (props) => {
 
 const OverMenu = () => {
   const { t, i18n } = useTranslation();
-  // const { state } = useUserContext();
+  const { state } = useUserContext();
 
   return (
     <Drawer.Navigator
+      initialRouteName="Home"
       drawerContent={(props) => <CustomDrawerView {...props} />}
     >
       {drawerUrls.map((drawer) => (
         <>
-          {/* {drawer.shouldBeLogged === true && state.isLoggedIn ? ( */}
-          <Drawer.Screen
-            key={`drawer-button-${drawer.translateKey}`}
-            name={t(drawer.translateKey)}
-            component={drawer.navigationScreen}
-            options={{
-              drawerLabel: () => (
-                <View style={{ flexDirection: "row" }}>
-                  <AntDesign
-                    // @ts-ignore
-                    name={drawer.antIcon}
-                    style={styles.iconContainer}
-                    size={15}
-                  />
-                  <Text style={styles.textMenu}>{t(drawer.translateKey)}</Text>
-                </View>
-              ),
-            }}
-          />
-          {/*  ) : null} */}
+          {drawer.displayWhenLogged == state.isLoggedIn ||
+          drawer.displayWhenNotLogged == !state.isLoggedIn ? (
+            <Drawer.Screen
+              key={`drawer-button-${drawer.translateKey}`}
+              name={drawer.translateKey}
+              component={drawer.navigationScreen}
+              options={{
+                drawerLabel: () => (
+                  <View style={{ flexDirection: "row" }}>
+                    <AntDesign
+                      // @ts-ignore
+                      name={drawer.antIcon}
+                      style={styles.iconContainer}
+                      size={15}
+                    />
+                    <Text style={styles.textMenu}>
+                      {t(drawer.translateKey)}
+                    </Text>
+                  </View>
+                ),
+              }}
+            />
+          ) : null}
         </>
       ))}
     </Drawer.Navigator>
@@ -204,7 +222,7 @@ const Navigation = () => {
 const NavWithMenu = () => {
   return (
     <NavigationContainer>
-      <Navigation />
+      <OverMenu />
     </NavigationContainer>
   );
 };

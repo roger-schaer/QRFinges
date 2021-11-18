@@ -39,7 +39,7 @@ const LoginPageView = (props) => {
       console.log(props);
       console.log(state.userId);
 
-      props.navigation.navigate("Profile");
+      props.navigation.navigate("profile");
     } catch (e) {
       dispatch({
         type: "IS_LOGGED_ERROR",
@@ -102,7 +102,7 @@ const LoginPageView = (props) => {
       </CustomButton>
 
       <CustomButtonNoBorders
-        onPress={(event) => props.navigation.navigate("CreateProfile")}
+        onPress={(event) => props.navigation.navigate("subscribe")}
       >
         {t("subscribe")}
       </CustomButtonNoBorders>
