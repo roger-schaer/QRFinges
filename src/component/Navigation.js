@@ -17,104 +17,187 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { Switch, View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
+import { handleSignOut } from "../services/firebase";
+import { useUserContext } from "../services/user-context";
 
 const StackNav = createNativeStackNavigator();
 
 const Drawer = createDrawerNavigator();
 
 const drawerUrls = [
-  { antIcon: "home", navigationScreen: HomeView, translateKey: "home" },
+  {
+    antIcon: "home",
+    navigationScreen: HomeView,
+    translateKey: "home",
+    shouldBeLogged: false,
+  },
   {
     antIcon: "contacts",
     navigationScreen: ContactPageView,
     translateKey: "contact",
+    shouldBeLogged: false,
   },
   {
     antIcon: "infocirlceo",
     navigationScreen: InfoNonRegisteredUserView,
     translateKey: "infoNonRegistered",
+    shouldBeLogged: false,
   },
   {
     antIcon: "infocirlceo",
     navigationScreen: InfoRegisteredUserView,
     translateKey: "infoRegistered",
+    shouldBeLogged: false,
   },
   {
     antIcon: "infocirlceo",
     navigationScreen: CreateProfilePageView,
     translateKey: "subscribe",
+    shouldBeLogged: false,
   },
   {
     antIcon: "profile",
     navigationScreen: ProfileView,
     translateKey: "profile",
+    shouldBeLogged: false,
   },
-  { antIcon: "qrcode", navigationScreen: QRcodeView, translateKey: "scanQR" },
+  {
+    antIcon: "qrcode",
+    navigationScreen: QRcodeView,
+    translateKey: "scanQR",
+    shouldBeLogged: false,
+  },
   {
     antIcon: "logout",
     navigationScreen: LoginPageView,
     translateKey: "logout",
+    shouldBeLogged: true,
   },
   {
     antIcon: "login",
     navigationScreen: LoginPageView,
     translateKey: "connect",
+    shouldBeLogged: false,
   },
 ];
 
 const CustomDrawerView = (props) => {
-  const { i18n } = useTranslation();
+  const { state, dispatch } = useUserContext();
+
+  const out = async () => {
+    handleSignOut();
+    dispatch({ type: "IS_LOGGED_OFF" });
+
+    props.navigation.navigate("LoginPage");
+  };
+
+  const logout = (e) => {
+    e.preventDefault();
+    out();
+  };
+
+  const { t, i18n } = useTranslation();
 
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
       <DrawerItem
-        onPress={() => {
-          i18n.changeLanguage(i18n.language === "FR" ? "EN" : "FR");
-        }}
+        onPress={() => {}}
         label={() => (
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.textMenu}>{i18n.language}</Text>
+            <Text>Language: {i18n.language}</Text>
             <Switch
-              trackColor={{ false: "#43a047", true: "#00695c" }}
-              thumbColor={i18n.language == "FR" ? "#43a047" : "#00695c"}
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={i18n.language == "fr" ? "#f5dd4b" : "#f4f3f4"}
               ios_backgroundColor="#3e3e3e"
-              value={i18n.language == "FR"}
+              value={i18n.language === "fr"}
+              onChange={() => {
+                i18n.changeLanguage(i18n.language == "fr" ? "en" : "fr");
+              }}
             />
           </View>
         )}
       />
+      {state.isLoggedIn && (
+        <DrawerItem
+          label={() => (
+            <View style={{ flexDirection: "row" }}>
+              <AntDesign name={"logout"} size={20} />
+              <Text>{t("logout")}</Text>
+            </View>
+          )}
+          onPress={(event) => {
+            logout(event);
+          }}
+        />
+      )}
     </DrawerContentScrollView>
   );
 };
 
+/* function OverMenu() {
+  const { t, i18n } = useTranslation();
+  const { state, dispatch } = useUserContext();
+  return (
+    <Drawer.Navigator
+      drawerContent={(props) => <CustomDrawerView {...props} />}
+    >
+      <Drawer.Screen name={t("home")} component={HomeView} />
+
+      {!state.isLoggedIn && (
+        <>
+          <StackNav.Screen name={t("LoginPage")} component={LoginPageView} />
+          <StackNav.Screen
+            name={t("CreateProfile")}
+            component={CreateProfilePageView}
+          />
+        </>
+      )}
+      {state.isLoggedIn && (
+        <>
+          <Drawer.Screen name="Contact" component={ContactPageView} />
+          <StackNav.Screen name="Profile" component={ProfileView} />
+          <StackNav.Screen name="QRcodePage" component={QRcodeView} />
+        </>
+      )}
+    </Drawer.Navigator>
+  );
+} */
+
 const OverMenu = () => {
   const { t, i18n } = useTranslation();
+  const { state } = useUserContext();
+
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerView {...props} />}
     >
       {drawerUrls.map((drawer) => (
-        <Drawer.Screen
-          key={`drawer-button-${drawer.translateKey}`}
-          name={t(drawer.translateKey)}
-          component={drawer.navigationScreen}
-          options={{
-            drawerLabel: () => (
-              <View style={{ flexDirection: "row" }}>
-                <AntDesign
-                  // @ts-ignore
-                  name={drawer.antIcon}
-                  style={styles.iconContainer}
-                  size={15}
-                />
-                <Text style={styles.textMenu}>{t(drawer.translateKey)}</Text>
-              </View>
-            ),
-          }}
-        />
+        <>
+          {/* {drawer.shouldBeLogged === true && state.isLoggedIn ? ( */}
+          <Drawer.Screen
+            key={`drawer-button-${drawer.translateKey}`}
+            name={t(drawer.translateKey)}
+            component={drawer.navigationScreen}
+            options={{
+              drawerLabel: () => (
+                <View style={{ flexDirection: "row" }}>
+                  <AntDesign
+                    // @ts-ignore
+                    name={drawer.antIcon}
+                    style={styles.iconContainer}
+                    size={15}
+                  />
+                  <Text style={styles.textMenu}>{t(drawer.translateKey)}</Text>
+                </View>
+              ),
+            }}
+          />
+          {/*  ) : null} */}
+        </>
       ))}
     </Drawer.Navigator>
   );
