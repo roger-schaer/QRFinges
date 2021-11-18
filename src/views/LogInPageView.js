@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet, Button } from "react-native";
-import Header from "../component/Header";
+import { View, Text, TextInput, StyleSheet } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Logo } from "../component/Logo";
 import { CustomButton } from "../component/CustomButton";
@@ -12,8 +11,6 @@ import { useUserContext } from "../services/user-context";
 const LoginPageView = (props) => {
   // Translation
   const { t, i18n } = useTranslation();
-
-  // const dispatch = useDispatch();
   const { state, dispatch } = useUserContext();
 
   const [email, setEmail] = useState("");

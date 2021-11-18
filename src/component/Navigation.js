@@ -177,34 +177,32 @@ const OverMenu = () => {
     >
       {drawerUrls.map((drawer) => (
         <>
-          {drawer.shouldBeLogged === true && state.isLoggedIn ? (
-            <Drawer.Screen
-              key={`drawer-button-${drawer.translateKey}`}
-              name={t(drawer.translateKey)}
-              component={drawer.navigationScreen}
-              options={{
-                drawerLabel: () => (
-                  <View style={{ flexDirection: "row" }}>
-                    <AntDesign
-                      // @ts-ignore
-                      name={drawer.antIcon}
-                      style={styles.iconContainer}
-                      size={15}
-                    />
-                    <Text style={styles.textMenu}>
-                      {t(drawer.translateKey)}
-                    </Text>
-                  </View>
-                ),
-              }}
-            />
-          ) : null}
+          {/* {drawer.shouldBeLogged === true && state.isLoggedIn ? ( */}
+          <Drawer.Screen
+            key={`drawer-button-${drawer.translateKey}`}
+            name={t(drawer.translateKey)}
+            component={drawer.navigationScreen}
+            options={{
+              drawerLabel: () => (
+                <View style={{ flexDirection: "row" }}>
+                  <AntDesign
+                    // @ts-ignore
+                    name={drawer.antIcon}
+                    style={styles.iconContainer}
+                    size={15}
+                  />
+                  <Text style={styles.textMenu}>{t(drawer.translateKey)}</Text>
+                </View>
+              ),
+            }}
+          />
+          {/*  ) : null} */}
         </>
       ))}
     </Drawer.Navigator>
   );
 };
-/*
+
 const Navigation = () => {
   return (
     <StackNav.Navigator
@@ -236,12 +234,12 @@ const Navigation = () => {
       />
     </StackNav.Navigator>
   );
-};*/
+};
 
 const NavWithMenu = () => {
   return (
     <NavigationContainer>
-      <OverMenu />
+      <Navigation />
     </NavigationContainer>
   );
 };
