@@ -13,13 +13,14 @@ const ProfileView = (props) => {
   return (
     <View style={stylesProfile.screen}>
       <Text style={styles.title}>{t("profileHead")}</Text>
+      <LocationBackgroundView />
+
       <View style={styles.startContainer}>
         <AntDesign
           style={styles.iconContainer}
           name={"playcircleo"}
           size={30}
         />
-        {Platform.OS !== "web" ? <LocationBackgroundView /> : null}
         <View style={styles.timerContainer}>
           <View style={styles.timerLine}>
             <Text style={styles.timerText}> {t("start")} </Text>
@@ -37,7 +38,12 @@ const ProfileView = (props) => {
       </View>
       <View>
         <Text style={styles.title}> {t("scanQR")}</Text>
-        <AntDesign style={styles.iconContainer} name={"qrcode"} size={50} onPress={() => props.navigation.navigate("QRcodePage")}/>
+        <AntDesign
+          style={styles.iconContainer}
+          name={"qrcode"}
+          size={50}
+          onPress={() => props.navigation.navigate("scanQR")}
+        />
       </View>
       <View>
         <Text style={styles.title}> {t("syncData")}</Text>
@@ -58,7 +64,6 @@ const stylesProfile = StyleSheet.create({
     padding: 10,
     alignItems: "flex-start",
   },
-
 });
 
 export default ProfileView;
