@@ -2581,7 +2581,11 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.5.tgz#1001cc5e6a3704b83c236027e77f2f58ea010f40"
   integrity sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==
 
+<<<<<<< HEAD
 "@types/node@*", "@types/node@>=12.12.47", "@types/node@>=13.7.0":
+=======
+"@types/node@*":
+>>>>>>> 5b801add76501b6cd04f3dfd7b5b2630a218093b
   version "16.11.7"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-16.11.7.tgz#36820945061326978c42a01e56b61cd223dfdc42"
   integrity sha512-QB5D2sqfSjCmTuWcBWyJ+/44bcjO7VbjSbOE0ucoVbAsSNQc4Lt6QkgkVXkTDwkL4z/beecZNDvVX15D4P8Jbw==
@@ -5543,6 +5547,14 @@ expo-asset@~8.3.3:
     md5-file "^3.2.3"
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
+
+expo-barcode-scanner@~10.2.2:
+  version "10.2.2"
+  resolved "https://registry.yarnpkg.com/expo-barcode-scanner/-/expo-barcode-scanner-10.2.2.tgz#506256ce4aafae5b17da77dceeb52831de20971b"
+  integrity sha512-FWGyNB88kntUV1ckpEcCiq8iepu9EJO/cK0bDnp42ieydBhKlTPXH/d/3ipBFbE+Ia7MNfddjzmzbDCadJukcg==
+  dependencies:
+    "@expo/config-plugins" "^3.0.0"
+    expo-modules-core "~0.2.0"
 
 expo-cli@^4.12.1:
   version "4.13.0"
