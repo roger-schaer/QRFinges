@@ -14,13 +14,14 @@ const ProfileView = (props) => {
   return (
     <View style={stylesProfile.screen}>
       <Text style={styles.title}>{t("profileHead")}</Text>
+      <LocationBackgroundView />
+
       <View style={styles.startContainer}>
         <AntDesign
           style={styles.iconContainer}
           name={"playcircleo"}
           size={30}
         />
-        <LocationBackgroundView />
         <View style={styles.timerContainer}>
           <View style={styles.timerLine}>
             <Text style={styles.timerText}> {t("start")} </Text>

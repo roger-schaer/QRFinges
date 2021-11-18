@@ -1,7 +1,7 @@
 import { firebaseDb } from "../config/firebaseDb";
-import { getFirestore, setDoc, doc, getDoc } from "firebase/firestore";
+import { updateDoc, setDoc, doc, addDoc, arrayUnion, collection } from "firebase/firestore";
 import { CURRENT_USER_ID } from "../constant/contants";
-
+const CURRENT_WALK_RECORD = 'test-app';
 const getCollection = (key, currentRef = null) => {
   if (currentRef) {
     return currentRef.collection(key);
@@ -17,20 +17,36 @@ export const getUsers = async () => {
 export const getUserScannedQrCodes = (ref) => {
   return getCollection("scannedQrCodes", ref);
 };
+export const addRecordLocations = async (
+  location,
+  currentUser = CURRENT_USER_ID,
+  currentWalkRecord = CURRENT_WALK_RECORD
+) => {
+  return await updateDoc(doc(firebaseDb, "users", currentUser, 'walkRecord', currentWalkRecord), {
+    startDate: new Date(),
+    locations: arrayUnion({location, random: Math.random()}),
+  });
+};
+
 export const startRecordLocations = async (
   location,
   currentUser = CURRENT_USER_ID
 ) => {
-  return await setDoc(doc(firebaseDb, "records"), {
+  return await addDoc(collection(firebaseDb, "users", currentUser, 'walkRecord'), {
     startDate: new Date(),
     endDate: null,
     locations: [location],
   });
-  /*   return await getCollection("users")
-    .doc(currentUser)
-    .collection("walkRecord")
-    .add({ startDate: new Date(), endDate: null, locations: [] }); */
 };
+
+export const stopRecordLocations = async (
+  currentUser = CURRENT_USER_ID,
+  currentWalkRecord = CURRENT_WALK_RECORD
+)  => {
+  return await updateDoc(doc(firebaseDb, "users", currentUser, 'walkRecord', currentWalkRecord), {
+    endDate: new Date()
+  });
+}
 /* export const addLocationToCurrentWalkRecord = (
   currentDoc,
   location,
