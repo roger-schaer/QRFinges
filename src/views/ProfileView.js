@@ -5,7 +5,6 @@ import { AntDesign } from "@expo/vector-icons";
 import moment from "moment";
 import { LinearProgress } from "react-native-elements";
 import { LocationBackgroundView } from "./LocationBackgroundView";
-import { LocationView } from "./LocationView";
 import { styles } from "../component/styles";
 
 const ProfileView = (props) => {

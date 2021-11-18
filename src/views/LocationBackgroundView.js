@@ -16,6 +16,8 @@ import {
   stopRecordLocations,
 } from "../services/firebase";
 import { getStorageData, setStorageData } from "../services/storage";
+import { useUserContext } from "../services/user-context";
+import { USER_ID } from "../utils/request";
 
 const WALK_RECORD_KEY = "walkRecord";
 
@@ -29,10 +31,11 @@ export const LocationBackgroundView = () => {
   const [backgroundPermission, setBackgroundPermission] = useState(false);
 
   const { t } = useTranslation();
+  const { state } = useUserContext();
 
   const resetCurrentWalkRecord = () => {
     currentWalkRecord !== null &&
-      stopRecordLocations(CURRENT_USER_ID, currentWalkRecord);
+      stopRecordLocations(state.userId, currentWalkRecord);
     setCurrentWalkRecord(null);
     setStorageData(WALK_RECORD_KEY, null);
     setLatitude(null);
@@ -73,7 +76,7 @@ export const LocationBackgroundView = () => {
     console.log("useEffect/currentWalkRecord", currentWalkRecord, isEnabled);
 
     if (currentWalkRecord == null && isEnabled) {
-      startRecordLocations(null)
+      startRecordLocations(state.userId)
         .then((walkRecord) => {
           setStorageData(WALK_RECORD_KEY, walkRecord.id);
           setCurrentWalkRecord(walkRecord.id);
@@ -103,7 +106,7 @@ export const LocationBackgroundView = () => {
         Location.startLocationUpdatesAsync(BACKGROUND_LOCATION_UPDATES_TASK, {
           accuracy: Location.Accuracy.Balanced,
           timeInterval: 10000,
-          distanceInterval: 10,
+          distanceInterval: 15,
           foregroundService: {
             notificationTitle: "Live Tracker",
             notificationBody: "Live Tracker is on.",
@@ -140,20 +143,6 @@ export const LocationBackgroundView = () => {
 
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
-      <View style={styles.timerContainer}>
-        <View style={styles.timerLine}>
-          <Text style={styles.timerText}> {t("start")} </Text>
-          <View>
-            <Text style={styles.timerText}> {moment().format("LTS")}</Text>
-          </View>
-        </View>
-        <View style={styles.timerLine}>
-          <Text style={styles.timerText}> {t("end")} </Text>
-          <View>
-            <Text style={styles.timerText}> {moment().format("LTS")}</Text>
-          </View>
-        </View>
-      </View>
       <Switch
         trackColor={{ false: "#767577", true: "#81b0ff" }}
         thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
@@ -192,17 +181,18 @@ TaskManager.defineTask(
         if (wr !== null) {
           console.log(
             `Background -> latitude: ${locations[0].coords.latitude} - longitude: ${locations[0].coords.longitude}`,
-            wr,
-            typeof "" + locations[0].coords.latitude
-          );
-          addRecordLocations(
-            {
-              latitude: locations[0].coords.latitude,
-              longitude: locations[0].coords.longitude,
-            },
-            CURRENT_USER_ID,
             wr
           );
+          getStorageData(USER_ID).then((user_id) => {
+            addRecordLocations(
+              {
+                latitude: locations[0].coords.latitude,
+                longitude: locations[0].coords.longitude,
+              },
+              user_id,
+              wr
+            );
+          });
         }
       });
     }

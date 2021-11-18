@@ -71,12 +71,6 @@ const drawerUrls = [
     shouldBeLogged: false,
   },
   {
-    antIcon: "logout",
-    navigationScreen: LoginPageView,
-    translateKey: "logout",
-    shouldBeLogged: true,
-  },
-  {
     antIcon: "login",
     navigationScreen: LoginPageView,
     translateKey: "connect",
@@ -138,38 +132,9 @@ const CustomDrawerView = (props) => {
   );
 };
 
-/* function OverMenu() {
-  const { t, i18n } = useTranslation();
-  const { state, dispatch } = useUserContext();
-  return (
-    <Drawer.Navigator
-      drawerContent={(props) => <CustomDrawerView {...props} />}
-    >
-      <Drawer.Screen name={t("home")} component={HomeView} />
-
-      {!state.isLoggedIn && (
-        <>
-          <StackNav.Screen name={t("LoginPage")} component={LoginPageView} />
-          <StackNav.Screen
-            name={t("CreateProfile")}
-            component={CreateProfilePageView}
-          />
-        </>
-      )}
-      {state.isLoggedIn && (
-        <>
-          <Drawer.Screen name="Contact" component={ContactPageView} />
-          <StackNav.Screen name="Profile" component={ProfileView} />
-          <StackNav.Screen name="QRcodePage" component={QRcodeView} />
-        </>
-      )}
-    </Drawer.Navigator>
-  );
-} */
-
 const OverMenu = () => {
   const { t, i18n } = useTranslation();
-  const { state } = useUserContext();
+  // const { state } = useUserContext();
 
   return (
     <Drawer.Navigator

@@ -77,16 +77,13 @@ export const addRecordLocations = async (
   );
 };
 
-export const startRecordLocations = async (
-  location,
-  currentUser = CURRENT_USER_ID
-) => {
+export const startRecordLocations = async (currentUser) => {
   return await addDoc(
     collection(firestore, "users", currentUser, "walkRecord"),
     {
       startDate: new Date(),
       endDate: null,
-      locations: [location],
+      locations: null,
     }
   );
 };
