@@ -1,1 +1,3 @@
-export const DEFAULT_LANGUAGE = "en";
+export const CURRENT_USER_ID = "SGH0SGAqsdcvRttub8WXRWc4eKu1";
+export const DEFAULT_LANGUAGE = "FR";
+export const BACKGROUND_LOCATION_UPDATES_TASK = "START_LOCATION";

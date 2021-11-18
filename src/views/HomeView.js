@@ -1,60 +1,42 @@
-import React from "react";
-import {
-  Text,
-  View,
-  Button,
-  StyleSheet,
-  SafeAreaView,
-  StatusBar,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import React, { useEffect } from "react";
+import { Text, View, TouchableOpacity } from "react-native";
 import { Logo } from "../component/Logo";
+import { styles } from "../component/styles";
+import { getStorageData } from "../services/storage";
+import { useUserContext } from "../services/user-context";
+import { USER_ID } from "../utils/request";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonText: {
-    fontSize: 40,
-    color: "#087940",
-    textDecorationLine: "underline",
-    textAlign: "center",
-  },
-});
 const HomeView = (props) => {
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar />
-      <View style={{ flex: 1 }}>
-        <TouchableOpacity onPress={() => console.log("Hamburger")}>
-          <Image
-            source={{
-              uri: "https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png",
-            }}
-            style={{ width: 35, height: 35, marginLeft: 15 }}
-          />
-        </TouchableOpacity>
+  const { state, dispatch } = useUserContext();
 
-        <View style={styles.container}>
-          <View style={{ marginBottom: 50 }}>
-            <Logo />
-          </View>
-          <View>
-            <Button
-              onPress={() => props.navigation.navigate("LoginPage")}
-              title="Login"
-            />
-            <Text style={styles.buttonText}>Finges</Text>
-            <Text style={styles.buttonText}>Map</Text>
-            <Text style={styles.buttonText}>Experience</Text>
-          </View>
-        </View>
+  useEffect(() => {
+    getStorageData(USER_ID).then((v) => {
+      console.log(v);
+      if (v !== null) {
+        dispatch({
+          type: "SET_LOGIN",
+          userId: v,
+          isLoggedIn: true,
+        });
+      }
+    });
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <View style={{ marginBottom: 50 }}>
+        <Logo />
       </View>
-    </SafeAreaView>
+      <View>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate("LoginPage")}
+        >
+          <Text style={styles.buttonText}>Finges</Text>
+          <Text style={styles.buttonText}>Map</Text>
+          <Text style={styles.buttonText}>Experience</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 export default HomeView;

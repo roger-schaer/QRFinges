@@ -1,22 +1,23 @@
 import React from "react";
 import {View, Text, TouchableOpacity, Image, StyleSheet} from "react-native";
 
+
 const Header = props => {
+
+
+
     return (
-       <View>
-           <Text>              </Text>
-           <TouchableOpacity
-               onPress={() =>
-                   console.log("Hamburger")
-               }
+        <TouchableOpacity onPress={(event) =>
+                   props.navigate.toggleDrawer()}
            >
+
                <Image style = {[styles.Image, {tintColor : 'darkgreen'}]}
                    source={{
                        uri: "https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png",
                    }}
                />
-           </TouchableOpacity>
-       </View>
+        </TouchableOpacity>
+
     );
 };
 

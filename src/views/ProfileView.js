@@ -1,37 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { View, Text, Button, StyleSheet, Platform } from "react-native";
-import Header from "../component/Header";
 import { useTranslation } from "react-i18next";
 import { AntDesign } from "@expo/vector-icons";
 import moment from "moment";
 import { LinearProgress } from "react-native-elements";
-import Time from "../component/Time";
 import { LocationBackgroundView } from "./LocationBackgroundView";
+import { styles } from "../component/styles";
 
-export const ProfileView = (props) => {
+const ProfileView = (props) => {
   const { t, i18n } = useTranslation();
 
-  i18n.changeLanguage(i18n.language == "fr" ? "en" : "fr");
-
   return (
-    <View style={styles.screen}>
-      <Header />
-      <Button
-        title="Mes Infos"
-        onPress={() => props.navigation.navigate("InfoRegisteredUser")}
-      />
-      <Button
-        title="Contact"
-        onPress={() => props.navigation.navigate("Contact")}
-      />
+    <View style={stylesProfile.screen}>
       <Text style={styles.title}>{t("profileHead")}</Text>
+      <LocationBackgroundView />
+
       <View style={styles.startContainer}>
         <AntDesign
           style={styles.iconContainer}
           name={"playcircleo"}
           size={30}
         />
-        {Platform.OS !== "web" ? <LocationBackgroundView /> : null}
         <View style={styles.timerContainer}>
           <View style={styles.timerLine}>
             <Text style={styles.timerText}> {t("start")} </Text>
@@ -49,9 +38,10 @@ export const ProfileView = (props) => {
       </View>
       <View>
         <Text style={styles.title}> {t("scanQR")}</Text>
-        <AntDesign style={styles.iconContainer} name={"qrcode"} size={50} />
-        <Button
-          title="go to scann"
+        <AntDesign
+          style={styles.iconContainer}
+          name={"qrcode"}
+          size={50}
           onPress={() => props.navigation.navigate("QRcodePage")}
         />
       </View>
@@ -63,80 +53,16 @@ export const ProfileView = (props) => {
       <View>
         <AntDesign style={styles.iconSyncContainer} name={"sync"} size={30} />
       </View>
-      <View>
-        <Button
-          title="Go to Home"
-          onPress={() => props.navigation.navigate("Home")}
-        />
-        <Button title="FAQ" onPress={() => props.navigation.navigate("Help")} />
-      </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const stylesProfile = StyleSheet.create({
   screen: {
     flexDirection: "column",
     flex: 1,
     padding: 10,
     alignItems: "flex-start",
-  },
-
-  title: {
-    //  flex : 1,
-    fontSize: 16,
-    fontWeight: "700",
-    color: "darkgreen",
-    padding: 10,
-  },
-
-  startContainer: {
-    //  flex : 2,
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 10,
-    paddingBottom: 70,
-  },
-
-  timerContainer: {
-    flexDirection: "column",
-  },
-
-  timerText: {
-    fontSize: 14,
-    fontWeight: "400",
-    color: "darkgreen",
-    paddingRight: 30,
-    paddingBottom: 20,
-  },
-
-  timerLine: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingRight: 35,
-  },
-
-  scanContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-
-  SyncContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-
-  iconContainer: {
-    color: "darkgreen",
-    padding: 10,
-  },
-
-  iconSyncContainer: {
-    color: "darkgreen",
-    paddingTop: 20,
-    paddingLeft: 150,
-    alignItems: "center",
   },
 });
 
