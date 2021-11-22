@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import {View, Text, TextInput, StyleSheet, ScrollView} from "react-native";
 import { useTranslation } from "react-i18next";
 import { Logo } from "../component/Logo";
 import { CustomButton } from "../component/CustomButton";
@@ -69,6 +69,7 @@ const LoginPageView = (props) => {
   };
 
   return (
+      <ScrollView>
     <View style={styles.screen}>
       <Logo style={styles.logoContainer} />
       <Text style={styles.text}>{t("welcomePhrase")}</Text>
@@ -106,7 +107,8 @@ const LoginPageView = (props) => {
       >
         {t("subscribe")}
       </CustomButtonNoBorders>
-    </View>
+     </View>
+      </ScrollView>
   );
 };
 

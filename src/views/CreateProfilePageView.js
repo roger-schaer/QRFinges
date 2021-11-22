@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Button, StyleSheet, TextInput } from "react-native";
+import {View, Text, StyleSheet, TextInput, ScrollView} from "react-native";
 import { handleSignup } from "../services/firebase";
 import { CustomButton } from "../component/CustomButton";
 import { useTranslation } from "react-i18next";
@@ -15,6 +15,7 @@ const CreateProfilePageView = (props) => {
   const [error, setError] = useState("");
 
   return (
+      <ScrollView>
     <View>
       <View style={styles.screen}>
         <Text style={styles.title}>{t("createAccount")}</Text>
@@ -99,6 +100,7 @@ const CreateProfilePageView = (props) => {
         </CustomButton>
       </View>
     </View>
+      </ScrollView>
   );
 };
 

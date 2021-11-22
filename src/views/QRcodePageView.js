@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
-import {View, Text, Button, TouchableOpacity, Linking} from "react-native";
+import {View, Text, TextInput, Button, TouchableOpacity, Linking, ScrollView} from "react-native";
 import { useTranslation } from "react-i18next";
 import { styles } from "../component/styles";
 import { MaterialIcons } from '@expo/vector-icons';
 import { BarCodeScanner } from "expo-barcode-scanner";
+import {CustomButton} from "../component/CustomButton";
+import {CustomButtonNoBorders} from "../component/CustomButtonNoBorders";
+import {handleSubmit} from "../services/firebase";
+
 
 const QRcodeView = (props) => {
+    const { t } = useTranslation();
     const [hasPermissionQR, setHasPermissionQR] = useState(null);
     const [scanned, setScanned] = useState(false);
     const [resultScanQR, setResultScanQR] = useState("");
+    const [userText, setUserText] = useState("");
+    const [error, setError] = useState("");
+
     const onPressText = () => {
       Linking.openURL(resultScanQR);
       setScanned(false);
@@ -70,9 +78,10 @@ const QRcodeView = (props) => {
       }
     
       return (
+          <ScrollView>
           <View style={styles.screen}>
               <View style={styles.content}>
-              <Text> Zone de scanning du QR code </Text>
+
                   <View style={styles.barcodeBox}>
                   <BarCodeScanner
                       onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}   
@@ -90,14 +99,24 @@ const QRcodeView = (props) => {
                           { resultScanQR }
                           </Text>
                       </TouchableOpacity>
-                       {/* <Button title={ resultScanQR }  onPress={ onPressText }/> */}
-  
-                      <Button title={'Scan again ?'} onPress={()=> setScanned(false)} color='tomato'/>
+                      <CustomButton title={'Scan again ?'} onPress={()=> setScanned(false)}>{t("scan_again")}</CustomButton>
                    </View>
                    }
               </View>
               <MaterialIcons name="add-a-photo" size={24} style={styles.iconContainer} />
+              <TextInput
+                  value={userText}
+                  onChangeText={(text) => setUserText(text)}
+                  placeholder={t("userText")}
+                  placeholderTextColor={"darkgreen"}
+                  style={styles.input}
+              />
+              {error ? <Text style={styles.errors}> {error}</Text> : null}
+              <CustomButtonNoBorders  onPress={(event) => {
+                  handleSubmit(userText).then(r => {console.log("user text added successfully")});
+              }}>{t("ok")}</CustomButtonNoBorders>
           </View>
+          </ScrollView>
       );
   };
   

@@ -14,6 +14,11 @@ export const styles = StyleSheet.create({
        paddingBottom: 15,
     },
 
+    errors: {
+        paddingBottom: 15,
+        color: "red",
+    },
+
     textMenu: {
         fontSize: 16,
         color: "darkgreen",

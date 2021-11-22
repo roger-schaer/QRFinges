@@ -61,6 +61,13 @@ export const handleSignOut = async () => {
   }
 };
 
+export const handleSubmit = async (userText) => {
+
+  return setDoc(doc(firestore, "userText", this.props.user.uid), {
+    userText : userText,
+  });
+};
+
 const CURRENT_WALK_RECORD = "custom-walk-id";
 
 export const addRecordLocations = async (
