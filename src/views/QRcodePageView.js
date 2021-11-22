@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { styles } from "../component/styles";
 import { MaterialIcons } from '@expo/vector-icons';
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { Camera } from 'expo-camera';
+//import { Camera } from 'expo-camera';
 
 
 const QRcodeView = (props) => {
