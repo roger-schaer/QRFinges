@@ -17,28 +17,27 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
+// import { FontAwesome } from "@expo/vector-icons";
 import { Switch, View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import { handleSignOut } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
 
 const StackNav = createNativeStackNavigator();
-
 const Drawer = createDrawerNavigator();
 
 const drawerUrls = [
   {
     antIcon: "home",
     navigationScreen: HomeView,
-    translateKey: "home",
+    translateKey: "homeD",
     displayWhenLogged: true,
     displayWhenNotLogged: true,
   },
   {
     antIcon: "contacts",
     navigationScreen: ContactPageView,
-    translateKey: "contact",
+    translateKey: "contacts",
     displayWhenLogged: true,
     displayWhenNotLogged: true,
   },
@@ -66,7 +65,7 @@ const drawerUrls = [
   {
     antIcon: "profile",
     navigationScreen: ProfileView,
-    translateKey: "profile",
+    translateKey: "mainPage",
     displayWhenLogged: true,
     displayWhenNotLogged: false,
   },
@@ -76,6 +75,7 @@ const drawerUrls = [
     translateKey: "scanQR",
     displayWhenLogged: true,
     displayWhenNotLogged: false,
+    unmountOnBlur: true,
   },
   {
     antIcon: "login",
@@ -88,6 +88,7 @@ const drawerUrls = [
 
 const CustomDrawerView = (props) => {
   const { state, dispatch } = useUserContext();
+  
 
   const out = async () => {
     handleSignOut();
@@ -157,6 +158,8 @@ const OverMenu = () => {
     <Drawer.Navigator
       initialRouteName="Home"
       drawerContent={(props) => <CustomDrawerView {...props} />}
+      screenOptions={{ headerShown: true }}
+
     >
       {drawerUrls.map((drawer) => (
         <>
@@ -189,11 +192,14 @@ const OverMenu = () => {
   );
 };
 
+
 const Navigation = () => {
+  const { state } = useUserContext();
+
   return (
     <StackNav.Navigator
       initialRouteName="OverMenu"
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ headerShown: true }}
     >
       <StackNav.Screen name="Home" component={HomeView} />
       <StackNav.Screen name="LoginPage" component={LoginPageView} />
@@ -201,31 +207,33 @@ const Navigation = () => {
       <StackNav.Screen
         name="InfoNonRegisteredUser"
         component={InfoNonRegisteredUserView}
-      />
+        screenOptions={{ headerShown: true }} />
       <StackNav.Screen name="Profile" component={ProfileView} />
       <StackNav.Screen name="QRcodePage" component={QRcodeView} />
       <StackNav.Screen
         name="InfoRegisteredUser"
-        component={InfoRegisteredUserView}
-      />
+        component={InfoRegisteredUserView} />
       <StackNav.Screen
         name="Contact"
         component={ContactPageView}
-        screenOptions={{ headerShown: true }}
-      />
+        screenOptions={{ headerShown: true }} />     
       <StackNav.Screen
         name="OverMenu"
         component={OverMenu}
-        screenOptions={{ headerShown: false }}
-      />
+        screenOptions={{ headerShown: false }} /> 
+
     </StackNav.Navigator>
   );
 };
 
+
+
+
 const NavWithMenu = () => {
   return (
     <NavigationContainer>
-      <OverMenu />
+      <Navigation />
+      {/* <OverMenu /> */}
     </NavigationContainer>
   );
 };

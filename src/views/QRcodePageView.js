@@ -1,22 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {View, Text, Button, TouchableOpacity, Linking} from "react-native";
 import { useTranslation } from "react-i18next";
 import { styles } from "../component/styles";
 import { MaterialIcons } from '@expo/vector-icons';
 import { BarCodeScanner } from "expo-barcode-scanner";
-//import { Camera } from 'expo-camera';
+import { Camera } from 'expo-camera';
+import { useIsFocused } from "@react-navigation/native";
+import { CAMERA } from "expo-permissions";
 
 
 const QRcodeView = (props) => {
+
+    const isFocused = useIsFocused();
     const [hasPermissionQR, setHasPermissionQR] = useState(null);
     const [scanned, setScanned] = useState(false);
     const [resultScanQR, setResultScanQR] = useState("");
+
     const onPressText = () => {
       Linking.openURL(resultScanQR);
       setScanned(false);
       setResultScanQR("");
 
-      return <QRcodeView/>
+      // return <QRcodeView/>
   
       /* Zone de check si connexion et d'enregistrement du lien QR +/- ouverture page web */
       /* using function IsConected () from CheckInternetConnexion */
@@ -31,11 +36,25 @@ const QRcodeView = (props) => {
   
     };
 
-    const askForPermission = () => {
+    // const askForPermission = () => {
+    //     (async () => {
+    //       try {
+    //       const { status } = await BarCodeScanner.requestPermissionsAsync();
+    //       setHasPermissionQR(status === 'granted');
+    
+    //         if (status === 'granted') {
+    //           console.log('permission granted')
+    //         }
+    //       } catch (e) {
+    //           console.log(e);
+    //       }
+    //     })()
+    //   }
+      const askForPermission = () => {
         (async () => {
           try {
-          const { status } = await BarCodeScanner.requestPermissionsAsync();
-          setHasPermissionQR(status === 'granted');
+            const { status } = await Camera.requestPermissionsAsync();
+            setHasPermissionQR(status === 'granted');
     
             if (status === 'granted') {
               console.log('permission granted')
@@ -43,15 +62,26 @@ const QRcodeView = (props) => {
           } catch (e) {
               console.log(e);
           }
-        })()
+        })();
       }
-  
+// const getQRPermission =  
+//     useCallback(
+//   async () => {
+//     // try {
+//       const { status } = await Camera.requestPermissionsAsync();
+//       setHasPermissionQR(status === 'granted');
 
-      useEffect(() => {
-        requestCameraPermission();
-        askForPermission();
-      }, []);
-    
+//       if (status === 'granted') {
+//         console.log('permission granted')
+//       }
+//     },
+//  [hasPermissionQR],);
+
+
+useEffect(() => {
+  askForPermission();
+}, []);
+
       const handleBarCodeScanned = ({ data }) => {
         setScanned(true);
         alert(`Code QR has been scanned ! (click on the link to finish)`);
@@ -62,8 +92,11 @@ const QRcodeView = (props) => {
         return (
           <View style={styles.screen}>
             <Text>Requesting for camera permission</Text>
-              <Button 
-                title={'Allow Camera'} 
+              {/* <Button 
+                title={'ALLOW'} 
+                onPress={() => getQRPermission askForPermission()} /> */}
+                <Button 
+                title={'Allow camera'} 
                 onPress={() => askForPermission()} />
           </View>
 
@@ -74,22 +107,24 @@ const QRcodeView = (props) => {
           <View style={styles.screen}>
             <Text style={{margin: 10}}>No access to camera</Text>;
             <Button 
-              title={'Allow Camera'} 
+              title={'You need camera to continue'} 
               onPress={() => askForPermission()} />
           </View>
         )
       }
+
     
-      return (
-         <View style={styles.screen}>
-              <View style={styles.content}>
-              <Text> Zone de scanning du QR code </Text>
+      return (  
+            <View style={styles.screen}>
+              <View  /* style={styles.content} */ >
+              <Text> Scanner le QR code </Text>
                   <View style={styles.barcodeBox}>
-                  <BarCodeScanner
-                      onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}   
-                      
-                      style={{height: 400, width: 400}}
-                  />               
+                  <Text> Ici doit être Scanner le QR code </Text>
+                    <BarCodeScanner
+                        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}   
+                        
+                        style={{height: 400, width: 400}}
+                    />                    
           </View>
           { scanned 
                   &&
@@ -101,7 +136,6 @@ const QRcodeView = (props) => {
                           { resultScanQR }
                           </Text>
                       </TouchableOpacity>
-                       {/* <Button title={ resultScanQR }  onPress={ onPressText }/> */}
   
                       <Button title={'Scan again ?'} onPress={()=> setScanned(false)} color='tomato'/>
                    </View>
@@ -112,7 +146,7 @@ const QRcodeView = (props) => {
       );
   };
   
-  function requestCameraPermission() {
+ async function requestCameraPermission() {
     const [hasPermission, setHasPermission] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
   
@@ -123,12 +157,13 @@ const QRcodeView = (props) => {
       })();
     }, []);
   
-    if (hasPermission === null) {
-      return <View />;
-    }
-    if (hasPermission === false) {
-      return <Text>No access to camera</Text>;
-    }
-  };
+    // if (hasPermission === null) {
+    //   return <View />;
+    // }
+    // if (hasPermission === false) {
+    //   return <Text>No access to camera</Text>;
+    // }
+    return hasPermission;
+  }
 
 export default QRcodeView;

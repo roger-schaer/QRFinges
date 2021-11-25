@@ -5708,20 +5708,12 @@ expo-modules-core@~0.2.0:
   resolved "https://registry.yarnpkg.com/expo-modules-core/-/expo-modules-core-0.2.0.tgz#68e5b6e53d0afbf8d131578831aed657589a2d42"
   integrity sha512-inpfZ5X/BaTtbj2wG9PA9AC0MN8VyId6KSRlVuEg7+ziurHBy/kKDFxpOddUokhwiln2uhoYPSStJjR/tKypdw==
 
-expo-modules-core@~0.4.4:
-  version "0.4.8"
-  resolved "https://registry.yarnpkg.com/expo-modules-core/-/expo-modules-core-0.4.8.tgz#6fed03fca9370793b0a4bebc4fe1a44b213ed445"
-  integrity sha512-PElvF9/mw8TZ0FG3cQkQHB1yZEvtSrQ9nh90pINuTwmIUrxC427rgGoPrALsMaX90h94jTkPHODXHuX+Xsl/rg==
+expo-permissions@~12.1.1:
+  version "12.1.1"
+  resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-12.1.1.tgz#93fd8569d4106ff9dd66d67619cb69a0aa895482"
+  integrity sha512-fHBB4A/aWMcvdmDY79gpgQt0ufKG8F1gwTgO3+RjjudVe5kovNy5TeXdHrCa0MksFVKjktqLjJrgiBITJXjg+g==
   dependencies:
-    compare-versions "^3.4.0"
-    invariant "^2.2.4"
-
-expo-permissions@^13.0.3:
-  version "13.0.3"
-  resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-13.0.3.tgz#93d4395658d9967d257faa31bbec096551654aaf"
-  integrity sha512-bVjdnhYDZy06jX0J+0fGuXzEJ7r+ibl9yCAsumd3S/ELrs1wbR8/zOkQBaSyoYk0z9MiGCC4ul6UB10wEiMPmw==
-  dependencies:
-    expo-modules-core "~0.4.4"
+    expo-modules-core "~0.2.0"
 
 expo-pwa@0.0.102:
   version "0.0.102"

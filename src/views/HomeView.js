@@ -22,13 +22,14 @@ const HomeView = (props) => {
     });
   }, []);
 
+
   return (
     <View style={styles.container}>
       <View style={{ marginBottom: 50 }}>
         <Logo />
       </View>
       <View>
-        <TouchableOpacity onPress={() => props.navigation.navigate("connect")}>
+        <TouchableOpacity onPress={() => props.navigation.navigate("LoginPageView")}>
           <Text style={styles.buttonText}>Finges</Text>
           <Text style={styles.buttonText}>Map</Text>
           <Text style={styles.buttonText}>Experience</Text>
