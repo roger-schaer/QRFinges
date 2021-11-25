@@ -29,7 +29,7 @@ const HomeView = (props) => {
         <Logo />
       </View>
       <View>
-        <TouchableOpacity onPress={() => props.navigation.navigate("LoginPageView")}>
+        <TouchableOpacity onPress={() => props.navigation.navigate("LoginPage")}>
           <Text style={styles.buttonText}>Finges</Text>
           <Text style={styles.buttonText}>Map</Text>
           <Text style={styles.buttonText}>Experience</Text>
