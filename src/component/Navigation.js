@@ -9,6 +9,7 @@ import LoginPageView from "../views/LogInPageView";
 import QRcodeView from "../views/QRcodePageView";
 import CreateProfilePageView from "../views/CreateProfilePageView";
 import HomeView from "../views/HomeView";
+import webViewer from "../views/InternWebViewer";
 import { styles } from "../component/styles";
 import {
   createDrawerNavigator,
@@ -30,7 +31,7 @@ const drawerUrls = [
   {
     antIcon: "home",
     navigationScreen: HomeView,
-    translateKey: "homeD",
+    translateKey: "home",
     displayWhenLogged: true,
     displayWhenNotLogged: true,
   },
@@ -76,6 +77,12 @@ const drawerUrls = [
     displayWhenLogged: true,
     displayWhenNotLogged: false,
     unmountOnBlur: true,
+  },
+  {
+    navigationScreen: webViewer,
+    translateKey: "webViewer",
+    displayWhenLogged: false,
+    displayWhenNotLogged: false,
   },
   {
     antIcon: "login",
@@ -210,6 +217,7 @@ const Navigation = () => {
         screenOptions={{ headerShown: true }} />
       <StackNav.Screen name="Profile" component={ProfileView} />
       <StackNav.Screen name="QRcodePage" component={QRcodeView} />
+      <StackNav.Screen name="webviewer" component={webViewer} />
       <StackNav.Screen
         name="InfoRegisteredUser"
         component={InfoRegisteredUserView} />

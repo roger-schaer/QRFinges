@@ -17,9 +17,11 @@ const QRcodeView = (props) => {
     const [resultScanQR, setResultScanQR] = useState("");
 
     const onPressText = () => {
-      Linking.openURL(resultScanQR);
+      // Linking.openURL(resultScanQR);
       setScanned(false);
       setResultScanQR("");
+
+      return props.navigation.navigate('webviewer', {uri: resultScanQR});
 
       // return <QRcodeView/>
   
@@ -116,7 +118,7 @@ useEffect(() => {
     
       return (  
             <View style={styles.screen}>
-              <View  /* style={styles.content} */ >
+              <View  style={styles.content} >
               <Text> Scanner le QR code </Text>
                   <View style={styles.barcodeBox}>
                   <Text> Ici doit être Scanner le QR code </Text>

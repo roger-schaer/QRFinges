@@ -122,6 +122,16 @@ export const styles = StyleSheet.create({
         fontWeight: "700",
         
     },
+
+    webviewer: {
+        flex: 1,
+        //flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingTop: 20,
+        paddingBottom: 10,
+
+    },
         
 
 });
