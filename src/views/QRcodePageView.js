@@ -6,7 +6,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { Camera } from 'expo-camera';
 import { useIsFocused } from "@react-navigation/native";
-import { CAMERA } from "expo-permissions";
 
 
 const QRcodeView = (props) => {
@@ -19,11 +18,10 @@ const QRcodeView = (props) => {
     const onPressText = () => {
       // Linking.openURL(resultScanQR);
       setScanned(false);
+      let uri = resultScanQR;
       setResultScanQR("");
 
-      return props.navigation.navigate('webviewer', {uri: resultScanQR});
-
-      // return <QRcodeView/>
+      return props.navigation.navigate('webViewer', {uri: uri});
   
       /* Zone de check si connexion et d'enregistrement du lien QR +/- ouverture page web */
       /* using function IsConected () from CheckInternetConnexion */
@@ -38,20 +36,7 @@ const QRcodeView = (props) => {
   
     };
 
-    // const askForPermission = () => {
-    //     (async () => {
-    //       try {
-    //       const { status } = await BarCodeScanner.requestPermissionsAsync();
-    //       setHasPermissionQR(status === 'granted');
     
-    //         if (status === 'granted') {
-    //           console.log('permission granted')
-    //         }
-    //       } catch (e) {
-    //           console.log(e);
-    //       }
-    //     })()
-    //   }
       const askForPermission = () => {
         (async () => {
           try {
@@ -66,18 +51,6 @@ const QRcodeView = (props) => {
           }
         })();
       }
-// const getQRPermission =  
-//     useCallback(
-//   async () => {
-//     // try {
-//       const { status } = await Camera.requestPermissionsAsync();
-//       setHasPermissionQR(status === 'granted');
-
-//       if (status === 'granted') {
-//         console.log('permission granted')
-//       }
-//     },
-//  [hasPermissionQR],);
 
 
 useEffect(() => {

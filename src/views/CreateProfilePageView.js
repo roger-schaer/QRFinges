@@ -3,6 +3,7 @@ import { View, Text, Button, StyleSheet, TextInput } from "react-native";
 import { handleSignup } from "../services/firebase";
 import { CustomButton } from "../component/CustomButton";
 import { useTranslation } from "react-i18next";
+import { ScrollView } from "react-native-gesture-handler";
 
 const CreateProfilePageView = (props) => {
   const { t } = useTranslation();
@@ -15,6 +16,7 @@ const CreateProfilePageView = (props) => {
   const [error, setError] = useState("");
 
   return (
+    <ScrollView>
     <View>
       <View style={styles.screen}>
         <Text style={styles.title}>{t("createAccount")}</Text>
@@ -99,6 +101,7 @@ const CreateProfilePageView = (props) => {
         </CustomButton>
       </View>
     </View>
+    </ScrollView>
   );
 };
 

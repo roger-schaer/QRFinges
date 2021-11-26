@@ -8,6 +8,7 @@ import { handleLogin } from "../services/firebase";
 import { USER_ID } from "../utils/request";
 import { useUserContext } from "../services/user-context";
 import { getStorageData, setStorageData } from "../services/storage";
+import { ScrollView } from "react-native-gesture-handler";
 
 const LoginPageView = (props) => {
   // Translation
@@ -69,6 +70,7 @@ const LoginPageView = (props) => {
   };
 
   return (
+    <ScrollView>
     <View style={styles.screen}>
       <Logo style={styles.logoContainer} />
       <Text style={styles.text}>{t("welcomePhrase")}</Text>
@@ -107,6 +109,7 @@ const LoginPageView = (props) => {
         {t("subscribe")}
       </CustomButtonNoBorders>
     </View>
+    </ScrollView>
   );
 };
 

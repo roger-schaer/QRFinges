@@ -9,7 +9,7 @@ import LoginPageView from "../views/LogInPageView";
 import QRcodeView from "../views/QRcodePageView";
 import CreateProfilePageView from "../views/CreateProfilePageView";
 import HomeView from "../views/HomeView";
-import webViewer from "../views/InternWebViewer";
+import WebViewer from "../views/InternWebViewer";
 import { styles } from "../component/styles";
 import {
   createDrawerNavigator,
@@ -23,6 +23,7 @@ import { Switch, View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import { handleSignOut } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
+import CameraView from "../views/PhotoView";
 
 const StackNav = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -79,9 +80,15 @@ const drawerUrls = [
     unmountOnBlur: true,
   },
   {
-    navigationScreen: webViewer,
+    navigationScreen: WebViewer,
     translateKey: "webViewer",
-    displayWhenLogged: false,
+    displayWhenLogged: true,
+    displayWhenNotLogged: false,
+  },
+  {
+    navigationScreen: CameraView,
+    translateKey: "cameraview",
+    displayWhenLogged: true,
     displayWhenNotLogged: false,
   },
   {
@@ -217,7 +224,8 @@ const Navigation = () => {
         screenOptions={{ headerShown: true }} />
       <StackNav.Screen name="Profile" component={ProfileView} />
       <StackNav.Screen name="QRcodePage" component={QRcodeView} />
-      <StackNav.Screen name="webviewer" component={webViewer} />
+      <StackNav.Screen name="webViewer" component={WebViewer} />
+      <StackNav.Screen name="cameraView" component={CameraView} />
       <StackNav.Screen
         name="InfoRegisteredUser"
         component={InfoRegisteredUserView} />
@@ -240,8 +248,8 @@ const Navigation = () => {
 const NavWithMenu = () => {
   return (
     <NavigationContainer>
-      <Navigation />
-      {/* <OverMenu /> */}
+      {/* <Navigation /> */}
+      <OverMenu />
     </NavigationContainer>
   );
 };
