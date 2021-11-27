@@ -42,7 +42,7 @@ const ProfileView = (props) => {
           style={styles.iconContainer}
           name={"qrcode"}
           size={50}
-          onPress={() => props.navigation.navigate("scanQR")}
+          onPress={() => props.navigation.navigate("QRcodePage")}
         />
       </View>
       <View>

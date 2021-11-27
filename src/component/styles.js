@@ -127,6 +127,30 @@ export const styles = StyleSheet.create({
         fontWeight: "700",
         
     },
-        
 
+    webviewer: {
+        flex: 1,
+        //flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingTop: 20,
+        paddingBottom: 10,
+
+    },
+    cameraButton: {
+        flex: 0.1,
+        alignSelf: "flex-end",
+        alignItems: "center",
+    },
+    cameraButtonContainer: {
+        flex: 1,
+        backgroundColor: 'transparent',
+        flexDirection: "row",
+        margin: 20,
+    },
+    camera: {
+        flex: 1,
+        margin: 2,
+        
+    }
 });

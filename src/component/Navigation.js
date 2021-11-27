@@ -8,6 +8,7 @@ import LoginPageView from "../views/LogInPageView";
 import QRcodeView from "../views/QRcodePageView";
 import CreateProfilePageView from "../views/CreateProfilePageView";
 import HomeView from "../views/HomeView";
+import WebViewer from "../views/InternWebViewer";
 import { styles } from "../component/styles";
 import {
   createDrawerNavigator,
@@ -20,6 +21,7 @@ import { Switch, View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import { handleSignOut } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
+import CameraView from "../views/PhotoView";
 
 const Drawer = createDrawerNavigator();
 
@@ -34,7 +36,7 @@ const drawerUrls = [
   {
     antIcon: "contacts",
     navigationScreen: ContactPageView,
-    translateKey: "contact",
+    translateKey: "contacts",
     displayWhenLogged: true,
     displayWhenNotLogged: true,
   },
@@ -62,8 +64,15 @@ const drawerUrls = [
   {
     antIcon: "profile",
     navigationScreen: ProfileView,
-    translateKey: "profile",
+    translateKey: "mainPage",
     displayWhenLogged: true,
+    displayWhenNotLogged: false,
+  },
+  {
+    antIcon: "webViewer",
+    navigationScreen: WebViewer,
+    translateKey: "webViewer",
+    displayWhenLogged: false,
     displayWhenNotLogged: false,
   },
   {
@@ -72,6 +81,7 @@ const drawerUrls = [
     translateKey: "scanQR",
     displayWhenLogged: true,
     displayWhenNotLogged: false,
+    unmountOnBlur: true,
   },
   {
     antIcon: "login",
@@ -153,6 +163,7 @@ const OverMenu = () => {
     <Drawer.Navigator
       initialRouteName="Home"
       drawerContent={(props) => <CustomDrawerView {...props} />}
+      screenOptions={{ headerShown: true }}
     >
       {drawerUrls.map((drawer) => (
         <Drawer.Screen
