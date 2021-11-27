@@ -67,9 +67,6 @@ useEffect(() => {
         return (
           <View style={styles.screen}>
             <Text>Requesting for camera permission</Text>
-              {/* <Button 
-                title={'ALLOW'} 
-                onPress={() => getQRPermission askForPermission()} /> */}
                 <Button 
                 title={'Allow camera'} 
                 onPress={() => askForPermission()} />
@@ -95,7 +92,10 @@ useEffect(() => {
               <Text> Scanner le QR code </Text>
                   <View style={styles.barcodeBox}>
                   <Text> Ici doit être Scanner le QR code </Text>
-                    <BarCodeScanner
+                    <Camera
+                         barCodeScannerSettings={{
+                          barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
+                        }}
                         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}   
                         
                         style={{height: 400, width: 400}}

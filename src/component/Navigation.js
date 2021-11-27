@@ -80,18 +80,6 @@ const drawerUrls = [
     unmountOnBlur: true,
   },
   {
-    navigationScreen: WebViewer,
-    translateKey: "webViewer",
-    displayWhenLogged: true,
-    displayWhenNotLogged: false,
-  },
-  {
-    navigationScreen: CameraView,
-    translateKey: "cameraview",
-    displayWhenLogged: true,
-    displayWhenNotLogged: false,
-  },
-  {
     antIcon: "login",
     navigationScreen: LoginPageView,
     translateKey: "connect",
@@ -225,7 +213,7 @@ const Navigation = () => {
       <StackNav.Screen name="Profile" component={ProfileView} />
       <StackNav.Screen name="QRcodePage" component={QRcodeView} />
       <StackNav.Screen name="webViewer" component={WebViewer} />
-      <StackNav.Screen name="cameraView" component={CameraView} />
+      
       <StackNav.Screen
         name="InfoRegisteredUser"
         component={InfoRegisteredUserView} />
@@ -248,7 +236,6 @@ const Navigation = () => {
 const NavWithMenu = () => {
   return (
     <NavigationContainer>
-      {/* <Navigation /> */}
       <OverMenu />
     </NavigationContainer>
   );
