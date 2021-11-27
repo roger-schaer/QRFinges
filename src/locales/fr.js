@@ -44,4 +44,7 @@ export const TranslationFR = {
   contact: "Contacts",
   syncData: "Vos données sont synchronisées",
   logout: "Se deconnecter",
+  scan_again : "Scanner encore ?",
+  userText : "Ajoutez votre commentaire",
+  ok : "OK",
 };

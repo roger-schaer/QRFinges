@@ -110,8 +110,8 @@ const CustomDrawerView = (props) => {
           <View style={{ flexDirection: "row" }}>
             <Text style={styles.textMenu}>{i18n.language}</Text>
             <Switch
-              trackColor={{ false: "#767577", true: "#81b0ff" }}
-              thumbColor={i18n.language == "fr" ? "#f5dd4b" : "#f4f3f4"}
+              trackColor={{ false: "#43a047", true: "#00695c" }}
+              thumbColor={i18n.language == "FR" ? "#43a047" : "#00695c"}
               ios_backgroundColor="#3e3e3e"
               value={i18n.language === "FR"}
               onChange={() => {
