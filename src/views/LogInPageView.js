@@ -8,7 +8,7 @@ import { handleLogin } from "../services/firebase";
 import { USER_ID } from "../utils/request";
 import { useUserContext } from "../services/user-context";
 import { getStorageData, setStorageData } from "../services/storage";
-import { ScrollView } from "react-native-gesture-handler";
+import { PROFILE_KEY, SUBSCRIBE_KEY } from "../constant/contants";
 
 const LoginPageView = (props) => {
   // Translation
@@ -40,7 +40,7 @@ const LoginPageView = (props) => {
       console.log(props);
       console.log(state.userId);
 
-      props.navigation.navigate("profile");
+      props.navigation.navigate(PROFILE_KEY);
     } catch (e) {
       dispatch({
         type: "IS_LOGGED_ERROR",
@@ -104,7 +104,7 @@ const LoginPageView = (props) => {
         </CustomButton>
 
         <CustomButtonNoBorders
-          onPress={(event) => props.navigation.navigate("subscribe")}
+          onPress={(event) => props.navigation.navigate(SUBSCRIBE_KEY)}
         >
           {t("subscribe")}
         </CustomButtonNoBorders>

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextInput, ScrollView } from "react-native";
 import { handleSignup } from "../services/firebase";
 import { CustomButton } from "../component/CustomButton";
 import { useTranslation } from "react-i18next";
-import { ScrollView } from "react-native-gesture-handler";
+import { PROFILE_KEY } from "../constant/contants";
 
 const CreateProfilePageView = (props) => {
   const { t } = useTranslation();
@@ -76,7 +76,7 @@ const CreateProfilePageView = (props) => {
               setError("");
               handleSignup(email, password, name, firstname)
                 .then(() => {
-                  props.navigation.navigate("profile");
+                  props.navigation.navigate(PROFILE_KEY);
                 })
                 .catch((e) => {
                   var errorCode = e.code;

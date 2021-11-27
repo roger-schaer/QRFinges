@@ -37,7 +37,7 @@ export const TranslationEN = {
   contact: "Contacts",
   syncData: "Your data is synchronized",
   logout: "Logout",
-  scan_again : "Scan again ?",
-  userText : "Add your comment",
-  ok : "Save",
+  scan_again: "Scan again ?",
+  userText: "Add your comment",
+  ok: "Save",
 };

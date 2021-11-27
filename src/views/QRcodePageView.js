@@ -5,6 +5,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { Camera } from "expo-camera";
 import { useIsFocused } from "@react-navigation/native";
+import { WEBVIEW_KEY } from "../constant/contants";
 
 const QRcodeView = (props) => {
   const isFocused = useIsFocused();
@@ -18,7 +19,7 @@ const QRcodeView = (props) => {
     let uri = resultScanQR;
     setResultScanQR("");
 
-    return props.navigation.navigate("webViewer", { uri: uri });
+    return props.navigation.navigate(WEBVIEW_KEY, { uri: uri });
 
     /* Zone de check si connexion et d'enregistrement du lien QR +/- ouverture page web */
     /* using function IsConected () from CheckInternetConnexion */
@@ -67,7 +68,7 @@ const QRcodeView = (props) => {
   if (hasPermissionQR === false) {
     return (
       <View style={styles.screen}>
-        <Text style={{ margin: 10 }}>No access to camera</Text>;
+        <Text style={{ margin: 10 }}>No access to camera</Text>
         <Button
           title={"You need camera to continue"}
           onPress={() => askForPermission()}

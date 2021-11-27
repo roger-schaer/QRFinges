@@ -20,6 +20,8 @@ import { useUserContext } from "../services/user-context";
 import { USER_ID } from "../utils/request";
 
 const WALK_RECORD_KEY = "walkRecord";
+const CURRENT_LAT = "currentLatitude";
+const CURRENT_LON = "currentLongitude";
 
 export const LocationBackgroundView = () => {
   const [latitude, setLatitude] = useState(null);
@@ -27,7 +29,6 @@ export const LocationBackgroundView = () => {
   const [gpsErrorMsg, setGpsErrorMsg] = useState(null);
   const [currentWalkRecord, setCurrentWalkRecord] = useState(null);
   const [isEnabled, setIsEnabled] = useState(false);
-  const [foregroundPermission, setForegroundPermission] = useState(false);
   const [backgroundPermission, setBackgroundPermission] = useState(false);
 
   const { t } = useTranslation();
@@ -38,6 +39,8 @@ export const LocationBackgroundView = () => {
       stopRecordLocations(state.userId, currentWalkRecord);
     setCurrentWalkRecord(null);
     setStorageData(WALK_RECORD_KEY, null);
+    setStorageData(CURRENT_LAT, null);
+    setStorageData(CURRENT_LON, null);
     setLatitude(null);
     setLongitude(null);
     Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_UPDATES_TASK);
@@ -106,7 +109,7 @@ export const LocationBackgroundView = () => {
         Location.startLocationUpdatesAsync(BACKGROUND_LOCATION_UPDATES_TASK, {
           accuracy: Location.Accuracy.Balanced,
           timeInterval: 10000,
-          distanceInterval: 15,
+          distanceInterval: 5,
           foregroundService: {
             notificationTitle: "Live Tracker",
             notificationBody: "Live Tracker is on.",
