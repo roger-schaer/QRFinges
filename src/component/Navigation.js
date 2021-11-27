@@ -1,6 +1,5 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import InfoRegisteredUserView from "../views/InfoRegisteredUserView";
 import ProfileView from "../views/ProfileView";
 import ContactPageView from "../views/ContactPageView";
@@ -17,13 +16,10 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
 import { Switch, View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import { handleSignOut } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
-
-const StackNav = createNativeStackNavigator();
 
 const Drawer = createDrawerNavigator();
 
@@ -93,7 +89,7 @@ const CustomDrawerView = (props) => {
     handleSignOut();
 
     dispatch({ type: "IS_LOGGED_OFF" });
-    props.navigation.navigate("home");
+    props.navigation.navigate("connect");
   };
 
   const logout = (e) => {
@@ -159,66 +155,33 @@ const OverMenu = () => {
       drawerContent={(props) => <CustomDrawerView {...props} />}
     >
       {drawerUrls.map((drawer) => (
-        <>
-          {drawer.displayWhenLogged == state.isLoggedIn ||
-          drawer.displayWhenNotLogged == !state.isLoggedIn ? (
-            <Drawer.Screen
-              key={`drawer-button-${drawer.translateKey}`}
-              name={drawer.translateKey}
-              component={drawer.navigationScreen}
-              options={{
-                drawerLabel: () => (
-                  <View style={{ flexDirection: "row" }}>
-                    <AntDesign
-                      // @ts-ignore
-                      name={drawer.antIcon}
-                      style={styles.iconContainer}
-                      size={15}
-                    />
-                    <Text style={styles.textMenu}>
-                      {t(drawer.translateKey)}
-                    </Text>
-                  </View>
-                ),
-              }}
-            />
-          ) : null}
-        </>
+        <Drawer.Screen
+          key={`drawer-button-${drawer.translateKey}`}
+          name={drawer.translateKey}
+          component={drawer.navigationScreen}
+          options={{
+            drawerItemStyle: {
+              display:
+                drawer.displayWhenLogged == state.isLoggedIn ||
+                drawer.displayWhenNotLogged == !state.isLoggedIn
+                  ? "flex"
+                  : "none",
+            },
+            drawerLabel: () => (
+              <View style={{ flexDirection: "row" }}>
+                <AntDesign
+                  // @ts-ignore
+                  name={drawer.antIcon}
+                  style={styles.iconContainer}
+                  size={15}
+                />
+                <Text style={styles.textMenu}>{t(drawer.translateKey)}</Text>
+              </View>
+            ),
+          }}
+        />
       ))}
     </Drawer.Navigator>
-  );
-};
-
-const Navigation = () => {
-  return (
-    <StackNav.Navigator
-      initialRouteName="OverMenu"
-      screenOptions={{ headerShown: false }}
-    >
-      <StackNav.Screen name="Home" component={HomeView} />
-      <StackNav.Screen name="LoginPage" component={LoginPageView} />
-      <StackNav.Screen name="CreateProfile" component={CreateProfilePageView} />
-      <StackNav.Screen
-        name="InfoNonRegisteredUser"
-        component={InfoNonRegisteredUserView}
-      />
-      <StackNav.Screen name="Profile" component={ProfileView} />
-      <StackNav.Screen name="QRcodePage" component={QRcodeView} />
-      <StackNav.Screen
-        name="InfoRegisteredUser"
-        component={InfoRegisteredUserView}
-      />
-      <StackNav.Screen
-        name="Contact"
-        component={ContactPageView}
-        screenOptions={{ headerShown: true }}
-      />
-      <StackNav.Screen
-        name="OverMenu"
-        component={OverMenu}
-        screenOptions={{ headerShown: false }}
-      />
-    </StackNav.Navigator>
   );
 };
 
