@@ -6,6 +6,7 @@ import moment from "moment";
 import { LinearProgress } from "react-native-elements";
 import { LocationBackgroundView } from "./LocationBackgroundView";
 import { styles } from "../component/styles";
+import { QR_CODE_KEY } from "../constant/contants";
 
 const ProfileView = (props) => {
   const { t, i18n } = useTranslation();
@@ -42,7 +43,7 @@ const ProfileView = (props) => {
           style={styles.iconContainer}
           name={"qrcode"}
           size={50}
-          onPress={() => props.navigation.navigate("scanQR")}
+          onPress={() => props.navigation.navigate(QR_CODE_KEY)}
         />
       </View>
       <View>

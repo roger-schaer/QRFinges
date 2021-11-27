@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { Logo } from "../component/Logo";
 import { styles } from "../component/styles";
+import { LOGIN_KEY } from "../constant/contants";
 import { getStorageData } from "../services/storage";
 import { useUserContext } from "../services/user-context";
 import { USER_ID } from "../utils/request";
@@ -28,7 +29,7 @@ const HomeView = (props) => {
         <Logo />
       </View>
       <View>
-        <TouchableOpacity onPress={() => props.navigation.navigate("connect")}>
+        <TouchableOpacity onPress={() => props.navigation.navigate(LOGIN_KEY)}>
           <Text style={styles.buttonText}>Finges</Text>
           <Text style={styles.buttonText}>Map</Text>
           <Text style={styles.buttonText}>Experience</Text>

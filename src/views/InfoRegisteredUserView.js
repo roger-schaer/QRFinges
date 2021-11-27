@@ -3,6 +3,7 @@ import { View, Text, Button } from "react-native";
 import { useTranslation } from "react-i18next";
 import { styles } from "../component/styles";
 import { CustomButton } from "../component/CustomButton";
+import { CONTACT_KEY } from "../constant/contants";
 
 const InfoRegisteredUserView = (props) => {
   const { t, i18n } = useTranslation();
@@ -22,7 +23,7 @@ const InfoRegisteredUserView = (props) => {
       <Text style={styles.text}>{t("personalData")}</Text>
       <Text style={styles.content}>bla-bla</Text>
 
-      <CustomButton onPress={() => props.navigation.navigate("contact")}>
+      <CustomButton onPress={() => props.navigation.navigate(CONTACT_KEY)}>
         {t("refusalButton")}
       </CustomButton>
     </View>
