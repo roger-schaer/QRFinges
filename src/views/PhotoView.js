@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { styles } from "../component/styles";
 import { Camera } from "expo-camera";
 import { Image } from "react-native-elements";
-import { CameraType } from "expo-camera/build/Camera.types";
+import { askCameraPermission } from "../services/cameraPermission";
 
 const CameraView = (props) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -27,44 +27,46 @@ const CameraView = (props) => {
     // })();
   };
 
-  const askForPermission = () => {
-    (async () => {
-      try {
-        const { status } = await Camera.requestPermissionsAsync();
-        setHasPermission(status === "granted");
+  askCameraPermission();
 
-        if (status === "granted") {
-          console.log("permission granted");
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    })();
-  };
+  // const askForPermission = () => {
+  //   (async () => {
+  //     try {
+  //       const { status } = await Camera.requestPermissionsAsync();
+  //       setHasPermission(status === "granted");
 
-  useEffect(() => {
-    askForPermission();
-  }, []);
+  //       if (status === "granted") {
+  //         console.log("permission granted");
+  //       }
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   })();
+  // };
 
-  if (hasPermission === null) {
-    return (
-      <View style={styles.screen}>
-        <Text>Requesting for camera permission</Text>
-        <Button title={"Allow camera"} onPress={() => askForPermission()} />
-      </View>
-    );
-  }
-  if (hasPermission === false) {
-    return (
-      <View style={styles.screen}>
-        <Text style={{ margin: 10 }}>No access to camera</Text>;
-        <Button
-          title={"You need camera to take photo"}
-          onPress={() => askForPermission()}
-        />
-      </View>
-    );
-  }
+  // useEffect(() => {
+  //   askForPermission();
+  // }, []);
+
+  // if (hasPermission === null) {
+  //   return (
+  //     <View style={styles.screen}>
+  //       <Text>Requesting for camera permission</Text>
+  //       <Button title={"Allow camera"} onPress={() => askForPermission()} />
+  //     </View>
+  //   );
+  // }
+  // if (hasPermission === false) {
+  //   return (
+  //     <View style={styles.screen}>
+  //       <Text style={{ margin: 10 }}>No access to camera</Text>;
+  //       <Button
+  //         title={"You need camera to take photo"}
+  //         onPress={() => askForPermission()}
+  //       />
+  //     </View>
+  //   );
+  // }
 
   let camera;
 
