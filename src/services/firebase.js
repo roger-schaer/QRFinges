@@ -103,3 +103,36 @@ export const stopRecordLocations = async (
     }
   );
 };
+
+// const CURRENT_PICTURE_RECORD = "custom-picture-id";
+
+// export const addRecordPicture = async (
+//   picture,
+//   location,
+//   currentUser = CURRENT_USER_ID,
+//   currentPicture = CURRENT_WALK_RECORD
+// ) => {
+//   return await updateDoc(
+//     doc(firestore, "users", currentUser, "picture", currentPicture),
+//     {
+//       startDate: new Date(),
+//       locations: arrayUnion({ location }),
+//     }
+//   );
+// };
+// const CURRENT_QRCODE_RECORD = "custom-qrcode-id";
+
+// export const addRecordQRCode = async (
+//   qrcode,
+//   location,
+//   currentUser = CURRENT_USER_ID,
+//   currentQRcode = CURRENT_QRCODE_RECORD
+// ) => {
+//   return await updateDoc(
+//     doc(firestore, "users", currentUser, "qrcode", currentQRcode),
+//     {
+//       startDate: new Date(),
+//       locations: arrayUnion({ location }),
+//     }
+//   );
+// };

@@ -4,7 +4,7 @@ import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
 import { styles } from "../component/styles";
 import moment from "moment";
-import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 import {
   BACKGROUND_LOCATION_UPDATES_TASK,
   CURRENT_USER_ID,
@@ -31,7 +31,7 @@ export const LocationBackgroundView = () => {
   const [isEnabled, setIsEnabled] = useState(false);
   const [backgroundPermission, setBackgroundPermission] = useState(false);
 
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const { state } = useUserContext();
 
   const resetCurrentWalkRecord = () => {

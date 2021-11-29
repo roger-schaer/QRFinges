@@ -110,11 +110,11 @@ const drawerUrls = [
     displayWhenNotLogged: false,
   },
   {
-    antIcon: "qrcode",
+    antIcon: "camera",
     pageKey: PHOTO_KEY,
 
     navigationScreen: CameraView,
-    translateKey: "CameraView",
+    translateKey: "camera",
     displayWhenLogged: true,
     displayWhenNotLogged: false,
   },

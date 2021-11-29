@@ -24,6 +24,7 @@ export const TranslationEN = {
   myAccount: "My account",
   name: "Lastname",
   needCameraPermission: "You need to allow camera access",
+  newPicture: "New Picture",
   noInternetToWebView: "No internet connexion ! Redirection to profile page",
   ok: "Save",
   pass: "Password",

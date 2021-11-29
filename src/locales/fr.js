@@ -29,6 +29,7 @@ export const TranslationFR = {
   myAccount: "Gestion de mon compte",
   name: "Nom",
   needCameraPermission: "Vous avez besoin de la camera pour continuer",
+  newPicture: "Changer la photo",
   noInternetToWebView:
     "Pas de réseau internet ! Redirection vers la page Profile",
   ok: "OK",
