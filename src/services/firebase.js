@@ -92,6 +92,16 @@ export const startRecordLocations = async (currentUser) => {
   );
 };
 
+export const addUserText = async (currentUser, userText) => {
+  return await addDoc(
+    collection(firestore, "users", currentUser, "userTexts"),
+      {
+        date : new Date(),
+        userText: userText,
+      }
+  );
+};
+
 export const stopRecordLocations = async (
   currentUser = CURRENT_USER_ID,
   currentWalkRecord = CURRENT_WALK_RECORD
