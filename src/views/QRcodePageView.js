@@ -143,16 +143,19 @@ const QRcodeView = (props) => {
           onPress={(event) => {
             if(userText == ""){
               Alert.alert(
-                  "Add a comment",
-                  "needs a text",
-                  [{text : "OK",
-                    onPress: () => console.log("OK pressed")}]);
+                  t("titleDialog"),
+                  t("addComment"),
+                  [
+                      {
+                        text : t("ok"),
+                        onPress: () => console.log("OK pressed"),
+                      }]);
             }else{
               handleUserTextSubmit(userText).then(() => {
                 Alert.alert(
-                    "Text added",
+                    t("titleDialogTextSend"),
                     " ",
-                    [{text : "OK",
+                    [{text : t("ok"),
                       onPress : () =>
                           props.navigation.navigate(PROFILE_KEY)}]
                 );

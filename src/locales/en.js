@@ -41,4 +41,6 @@ export const TranslationEN = {
   userText: "Add your comment",
   ok: "Save",
   addComment : "Add your comment, please",
+  titleDialog : "Add comment",
+  titleDialogTextSend : "Your comment was added",
 };
