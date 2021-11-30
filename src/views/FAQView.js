@@ -7,7 +7,7 @@ import CreateProfilePageView from "./CreateProfilePageView";
 import {CONTACT_KEY, SUBSCRIBE_KEY} from "../constant/contants";
 import {ListItemAccordionProps} from "react-native-elements";
 
-const InfoNonRegisteredUserView = (props) => {
+const FAQView = (props) => {
     const {t, i18n} = useTranslation();
 
     return (
@@ -49,4 +49,4 @@ const InfoNonRegisteredUserView = (props) => {
 
     );
 };
-export default InfoNonRegisteredUserView;
+export default FAQView;
