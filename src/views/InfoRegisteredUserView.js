@@ -1,13 +1,11 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
-import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 import { styles } from "../component/styles";
 import { CustomButton } from "../component/CustomButton";
 import { CONTACT_KEY } from "../constant/contants";
 
 const InfoRegisteredUserView = (props) => {
-  const { t, i18n } = useTranslation();
-
   return (
     <View style={styles.screen}>
       <Text style={styles.title}>{t("helpCenterHead")}</Text>

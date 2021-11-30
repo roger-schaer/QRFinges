@@ -54,7 +54,7 @@ export const handleSignup = async (email, password, name, firstname) => {
 };
 
 export const handleLogin = async (email, password) => {
-  return await signInWithEmailAndPassword(auth, email, password);
+  return /* await */ signInWithEmailAndPassword(auth, email, password);
 };
 
 export const handleSignOut = async () => {
@@ -69,10 +69,10 @@ const CURRENT_WALK_RECORD = "custom-walk-id";
 
 export const addRecordLocations = async (
   location,
-  currentUser = CURRENT_USER_ID,
+  currentUser /* = CURRENT_USER_ID*/,
   currentWalkRecord = CURRENT_WALK_RECORD
 ) => {
-  return await updateDoc(
+  return /* await */ updateDoc(
     doc(firestore, "users", currentUser, "walkRecord", currentWalkRecord),
     {
       startDate: new Date(),
@@ -82,7 +82,7 @@ export const addRecordLocations = async (
 };
 
 export const startRecordLocations = async (currentUser) => {
-  return await addDoc(
+  return /* await */ addDoc(
     collection(firestore, "users", currentUser, "walkRecord"),
     {
       startDate: new Date(),
@@ -96,7 +96,7 @@ export const stopRecordLocations = async (
   currentUser = CURRENT_USER_ID,
   currentWalkRecord = CURRENT_WALK_RECORD
 ) => {
-  return await updateDoc(
+  return /* await */ updateDoc(
     doc(firestore, "users", currentUser, "walkRecord", currentWalkRecord),
     {
       endDate: new Date(),
@@ -104,35 +104,19 @@ export const stopRecordLocations = async (
   );
 };
 
-// const CURRENT_PICTURE_RECORD = "custom-picture-id";
+export const addRecordQRCode = async (currentUser, QRCode) => {
+  return await addDoc(
+    collection(firestore, "users", currentUser, "scannedQRCodes"),
+    {
+      startDate: new Date(),
+      QRCode: arrayUnion({ QRCode }),
+    }
+  );
+};
 
-// export const addRecordPicture = async (
-//   picture,
-//   location,
-//   currentUser = CURRENT_USER_ID,
-//   currentPicture = CURRENT_WALK_RECORD
-// ) => {
-//   return await updateDoc(
-//     doc(firestore, "users", currentUser, "picture", currentPicture),
-//     {
-//       startDate: new Date(),
-//       locations: arrayUnion({ location }),
-//     }
-//   );
-// };
-// const CURRENT_QRCODE_RECORD = "custom-qrcode-id";
-
-// export const addRecordQRCode = async (
-//   qrcode,
-//   location,
-//   currentUser = CURRENT_USER_ID,
-//   currentQRcode = CURRENT_QRCODE_RECORD
-// ) => {
-//   return await updateDoc(
-//     doc(firestore, "users", currentUser, "qrcode", currentQRcode),
-//     {
-//       startDate: new Date(),
-//       locations: arrayUnion({ location }),
-//     }
-//   );
-// };
+export const addImage = async (currentUser, imageStorageUri) => {
+  return await addDoc(collection(firestore, "users", currentUser, "images"), {
+    imageDate: new Date(),
+    imageId: imageStorageUri,
+  });
+};

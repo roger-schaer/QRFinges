@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, ScrollView } from "react-native";
-import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 import { Logo } from "../component/Logo";
 import { CustomButton } from "../component/CustomButton";
 import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
@@ -11,8 +11,6 @@ import { getStorageData, setStorageData } from "../services/storage";
 import { PROFILE_KEY, SUBSCRIBE_KEY } from "../constant/contants";
 
 const LoginPageView = (props) => {
-  // Translation
-  const { t, i18n } = useTranslation();
   const { state, dispatch } = useUserContext();
 
   const [email, setEmail] = useState("");

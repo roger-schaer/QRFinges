@@ -1,43 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Button, TouchableOpacity } from "react-native";
 import { styles } from "../component/styles";
-import { useTranslation } from "react-i18next";
 import { MaterialIcons } from "@expo/vector-icons";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { Camera } from "expo-camera";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { WEBVIEW_KEY, PROFILE_KEY } from "../constant/contants";
 import { askCameraPermission } from "../services/cameraPermission";
+import { useUserContext } from "../services/user-context";
 import { t } from "i18next";
+import { addRecordQRCode } from "../services/firebase";
 
 const QRcodeView = (props) => {
+  const { state } = useUserContext();
   const [scanned, setScanned] = useState(false);
   const [resultScanQR, setResultScanQR] = useState("");
   const netInfo = useNetInfo();
   const [webAccess, setWebAccess] = useState(false);
+  let testConnexion;
   const onPressText = () => {
     setScanned(false);
-    let uri = resultScanQR;
+    const QRuri = resultScanQR;
     setResultScanQR("");
 
+    // QRcodeView(props);
     //   return props.navigation.navigate(WEBVIEW_KEY, { uri: uri });
 
     /* Zone de check si connexion et d'enregistrement du lien QR +/- ouverture page web */
     /* using function IsConected () from CheckInternetConnexion */
 
-    (async () => {
+    (() => {
       try {
-        const testConnexion = await netInfo.isConnected;
+        testConnexion = netInfo.isConnected;
+        console.log("Tester la connexion internet : " + testConnexion);
         setWebAccess(testConnexion);
+        saveQRCode(state.id, QRuri);
       } catch {
         setWebAccess(false);
         console.log("impossible de tester la connexion internet");
       }
 
-      if (webAccess) {
-        return props.navigation.navigate(WEBVIEW_KEY, { uri: uri });
+      if (!webAccess) {
+        return props.navigation.navigate(WEBVIEW_KEY, { uri: QRuri });
       } else {
-        alert(t("noInternetToWebView"));
+        // alert(t("noInternetToWebView"));
         console.log("Pas d'internet uniquement stockage dans fireStore !!!");
         return props.navigation.navigate(PROFILE_KEY);
       }
@@ -45,20 +51,18 @@ const QRcodeView = (props) => {
   };
 
   askCameraPermission();
-  // const askForPermission = () => {
-  //   (async () => {
-  //     try {
-  //       const { status } = await Camera.requestPermissionsAsync();
-  //       setHasPermissionQR(status === "granted");
 
-  //       if (status === "granted") {
-  //         console.log("permission granted");
-  //       }
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   })();
-  // };
+  const saveQRCode = (stateId, QRuri) => {
+    (() => {
+      try {
+        addRecordQRCode(stateId, QRuri);
+
+        console.log("QRCode " + QRuri + " saved");
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+  };
 
   // useEffect(() => {
   //   askForPermission();

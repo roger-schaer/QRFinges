@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Button, StyleSheet, Platform } from "react-native";
-import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 import { AntDesign } from "@expo/vector-icons";
 import moment from "moment";
 import { LinearProgress } from "react-native-elements";
@@ -9,8 +9,6 @@ import { styles } from "../component/styles";
 import { QR_CODE_KEY } from "../constant/contants";
 
 const ProfileView = (props) => {
-  const { t, i18n } = useTranslation();
-
   return (
     <View style={stylesProfile.screen}>
       <Text style={styles.title}>{t("profileHead")}</Text>

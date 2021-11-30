@@ -8,14 +8,20 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { MaterialIcons, Ionicons } from "@expo/vector-icons";
-import { useTranslation } from "react-i18next";
+import {
+  MaterialCommunityIcons,
+  MaterialIcons,
+  Ionicons,
+} from "@expo/vector-icons";
 import { styles } from "../component/styles";
 import { Camera } from "expo-camera";
 import { askCameraPermission } from "../services/cameraPermission";
+import { useUserContext } from "../services/user-context";
 import { t } from "i18next";
+import { pictureToFirebaseStorage } from "../services/firebaseStorage";
 
 const CameraView = (props) => {
+  const { state } = useUserContext();
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [picture, setPicture] = useState("uri");
@@ -33,11 +39,18 @@ const CameraView = (props) => {
     }
     console.log(" photo " + photo);
 
-    setPicture(photo.uri);
-    setIsPicked(true);
+    if (photo) {
+      setPicture(photo.uri);
+      setIsPicked(true);
+    }
   };
 
   console.log("picture 2 " + picture);
+
+  const savePicture = () => {
+    pictureToFirebaseStorage(state.id, picture);
+    newPicture();
+  };
 
   const newPicture = () => {
     setIsPicked(false);
@@ -84,6 +97,16 @@ const CameraView = (props) => {
           <TouchableOpacity style={styles.customBtnGreen} onPress={newPicture}>
             <Text style={{ color: "cornsilk" }}>{t("newPicture")}</Text>
           </TouchableOpacity>
+          <MaterialCommunityIcons
+            name="content-save-move"
+            style={styles.cameraButton}
+            size={40}
+            color="green"
+            onPress={savePicture}
+          ></MaterialCommunityIcons>
+          {/* <TouchableOpacity style={styles.customBtnGreen} onPress={savePicture}>
+            <Text style={{ color: "cornsilk" }}>{t("newPicture")}</Text>
+          </TouchableOpacity> */}
         </>
       )}
     </>
