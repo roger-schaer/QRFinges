@@ -3,15 +3,15 @@ import {StyleSheet} from "react-native";
 export const styles = StyleSheet.create({
     screen: {
         padding: 50,
-        paddingTop : 0,
-        backgroundColor : "#f5f5f5",
+        paddingTop: 0,
+        backgroundColor: "#f5f5f5",
     },
 
     text: {
         fontSize: 16,
         fontWeight: "700",
         color: "darkgreen",
-       paddingBottom: 15,
+        paddingBottom: 15,
     },
 
     errors: {
@@ -23,26 +23,31 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         color: "darkgreen",
         paddingTop: 10,
-        paddingRight : 10,
-        paddingLeft : 15,
+        paddingRight: 10,
+        paddingLeft: 15,
     },
 
     content: {
         fontSize: 14,
         color: "darkgreen",
         paddingBottom: 20,
+        paddingLeft:20,
+        paddingRight:20
     },
+
 
     logoContainer: {
         marginBottom: 20,
         paddingBottom: 30,
     },
 
-    title : {
-        color : 'darkgreen',
-        fontSize : 20,
-        paddingBottom : 20,
-        paddingTop : 10,
+    title: {
+        color: 'darkgreen',
+        fontSize: 20,
+        paddingBottom: 20,
+        paddingTop: 10,
+        paddingLeft:20,
+        paddingRight:20,
     },
 
     iconContainer: {
@@ -64,7 +69,7 @@ export const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor : "#f5f5f5",
+        backgroundColor: "#f5f5f5",
     },
 
     buttonText: {
@@ -109,13 +114,13 @@ export const styles = StyleSheet.create({
     barcodeBox: {
         marginVertical: 50,
         marginBottom: 20,
-         alignItems: 'center',
-         justifyContent: 'center',
-         height: 250,
-         width: 250,
-         overflow: 'hidden',
-         borderRadius: 30,
-         borderStartColor: 'darkgreen'
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 250,
+        width: 250,
+        overflow: 'hidden',
+        borderRadius: 30,
+        borderStartColor: 'darkgreen'
     },
     customBtnGreen: {
         marginBottom: 20,
@@ -125,7 +130,7 @@ export const styles = StyleSheet.create({
         borderRadius: 30,
         fontSize: 16,
         fontWeight: "700",
-        
+
     },
 
     webviewer: {
@@ -151,6 +156,10 @@ export const styles = StyleSheet.create({
     camera: {
         flex: 1,
         margin: 2,
-        
-    }
+
+    },
+    scrollView: {
+        marginHorizontal: 0,
+    },
+
 });
