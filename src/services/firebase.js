@@ -117,9 +117,9 @@ export const addRecordQRCode = async (currentUser, QRCode) => {
   );
 };
 
-export const addImage = async (currentUser, imageStorageUri, date) => {
+export const addImageToUser = async (currentUser, imageStorageUri) => {
   return await addDoc(collection(firestore, "users", currentUser, "images"), {
-    imageDate: date,
+    imageDate: new Date(),
     imageId: imageStorageUri,
   });
 };
