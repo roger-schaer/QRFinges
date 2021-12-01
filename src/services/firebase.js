@@ -112,7 +112,7 @@ export const addRecordQRCode = async (currentUser, QRCode) => {
     collection(firestore, "users", currentUser, "scannedQRCodes"),
     {
       QRCodeDate: new Date(),
-      QRCode: arrayUnion({ QRCode }),
+      QRCodeUrl: QRCode,
     }
   );
 };
