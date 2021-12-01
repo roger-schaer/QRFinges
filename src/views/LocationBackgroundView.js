@@ -2,12 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Switch, Text, View } from "react-native";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
-import { styles } from "../component/styles";
-import moment from "moment";
-import { useTranslation } from "react-i18next";
 import {
   BACKGROUND_LOCATION_UPDATES_TASK,
-  CURRENT_USER_ID,
+  LOCALSTORAGE_USER_ID,
 } from "../constant/contants";
 
 import {
@@ -17,7 +14,6 @@ import {
 } from "../services/firebase";
 import { getStorageData, setStorageData } from "../services/storage";
 import { useUserContext } from "../services/user-context";
-import { USER_ID } from "../utils/request";
 
 const WALK_RECORD_KEY = "walkRecord";
 const CURRENT_LAT = "currentLatitude";
@@ -29,9 +25,7 @@ export const LocationBackgroundView = () => {
   const [gpsErrorMsg, setGpsErrorMsg] = useState(null);
   const [currentWalkRecord, setCurrentWalkRecord] = useState(null);
   const [isEnabled, setIsEnabled] = useState(false);
-  const [backgroundPermission, setBackgroundPermission] = useState(false);
 
-  const { t } = useTranslation();
   const { state } = useUserContext();
 
   const resetCurrentWalkRecord = () => {
@@ -57,8 +51,6 @@ export const LocationBackgroundView = () => {
 
     getStorageData(WALK_RECORD_KEY)
       .then((walkRecord) => {
-        // console.log(walkRecord, isEnabled);
-
         if (isEnabled) {
           console.log("before permissions", walkRecord, isEnabled);
           setCurrentWalkRecord(walkRecord);
@@ -99,7 +91,6 @@ export const LocationBackgroundView = () => {
     Location.requestBackgroundPermissionsAsync()
       .then((r) => {
         console.log("Background permission: " + r.status);
-        setBackgroundPermission(r.granted);
         if (r.status !== "granted") {
           setGpsErrorMsg("Background permission to access location was denied");
           throw Error();
@@ -115,8 +106,7 @@ export const LocationBackgroundView = () => {
             notificationBody: "Live Tracker is on.",
           },
         });
-      })
-      .catch((e) => {});
+      });
   };
 
   const foregroundLocationFetch = () => {
@@ -137,9 +127,6 @@ export const LocationBackgroundView = () => {
   };
 
   const getGPSPosition = async () => {
-    /*let location = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Balanced,
-    });*/
     getStorageData("currentLatitude").then((lat) => setLatitude(lat));
     getStorageData("currentLongitude").then((lat) => setLongitude(lat));
   };
@@ -186,7 +173,7 @@ TaskManager.defineTask(
             `Background -> latitude: ${locations[0].coords.latitude} - longitude: ${locations[0].coords.longitude}`,
             wr
           );
-          getStorageData(USER_ID).then((user_id) => {
+          getStorageData(LOCALSTORAGE_USER_ID).then((user_id) => {
             addRecordLocations(
               {
                 latitude: locations[0].coords.latitude,

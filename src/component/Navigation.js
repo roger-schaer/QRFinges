@@ -21,10 +21,9 @@ import { useTranslation } from "react-i18next";
 import { handleSignOut } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
 import {
-  CONTACT_KEY, FAQ_KEY,
+  CONTACT_KEY,
+  FAQ_KEY,
   HOME_KEY,
-  INFO_NOREGISTERED_KEY,
-  INFO_REGISTERED_KEY,
   LOGIN_KEY,
   PROFILE_KEY,
   QR_CODE_KEY,

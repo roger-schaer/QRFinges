@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Button, StyleSheet, Platform } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { useTranslation } from "react-i18next";
 import { AntDesign } from "@expo/vector-icons";
 import moment from "moment";

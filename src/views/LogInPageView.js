@@ -5,10 +5,13 @@ import { Logo } from "../component/Logo";
 import { CustomButton } from "../component/CustomButton";
 import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
 import { handleLogin } from "../services/firebase";
-import { USER_ID } from "../utils/request";
 import { useUserContext } from "../services/user-context";
 import { getStorageData, setStorageData } from "../services/storage";
-import { PROFILE_KEY, SUBSCRIBE_KEY } from "../constant/contants";
+import {
+  LOCALSTORAGE_USER_ID,
+  PROFILE_KEY,
+  SUBSCRIBE_KEY,
+} from "../constant/contants";
 
 const LoginPageView = (props) => {
   // Translation
@@ -23,12 +26,10 @@ const LoginPageView = (props) => {
     try {
       let loginData = await handleLogin(email, password);
       console.log("handleLogin successfull", loginData.user.uid);
-      setStorageData(USER_ID, loginData.user.uid);
-      // localStorage.setItem(USER_ID, loginData.user.uid);
+      setStorageData(LOCALSTORAGE_USER_ID, loginData.user.uid);
       console.log(
         "save to local storage successfull",
-        getStorageData(USER_ID)
-        // localStorage.getItem(USER_ID)
+        getStorageData(LOCALSTORAGE_USER_ID)
       );
 
       dispatch({
@@ -58,13 +59,11 @@ const LoginPageView = (props) => {
         default:
           setError("An error occurred");
       }
-      //setError(e.message)
       console.error(e);
     }
   };
 
   const handleSubmit = (e) => {
-    // Stop the browser from submitting in the "traditional" way
     e.preventDefault();
     login();
   };

@@ -14,8 +14,6 @@ import {
   getAuth,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { CURRENT_USER_ID } from "../constant/contants";
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyBKKBamDhPsS4DBxZ_Na1aCWybXwLPthPU",
@@ -57,12 +55,10 @@ export const handleSignOut = async () => {
   }
 };
 
-const CURRENT_WALK_RECORD = "custom-walk-id";
-
 export const addRecordLocations = async (
   location,
-  currentUser = CURRENT_USER_ID,
-  currentWalkRecord = CURRENT_WALK_RECORD
+  currentUser,
+  currentWalkRecord
 ) => {
   return await updateDoc(
     doc(firestore, "users", currentUser, "walkRecord", currentWalkRecord),
@@ -87,17 +83,14 @@ export const startRecordLocations = async (currentUser) => {
 export const addUserText = async (currentUser, userText) => {
   return await addDoc(
     collection(firestore, "users", currentUser, "userTexts"),
-      {
-        date : new Date(),
-        userText: userText,
-      }
+    {
+      date: new Date(),
+      userText: userText,
+    }
   );
 };
 
-export const stopRecordLocations = async (
-  currentUser = CURRENT_USER_ID,
-  currentWalkRecord = CURRENT_WALK_RECORD
-) => {
+export const stopRecordLocations = async (currentUser, currentWalkRecord) => {
   return await updateDoc(
     doc(firestore, "users", currentUser, "walkRecord", currentWalkRecord),
     {

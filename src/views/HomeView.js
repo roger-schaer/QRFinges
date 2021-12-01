@@ -2,16 +2,15 @@ import React, { useEffect } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { Logo } from "../component/Logo";
 import { styles } from "../component/styles";
-import { LOGIN_KEY } from "../constant/contants";
+import { LOCALSTORAGE_USER_ID, LOGIN_KEY } from "../constant/contants";
 import { getStorageData } from "../services/storage";
 import { useUserContext } from "../services/user-context";
-import { USER_ID } from "../utils/request";
 
 const HomeView = (props) => {
   const { state, dispatch } = useUserContext();
 
   useEffect(() => {
-    getStorageData(USER_ID).then((v) => {
+    getStorageData(LOCALSTORAGE_USER_ID).then((v) => {
       console.log(v);
       if (v !== null) {
         dispatch({
