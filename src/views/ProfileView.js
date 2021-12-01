@@ -1,17 +1,14 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { useTranslation } from "react-i18next";
 import { AntDesign } from "@expo/vector-icons";
-import moment from "moment";
-import { LinearProgress } from "react-native-elements";
 import { LocationBackgroundView } from "./LocationBackgroundView";
 import { styles } from "../component/styles";
 import { QR_CODE_KEY } from "../constant/contants";
 import { ScrollView } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 
 const ProfileView = (props) => {
-  const { t, i18n } = useTranslation();
-
+  const { t } = useTranslation();
   return (
     <ScrollView>
       <View style={stylesProfile.screen}>
@@ -30,7 +27,6 @@ const ProfileView = (props) => {
         <View>
           <Text style={styles.title}> {t("syncData")}</Text>
         </View>
-        {/* afficher soit LinearProgress ou l'icon de données selon du status de connexion*/}
 
         <View>
           <AntDesign style={styles.iconSyncContainer} name={"sync"} size={30} />

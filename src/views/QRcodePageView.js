@@ -16,8 +16,9 @@ import { useIsFocused } from "@react-navigation/native";
 import { PROFILE_KEY, WEBVIEW_KEY } from "../constant/contants";
 import { useTranslation } from "react-i18next";
 import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
-import { addUserText } from "../services/firebase";
+import { addRecordQRCode, addUserText } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
+import { askCameraPermission } from "../services/cameraPermission";
 
 const QRcodeView = (props) => {
   const isFocused = useIsFocused();
@@ -30,10 +31,15 @@ const QRcodeView = (props) => {
 
   const onPressText = () => {
     setScanned(false);
-    let uri = resultScanQR;
-    setResultScanQR("");
 
-    return props.navigation.navigate(WEBVIEW_KEY, { uri: uri });
+    try {
+      addRecordQRCode(state.userId, resultScanQR).then(() => {
+        props.navigation.navigate(WEBVIEW_KEY, { uri: resultScanQR });
+        setResultScanQR("");
+      });
+    } catch (e) {
+      console.log("Echec !");
+    }
   };
 
   const askForPermission = () => {
@@ -57,6 +63,7 @@ const QRcodeView = (props) => {
 
   const handleBarCodeScanned = ({ data }) => {
     setScanned(true);
+
     setResultScanQR(data);
   };
 

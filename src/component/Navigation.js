@@ -8,6 +8,7 @@ import QRcodeView from "../views/QRcodePageView";
 import CreateProfilePageView from "../views/CreateProfilePageView";
 import HomeView from "../views/HomeView";
 import WebViewer from "../views/InternWebViewer";
+import CameraView from "../views/PhotoView";
 import { styles } from "../component/styles";
 import {
   createDrawerNavigator,
@@ -16,7 +17,7 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { AntDesign } from "@expo/vector-icons";
-import { Switch, View, Text } from "react-native";
+import { Switch, View, Text, Button } from "react-native";
 import { useTranslation } from "react-i18next";
 import { handleSignOut } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
@@ -29,7 +30,10 @@ import {
   QR_CODE_KEY,
   SUBSCRIBE_KEY,
   WEBVIEW_KEY,
+  PHOTO_KEY,
 } from "../constant/contants";
+import { ScreenStackHeaderBackButtonImage } from "react-native-screens";
+import { Icon } from "react-native-elements/dist/icons/Icon";
 
 const Drawer = createDrawerNavigator();
 
@@ -93,6 +97,15 @@ const drawerUrls = [
 
     navigationScreen: QRcodeView,
     translateKey: "scanQR",
+    displayWhenLogged: true,
+    displayWhenNotLogged: false,
+  },
+  {
+    antIcon: "camera",
+    pageKey: PHOTO_KEY,
+
+    navigationScreen: CameraView,
+    translateKey: "camera",
     displayWhenLogged: true,
     displayWhenNotLogged: false,
   },
