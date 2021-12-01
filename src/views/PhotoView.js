@@ -1,13 +1,6 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Button,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import {
   MaterialCommunityIcons,
   MaterialIcons,
@@ -18,7 +11,9 @@ import { Camera } from "expo-camera";
 import { askCameraPermission } from "../services/cameraPermission";
 import { useUserContext } from "../services/user-context";
 import { t } from "i18next";
-import { pictureToFirebaseStorage } from "../services/firebaseStorage";
+import { storage } from "../services/firebase";
+import { ref, uploadBytes, uploadBytesResumable } from "@firebase/storage";
+import LinearProgress from "react-native-elements/dist/linearProgress/LinearProgress";
 
 const CameraView = (props) => {
   const { state } = useUserContext();
@@ -26,50 +21,58 @@ const CameraView = (props) => {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [picture, setPicture] = useState("uri");
   const [isPicked, setIsPicked] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [photo, setPhoto] = useState(null);
   const isFocused = useIsFocused();
   let camera;
-  let photo;
-
+  let p;
   askCameraPermission();
 
   const takePicture = async () => {
+    p = null;
     if (camera) {
       const options = { quality: 0.5 };
-      photo = await camera.takePictureAsync(options);
+      p = await camera.takePictureAsync(options);
     }
-    console.log(" photo " + photo);
-
-    if (photo) {
-      setPicture(photo.uri);
+    console.log(" photo ", p.uri);
+    if (p) {
+      setPicture(p.uri);
+      setPhoto(p);
       setIsPicked(true);
     }
   };
 
-  console.log("picture 2 " + picture);
+  const savePicture = async () => {
+    await Promise.resolve().then(() => {
+      setIsUploading(true);
+    });
+    const response = await fetch(picture);
+    let blob = await response.blob();
 
-  const savePicture = () => {
-    pictureToFirebaseStorage(picture);
-    newPicture();
+    const storageRef = ref(
+      storage,
+      new Date().toISOString().toLocaleLowerCase("fr-CH") + ".jpg"
+    );
+
+    uploadBytes(storageRef, blob)
+      .then(() => {
+        blob = null;
+        console.log("File uploaded!");
+        newPicture();
+      })
+      .catch((e) => {
+        console.log(e);
+        newPicture();
+      });
   };
 
   const newPicture = () => {
+    p = null;
     setIsPicked(false);
+    setPhoto(null);
     setPicture("uri");
-    photo = null;
+    setIsUploading(false);
   };
-
-  const pictureToFirebaseStorage = (image) => {
-    pictureToFirebaseStorage(image);
-  };
-
-  // const handleUserPictureSubmit = (image) => {
-  //   //const { state } = useUserContext();
-  //   //const [uploading, setUploading] = useState(false);
-
-  //   addImage(state.id, image);
-  //   // setImage(null);
-  //   //setScanned(false);
-  // };
 
   return (
     <>
@@ -106,17 +109,26 @@ const CameraView = (props) => {
         </Camera>
       ) : (
         <>
+          {isUploading && <LinearProgress color="darkgreen" />}
+
           <Image style={styles.camera} source={{ uri: picture }} />
-          <TouchableOpacity style={styles.customBtnGreen} onPress={newPicture}>
-            <Text style={{ color: "cornsilk" }}>{t("newPicture")}</Text>
-          </TouchableOpacity>
-          <MaterialCommunityIcons
-            name="content-save-move"
-            style={styles.cameraButton}
-            size={40}
-            color="green"
-            onPress={savePicture}
-          ></MaterialCommunityIcons>
+          {!isUploading && (
+            <>
+              <TouchableOpacity
+                style={styles.customBtnGreen}
+                onPress={newPicture}
+              >
+                <Text style={{ color: "cornsilk" }}>{t("newPicture")}</Text>
+              </TouchableOpacity>
+              <MaterialCommunityIcons
+                name="content-save-move"
+                style={styles.cameraButton}
+                size={40}
+                color="green"
+                onPress={savePicture}
+              />
+            </>
+          )}
           {/* <TouchableOpacity style={styles.customBtnGreen} onPress={savePicture}>
             <Text style={{ color: "cornsilk" }}>{t("newPicture")}</Text>
           </TouchableOpacity> */}
