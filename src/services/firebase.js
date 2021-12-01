@@ -9,18 +9,13 @@ import {
   collection,
   addDoc,
 } from "firebase/firestore";
+import { getStorage, ref } from "firebase/storage";
 import {
   createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { CURRENT_USER_ID } from "../constant/contants";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBKKBamDhPsS4DBxZ_Na1aCWybXwLPthPU",
   authDomain: "qrfinges.firebaseapp.com",
@@ -36,6 +31,8 @@ const app = initializeApp(firebaseConfig);
 
 export const firestore = getFirestore(app);
 export const auth = getAuth(app);
+export const storage = getStorage(app);
+export const photoFirebaseStorage = ref(storage, "Photos");
 
 export const handleSignup = async (email, password, name, firstname) => {
   const user = await createUserWithEmailAndPassword(auth, email, password);
@@ -50,7 +47,7 @@ export const handleSignup = async (email, password, name, firstname) => {
 };
 
 export const handleLogin = async (email, password) => {
-  return await signInWithEmailAndPassword(auth, email, password);
+  return /* await */ signInWithEmailAndPassword(auth, email, password);
 };
 
 export const handleSignOut = async () => {
@@ -61,24 +58,22 @@ export const handleSignOut = async () => {
   }
 };
 
-const CURRENT_WALK_RECORD = "custom-walk-id";
-
 export const addRecordLocations = async (
   location,
-  currentUser = CURRENT_USER_ID,
-  currentWalkRecord = CURRENT_WALK_RECORD
+  currentUser,
+  currentWalkRecord
 ) => {
-  return await updateDoc(
+  return /* await */ updateDoc(
     doc(firestore, "users", currentUser, "walkRecord", currentWalkRecord),
     {
       startDate: new Date(),
-      locations: arrayUnion({ location, random: Math.random() }),
+      locations: arrayUnion({ location }),
     }
   );
 };
 
 export const startRecordLocations = async (currentUser) => {
-  return await addDoc(
+  return /* await */ addDoc(
     collection(firestore, "users", currentUser, "walkRecord"),
     {
       startDate: new Date(),
@@ -88,14 +83,38 @@ export const startRecordLocations = async (currentUser) => {
   );
 };
 
-export const stopRecordLocations = async (
-  currentUser = CURRENT_USER_ID,
-  currentWalkRecord = CURRENT_WALK_RECORD
-) => {
+export const addUserText = async (currentUser, userText) => {
+  return await addDoc(
+    collection(firestore, "users", currentUser, "userTexts"),
+    {
+      date: new Date(),
+      userText: userText,
+    }
+  );
+};
+
+export const stopRecordLocations = async (currentUser, currentWalkRecord) => {
   return await updateDoc(
     doc(firestore, "users", currentUser, "walkRecord", currentWalkRecord),
     {
       endDate: new Date(),
     }
   );
+};
+
+export const addRecordQRCode = async (currentUser, QRCode) => {
+  return await addDoc(
+    collection(firestore, "users", currentUser, "scannedQRCodes"),
+    {
+      QRCodeDate: new Date(),
+      QRCodeUrl: QRCode,
+    }
+  );
+};
+
+export const addImageToUser = async (currentUser, imageStorageUri) => {
+  return await addDoc(collection(firestore, "users", currentUser, "images"), {
+    imageDate: new Date(),
+    imageId: imageStorageUri,
+  });
 };

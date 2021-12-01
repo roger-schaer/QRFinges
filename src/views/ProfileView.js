@@ -1,59 +1,38 @@
 import React from "react";
-import { View, Text, Button, StyleSheet, Platform } from "react-native";
-import { useTranslation } from "react-i18next";
+import { View, Text, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import moment from "moment";
-import { LinearProgress } from "react-native-elements";
 import { LocationBackgroundView } from "./LocationBackgroundView";
 import { styles } from "../component/styles";
+import { QR_CODE_KEY } from "../constant/contants";
+import { ScrollView } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 
 const ProfileView = (props) => {
-  const { t, i18n } = useTranslation();
-
+  const { t } = useTranslation();
   return (
-    <View style={stylesProfile.screen}>
-      <Text style={styles.title}>{t("profileHead")}</Text>
-      <LocationBackgroundView />
+    <ScrollView>
+      <View style={stylesProfile.screen}>
+        <Text style={styles.title}>{t("profileHead")}</Text>
+        <LocationBackgroundView />
 
-      <View style={styles.startContainer}>
-        <AntDesign
-          style={styles.iconContainer}
-          name={"playcircleo"}
-          size={30}
-        />
-        <View style={styles.timerContainer}>
-          <View style={styles.timerLine}>
-            <Text style={styles.timerText}> {t("start")} </Text>
-            <View>
-              <Text style={styles.timerText}> {moment().format("LTS")}</Text>
-            </View>
-          </View>
-          <View style={styles.timerLine}>
-            <Text style={styles.timerText}> {t("end")} </Text>
-            <View>
-              <Text style={styles.timerText}> {moment().format("LTS")}</Text>
-            </View>
-          </View>
+        <View style={styles.timerLine}>
+          <Text style={styles.title}> {t("scanQR")}</Text>
+          <AntDesign
+            style={styles.iconContainer}
+            name={"qrcode"}
+            size={50}
+            onPress={() => props.navigation.navigate(QR_CODE_KEY)}
+          />
+        </View>
+        <View>
+          <Text style={styles.title}> {t("syncData")}</Text>
+        </View>
+
+        <View>
+          <AntDesign style={styles.iconSyncContainer} name={"sync"} size={30} />
         </View>
       </View>
-      <View>
-        <Text style={styles.title}> {t("scanQR")}</Text>
-        <AntDesign
-          style={styles.iconContainer}
-          name={"qrcode"}
-          size={50}
-          onPress={() => props.navigation.navigate("scanQR")}
-        />
-      </View>
-      <View>
-        <Text style={styles.title}> {t("syncData")}</Text>
-      </View>
-      {/* afficher soit LinearProgress ou l'icon de données selon du status de connexion*/}
-      <LinearProgress color="darkgreen" />
-      <View>
-        <AntDesign style={styles.iconSyncContainer} name={"sync"} size={30} />
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 

@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
-import { useTranslation } from "react-i18next";
+import { View, Text, TextInput, StyleSheet, ScrollView } from "react-native";
+import { t } from "i18next";
 import { Logo } from "../component/Logo";
 import { CustomButton } from "../component/CustomButton";
 import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
 import { handleLogin } from "../services/firebase";
-import { USER_ID } from "../utils/request";
 import { useUserContext } from "../services/user-context";
 import { getStorageData, setStorageData } from "../services/storage";
+import {
+  LOCALSTORAGE_USER_ID,
+  PROFILE_KEY,
+  SUBSCRIBE_KEY,
+} from "../constant/contants";
 
 const LoginPageView = (props) => {
-  // Translation
-  const { t, i18n } = useTranslation();
   const { state, dispatch } = useUserContext();
 
   const [email, setEmail] = useState("");
@@ -22,12 +24,10 @@ const LoginPageView = (props) => {
     try {
       let loginData = await handleLogin(email, password);
       console.log("handleLogin successfull", loginData.user.uid);
-      setStorageData(USER_ID, loginData.user.uid);
-      // localStorage.setItem(USER_ID, loginData.user.uid);
+      setStorageData(LOCALSTORAGE_USER_ID, loginData.user.uid);
       console.log(
         "save to local storage successfull",
-        getStorageData(USER_ID)
-        // localStorage.getItem(USER_ID)
+        getStorageData(LOCALSTORAGE_USER_ID)
       );
 
       dispatch({
@@ -39,7 +39,7 @@ const LoginPageView = (props) => {
       console.log(props);
       console.log(state.userId);
 
-      props.navigation.navigate("profile");
+      props.navigation.navigate(PROFILE_KEY);
     } catch (e) {
       dispatch({
         type: "IS_LOGGED_ERROR",
@@ -57,56 +57,56 @@ const LoginPageView = (props) => {
         default:
           setError("An error occurred");
       }
-      //setError(e.message)
       console.error(e);
     }
   };
 
   const handleSubmit = (e) => {
-    // Stop the browser from submitting in the "traditional" way
     e.preventDefault();
     login();
   };
 
   return (
-    <View style={styles.screen}>
-      <Logo style={styles.logoContainer} />
-      <Text style={styles.text}>{t("welcomePhrase")}</Text>
-      <TextInput
-        value={email}
-        onChangeText={(text) => setEmail(text)}
-        placeholder={t("email")}
-        placeholderTextColor={"darkgreen"}
-        style={styles.input}
-      />
-      <TextInput
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-        secureTextEntry={true}
-        placeholder={t("pass")}
-        placeholderTextColor={"darkgreen"}
-        style={styles.input}
-      />
+    <ScrollView>
+      <View style={styles.screen}>
+        <Logo style={styles.logoContainer} />
+        <Text style={styles.text}>{t("welcomePhrase")}</Text>
+        <TextInput
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+          placeholder={t("email")}
+          placeholderTextColor={"darkgreen"}
+          style={styles.input}
+        />
+        <TextInput
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+          secureTextEntry={true}
+          placeholder={t("pass")}
+          placeholderTextColor={"darkgreen"}
+          style={styles.input}
+        />
 
-      {error ? <Text style={styles.errors}> {error}</Text> : null}
+        {error ? <Text style={styles.errors}> {error}</Text> : null}
 
-      <CustomButton
-        onPress={(event) => {
-          if (email == "" || password == "") {
-            return setError(t("allFieldRequired"));
-          }
-          handleSubmit(event);
-        }}
-      >
-        {t("connect")}
-      </CustomButton>
+        <CustomButton
+          onPress={(event) => {
+            if (email == "" || password == "") {
+              return setError(t("allFieldRequired"));
+            }
+            handleSubmit(event);
+          }}
+        >
+          {t("connect")}
+        </CustomButton>
 
-      <CustomButtonNoBorders
-        onPress={(event) => props.navigation.navigate("subscribe")}
-      >
-        {t("subscribe")}
-      </CustomButtonNoBorders>
-    </View>
+        <CustomButtonNoBorders
+          onPress={(event) => props.navigation.navigate(SUBSCRIBE_KEY)}
+        >
+          {t("subscribe")}
+        </CustomButtonNoBorders>
+      </View>
+    </ScrollView>
   );
 };
 
