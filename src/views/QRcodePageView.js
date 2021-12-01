@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, TouchableOpacity, Linking } from "react-native";
+import {View, Text, Button, TouchableOpacity, Alert, TextInput, ScrollView} from "react-native";
 import { styles } from "../component/styles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { Camera } from "expo-camera";
 import { useIsFocused } from "@react-navigation/native";
-import { WEBVIEW_KEY } from "../constant/contants";
+import { PROFILE_KEY, WEBVIEW_KEY, CURRENT_USER_ID } from "../constant/contants";
+import { useTranslation } from "react-i18next";
+import {CustomButtonNoBorders} from "../component/CustomButtonNoBorders";
+import { USER_ID } from "../utils/request";
+import {addUserText} from "../services/firebase";
+import {useUserContext} from "../services/user-context";
 
 const QRcodeView = (props) => {
   const isFocused = useIsFocused();
+  const { t } = useTranslation();
+  const { state } = useUserContext();
   const [hasPermissionQR, setHasPermissionQR] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [resultScanQR, setResultScanQR] = useState("");
+  const [userText, setUserText] = useState("");
 
   const onPressText = () => {
     setScanned(false);
@@ -40,6 +48,7 @@ const QRcodeView = (props) => {
     askForPermission();
   }, []);
 
+
   const handleBarCodeScanned = ({ data }) => {
     setScanned(true);
     setResultScanQR(data);
@@ -65,10 +74,20 @@ const QRcodeView = (props) => {
     );
   }
 
+  const handleUserTextSubmit = async (userText) => {
+    await addUserText(state.userId, userText);
+    setUserText("");
+  }
+
+
+
   return (
+
+      <ScrollView>
+
     <View style={styles.screen}>
       <View style={styles.content}>
-        <Text> Scanner le QR code </Text>
+        <Text> {t("scanQR")} </Text>
         <View style={styles.barcodeBox}>
           <Text> Ici doit être Scanner le QR code </Text>
           <Camera
@@ -102,7 +121,40 @@ const QRcodeView = (props) => {
         size={24}
         style={styles.iconContainer}
       />
+      <TextInput
+          value={userText}
+          onChangeText={(text) => setUserText(text)}
+          placeholder={t("userText")}
+          placeholderTextColor={"darkgreen"}
+          style={styles.input}
+      />
+      <CustomButtonNoBorders
+          onPress={(event) => {
+            if(userText == ""){
+              Alert.alert(
+                  t("titleDialog"),
+                  t("addComment"),
+                  [
+                      {
+                        text : t("ok"),
+                        onPress: () => console.log("OK pressed"),
+                      }]);
+            }else{
+              handleUserTextSubmit(userText).then(() => {
+                Alert.alert(
+                    t("titleDialogTextSend"),
+                    " ",
+                    [{text : t("ok"),
+                      onPress : () =>
+                          props.navigation.navigate(PROFILE_KEY)}]
+                );
+              })
+            }
+          }
+          }
+      >{t("ok")}</CustomButtonNoBorders>
     </View>
+      </ScrollView>
   );
 };
 
