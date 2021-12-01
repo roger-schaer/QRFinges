@@ -34,7 +34,7 @@ const QRcodeView = (props) => {
         //     testConnexion = netInfo.isConnected;
         //     console.log("Tester la connexion internet : " + testConnexion);
         //     setWebAccess(testConnexion);
-        saveQRCode(state.id, QRuri).then(() => {
+        saveQRCode(state.userId, QRuri).then(() => {
           return props.navigation.navigate(WEBVIEW_KEY, { uri: QRuri });
         });
       } catch {
@@ -42,7 +42,7 @@ const QRcodeView = (props) => {
       }
 
       // if (!webAccess) {
-      return props.navigation.navigate(WEBVIEW_KEY, { uri: QRuri });
+      // return props.navigation.navigate(WEBVIEW_KEY, { uri: QRuri });
       //   } else {
       //     // alert(t("noInternetToWebView"));
       //     console.log("Pas d'internet uniquement stockage dans fireStore !!!");
