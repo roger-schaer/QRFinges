@@ -111,15 +111,15 @@ export const addRecordQRCode = async (currentUser, QRCode) => {
   return await addDoc(
     collection(firestore, "users", currentUser, "scannedQRCodes"),
     {
-      startDate: new Date(),
+      QRCodeDate: new Date(),
       QRCode: arrayUnion({ QRCode }),
     }
   );
 };
 
-export const addImage = async (currentUser, imageStorageUri) => {
+export const addImage = async (currentUser, imageStorageUri, date) => {
   return await addDoc(collection(firestore, "users", currentUser, "images"), {
-    imageDate: new Date(),
+    imageDate: date,
     imageId: imageStorageUri,
   });
 };

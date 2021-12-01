@@ -11,7 +11,7 @@ import { Camera } from "expo-camera";
 import { askCameraPermission } from "../services/cameraPermission";
 import { useUserContext } from "../services/user-context";
 import { t } from "i18next";
-import { storage } from "../services/firebase";
+import { storage, photoFirebaseStorage, addImage } from "../services/firebase";
 import { ref, uploadBytes, uploadBytesResumable } from "@firebase/storage";
 import LinearProgress from "react-native-elements/dist/linearProgress/LinearProgress";
 
@@ -26,6 +26,8 @@ const CameraView = (props) => {
   const isFocused = useIsFocused();
   let camera;
   let p;
+  let date;
+  let uri;
   askCameraPermission();
 
   const takePicture = async () => {
@@ -49,29 +51,49 @@ const CameraView = (props) => {
     const response = await fetch(picture);
     let blob = await response.blob();
 
-    const storageRef = ref(
-      storage,
-      new Date().toISOString().toLocaleLowerCase("fr-CH") + ".jpg"
-    );
+    console.log("" + state.id);
+
+    date = new Date();
+    uri =
+      picture.substring(picture.lastIndexOf("/") + 1) +
+      "_" +
+      date.toISOString().toLocaleLowerCase("fr-CH") +
+      ".jpg";
+
+    const storageRef = ref(photoFirebaseStorage, uri);
+
+    addRefPicture(state.id, uri, date);
 
     uploadBytes(storageRef, blob)
       .then(() => {
         blob = null;
-        console.log("File uploaded!");
+        console.log("Image uploaded!");
         newPicture();
       })
       .catch((e) => {
         console.log(e);
         newPicture();
       });
+
+    //  addRefPicture(state.id, storageRef, date);
   };
 
   const newPicture = () => {
     p = null;
     setIsPicked(false);
     setPhoto(null);
-    setPicture("uri");
+    setPicture(null);
     setIsUploading(false);
+  };
+
+  const addRefPicture = (stateId, url, time) => {
+    (() => {
+      try {
+        addImage(stateId, url, time);
+      } catch (e) {
+        console.log(e);
+      }
+    })();
   };
 
   return (
@@ -80,8 +102,8 @@ const CameraView = (props) => {
         <Camera
           style={styles.camera}
           type={type}
-          ref={(ref) => {
-            camera = ref;
+          ref={(refs) => {
+            camera = refs;
           }}
         >
           <View style={styles.cameraButtonContainer}>
@@ -129,9 +151,6 @@ const CameraView = (props) => {
               />
             </>
           )}
-          {/* <TouchableOpacity style={styles.customBtnGreen} onPress={savePicture}>
-            <Text style={{ color: "cornsilk" }}>{t("newPicture")}</Text>
-          </TouchableOpacity> */}
         </>
       )}
     </>
