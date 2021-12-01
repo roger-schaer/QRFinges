@@ -31,42 +31,34 @@ const QRcodeView = (props) => {
 
     (() => {
       try {
-        testConnexion = netInfo.isConnected;
-        console.log("Tester la connexion internet : " + testConnexion);
-        setWebAccess(testConnexion);
-        saveQRCode(state.id, QRuri);
+        //     testConnexion = netInfo.isConnected;
+        //     console.log("Tester la connexion internet : " + testConnexion);
+        //     setWebAccess(testConnexion);
+        saveQRCode(state.id, QRuri).then(() => {
+          return props.navigation.navigate(WEBVIEW_KEY, { uri: QRuri });
+        });
       } catch {
-        setWebAccess(false);
-        console.log("impossible de tester la connexion internet");
+        console.log("Echec !");
       }
 
-      if (!webAccess) {
-        return props.navigation.navigate(WEBVIEW_KEY, { uri: QRuri });
-      } else {
-        // alert(t("noInternetToWebView"));
-        console.log("Pas d'internet uniquement stockage dans fireStore !!!");
-        return props.navigation.navigate(PROFILE_KEY);
-      }
+      // if (!webAccess) {
+      return props.navigation.navigate(WEBVIEW_KEY, { uri: QRuri });
+      //   } else {
+      //     // alert(t("noInternetToWebView"));
+      //     console.log("Pas d'internet uniquement stockage dans fireStore !!!");
+      //     return props.navigation.navigate(PROFILE_KEY);
+      //   }
     })();
   };
 
   askCameraPermission();
 
-  const saveQRCode = (stateId, QRuri) => {
-    (() => {
-      try {
-        addRecordQRCode(stateId, QRuri);
+  const saveQRCode = async (stateId, QRuri) => {
+    await addRecordQRCode(stateId, QRuri);
+    setResultScanQR("");
 
-        console.log("QRCode " + QRuri + " saved");
-      } catch (e) {
-        console.log(e);
-      }
-    })();
+    console.log("QRCode " + QRuri + " saved");
   };
-
-  // useEffect(() => {
-  //   askForPermission();
-  // }, []);
 
   const handleBarCodeScanned = ({ data }) => {
     setScanned(true);
@@ -74,34 +66,14 @@ const QRcodeView = (props) => {
     setResultScanQR(data);
   };
 
-  // if (hasPermissionQR === null) {
-  //   return (
-  //     <View style={styles.screen}>
-  //       <Text>Requesting for camera permission</Text>
-  //       <Button title={"Allow camera"} onPress={() => askForPermission()} />
-  //     </View>
-  //   );
-  // }
-  // if (hasPermissionQR === false) {
-  //   return (
-  //     <View style={styles.screen}>
-  //       <Text style={{ margin: 10 }}>No access to camera</Text>
-  //       <Button
-  //         title={"You need camera to continue"}
-  //         onPress={() => askForPermission()}
-  //       />
-  //     </View>
-  //   );
-  // }
-
   return (
     <View style={styles.screen}>
       <View style={styles.content}>
         <View style={styles.barcodeBox}>
-          <Camera
-            barCodeScannerSettings={{
-              barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
-            }}
+          <BarCodeScanner
+            // barCodeScannerSettings={{
+            //   barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
+            // }}
             onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
             style={{ height: 400, width: 400 }}
           />
