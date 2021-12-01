@@ -14,22 +14,11 @@ const QRcodeView = (props) => {
   const [resultScanQR, setResultScanQR] = useState("");
 
   const onPressText = () => {
-    // Linking.openURL(resultScanQR);
     setScanned(false);
     let uri = resultScanQR;
     setResultScanQR("");
 
     return props.navigation.navigate(WEBVIEW_KEY, { uri: uri });
-
-    /* Zone de check si connexion et d'enregistrement du lien QR +/- ouverture page web */
-    /* using function IsConected () from CheckInternetConnexion */
-
-    // (async() =>{
-    //   try {
-
-    //   }
-
-    // })();
   };
 
   const askForPermission = () => {
@@ -53,7 +42,6 @@ const QRcodeView = (props) => {
 
   const handleBarCodeScanned = ({ data }) => {
     setScanned(true);
-    alert(`Code QR has been scanned ! (click on the link to finish)`);
     setResultScanQR(data);
   };
 
@@ -87,10 +75,11 @@ const QRcodeView = (props) => {
             barCodeScannerSettings={{
               barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
             }}
-            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            onBarCodeScanned={handleBarCodeScanned}
             style={{ height: 400, width: 400 }}
           />
         </View>
+
         {scanned && (
           <View style={styles.content}>
             <TouchableOpacity
@@ -117,24 +106,5 @@ const QRcodeView = (props) => {
   );
 };
 
-async function requestCameraPermission() {
-  const [hasPermission, setHasPermission] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
-
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
-  }, []);
-
-  // if (hasPermission === null) {
-  //   return <View />;
-  // }
-  // if (hasPermission === false) {
-  //   return <Text>No access to camera</Text>;
-  // }
-  return hasPermission;
-}
 
 export default QRcodeView;

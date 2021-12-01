@@ -15,24 +15,16 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { CURRENT_USER_ID } from "../constant/contants";
-import {
-  FIREBASE_API_KEY,
-  FIREBASE_AUTH_DOMAIN,
-  FIREBASE_STORAGE_BUCKET,
-  FIREBASE_MESSAGE_SENDER_ID,
-  FIREBASE_APP_ID,
-  FIREBASE_MEASUREMENT_ID,
-  FIREBASE_PROJECT_ID,
-} from "@env";
+
 
 const firebaseConfig = {
-  apiKey: FIREBASE_API_KEY || "",
-  authDomain: FIREBASE_AUTH_DOMAIN || "",
-  projectId: FIREBASE_PROJECT_ID || "",
-  storageBucket: FIREBASE_STORAGE_BUCKET || "",
-  messagingSenderId: FIREBASE_MESSAGE_SENDER_ID || "",
-  appId: FIREBASE_APP_ID || "",
-  measurementId: FIREBASE_MEASUREMENT_ID || "",
+  apiKey: "AIzaSyBKKBamDhPsS4DBxZ_Na1aCWybXwLPthPU",
+  authDomain: "qrfinges.firebaseapp.com",
+  projectId: "qrfinges",
+  storageBucket: "qrfinges.appspot.com",
+  messagingSenderId: "492229251310",
+  appId: "1:492229251310:web:3e07d76e9814bf090123ff",
+  measurementId: "G-MYBSS7VS0G",
 };
 
 // Initialize Firebase

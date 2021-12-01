@@ -14,6 +14,8 @@ export const CustomButton = props => {
 
 const styles = StyleSheet.create ({
     buttonContainer : {
+        marginLeft: 20,
+        marginRight: 20,
         paddingVertical: 12,
         paddingHorizontal: 30,
         borderColor : 'darkgreen',

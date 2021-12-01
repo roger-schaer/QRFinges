@@ -1,9 +1,8 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import InfoRegisteredUserView from "../views/InfoRegisteredUserView";
 import ProfileView from "../views/ProfileView";
 import ContactPageView from "../views/ContactPageView";
-import InfoNonRegisteredUserView from "../views/InfoNonRegisteredUserView";
+import FAQView from "../views/FAQView";
 import LoginPageView from "../views/LogInPageView";
 import QRcodeView from "../views/QRcodePageView";
 import CreateProfilePageView from "../views/CreateProfilePageView";
@@ -22,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import { handleSignOut } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
 import {
-  CONTACT_KEY,
+  CONTACT_KEY, FAQ_KEY,
   HOME_KEY,
   INFO_NOREGISTERED_KEY,
   INFO_REGISTERED_KEY,
@@ -55,21 +54,12 @@ const drawerUrls = [
   },
   {
     antIcon: "infocirlceo",
-    pageKey: INFO_NOREGISTERED_KEY,
+    pageKey: FAQ_KEY,
 
-    navigationScreen: InfoNonRegisteredUserView,
-    translateKey: "infoNonRegistered",
+    navigationScreen: FAQView,
+    translateKey: "faq",
     displayWhenLogged: true,
     displayWhenNotLogged: true,
-  },
-  {
-    antIcon: "infocirlceo",
-    pageKey: INFO_REGISTERED_KEY,
-
-    navigationScreen: InfoRegisteredUserView,
-    translateKey: "infoRegistered",
-    displayWhenLogged: true,
-    displayWhenNotLogged: false,
   },
   {
     antIcon: "infocirlceo",
