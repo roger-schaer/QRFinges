@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Platform } from "react-native";
 import { ref, uploadBytes } from "firebase/storage";
-import { photoFirebaseStorage, storage } from "../config/firebaseDb";
-import { addImage } from "../services/firebase";
+// import { photoFirebaseStorage, storage } from "../config/firebase";
+import { addImage, photoFirebaseStorage } from "../services/firebase";
 // import { useUserContext } from "../services/user-context";
 
 // const firebaseStorage = firebaseStore.getStorage(app);
