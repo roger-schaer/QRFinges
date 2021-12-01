@@ -9,6 +9,7 @@ import {
   collection,
   addDoc,
 } from "firebase/firestore";
+import { getStorage, ref } from "firebase/storage";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -40,6 +41,8 @@ const app = initializeApp(firebaseConfig);
 
 export const firestore = getFirestore(app);
 export const auth = getAuth(app);
+export const storage = getStorage(app);
+export const photoFirebaseStorage = ref(storage, "Photos");
 
 export const handleSignup = async (email, password, name, firstname) => {
   const user = await createUserWithEmailAndPassword(auth, email, password);

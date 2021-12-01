@@ -48,7 +48,7 @@ const CameraView = (props) => {
   console.log("picture 2 " + picture);
 
   const savePicture = () => {
-    pictureToFirebaseStorage(state.id, picture);
+    pictureToFirebaseStorage(picture);
     newPicture();
   };
 
@@ -57,6 +57,19 @@ const CameraView = (props) => {
     setPicture("uri");
     photo = null;
   };
+
+  const pictureToFirebaseStorage = (image) => {
+    pictureToFirebaseStorage(image);
+  };
+
+  // const handleUserPictureSubmit = (image) => {
+  //   //const { state } = useUserContext();
+  //   //const [uploading, setUploading] = useState(false);
+
+  //   addImage(state.id, image);
+  //   // setImage(null);
+  //   //setScanned(false);
+  // };
 
   return (
     <>
