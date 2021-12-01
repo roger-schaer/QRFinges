@@ -11,13 +11,12 @@ import { Camera } from "expo-camera";
 import { askCameraPermission } from "../services/cameraPermission";
 import { useUserContext } from "../services/user-context";
 import { t } from "i18next";
-import { storage, photoFirebaseStorage, addImage } from "../services/firebase";
-import { ref, uploadBytes, uploadBytesResumable } from "@firebase/storage";
+import { storage, addImageToUser } from "../services/firebase";
+import { ref, uploadBytes } from "@firebase/storage";
 import LinearProgress from "react-native-elements/dist/linearProgress/LinearProgress";
 
 const CameraView = (props) => {
   const { state } = useUserContext();
-  const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [picture, setPicture] = useState("uri");
   const [isPicked, setIsPicked] = useState(false);
@@ -29,7 +28,6 @@ const CameraView = (props) => {
   let date;
   let uri;
   askCameraPermission();
-
   const takePicture = async () => {
     p = null;
     if (camera) {
@@ -45,27 +43,23 @@ const CameraView = (props) => {
   };
 
   const savePicture = async () => {
-    await Promise.resolve().then(() => {
-      setIsUploading(true);
-    });
+    setIsUploading(true);
     const response = await fetch(picture);
     let blob = await response.blob();
 
-    console.log("" + state.id);
-
     date = new Date();
     uri =
-      picture.substring(picture.lastIndexOf("/") + 1) +
-      "_" +
       date.toISOString().toLocaleLowerCase("fr-CH") +
-      ".jpg";
+      "_" +
+      picture.substring(picture.lastIndexOf("/") + 1);
 
-    const storageRef = ref(photoFirebaseStorage, uri);
+    const storageRef = ref(storage, "Photos/" + uri);
 
-    addRefPicture(state.id, uri, date);
+    /* addRefPicture(state.id, uri, date); */
 
     uploadBytes(storageRef, blob)
       .then(() => {
+        addImageToUser(state.userId, storageRef.name);
         blob = null;
         console.log("Image uploaded!");
         newPicture();
@@ -84,16 +78,6 @@ const CameraView = (props) => {
     setPhoto(null);
     setPicture(null);
     setIsUploading(false);
-  };
-
-  const addRefPicture = (stateId, url, time) => {
-    (() => {
-      try {
-        addImage(stateId, url, time);
-      } catch (e) {
-        console.log(e);
-      }
-    })();
   };
 
   return (
@@ -131,8 +115,7 @@ const CameraView = (props) => {
         </Camera>
       ) : (
         <>
-          {isUploading && <LinearProgress color="darkgreen" />}
-
+          {isUploading ? <LinearProgress color="darkgreen" /> : null}
           <Image style={styles.camera} source={{ uri: picture }} />
           {!isUploading && (
             <>
