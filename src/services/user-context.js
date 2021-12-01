@@ -31,7 +31,7 @@ function loginReducer(state, action) {
 function UserProvider({ children }) {
   const initialState = {
     isLoggedIn: false,
-    userId: "", //localStorage.getItem(USER_ID)
+    userId: "",
   };
 
   const [state, dispatch] = React.useReducer(loginReducer, initialState);
