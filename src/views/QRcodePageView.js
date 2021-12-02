@@ -42,50 +42,13 @@ const QRcodeView = (props) => {
     }
   };
 
-  const askForPermission = () => {
-    (async () => {
-      try {
-        const { status } = await Camera.requestPermissionsAsync();
-        setHasPermissionQR(status === "granted");
-
-        if (status === "granted") {
-          console.log("permission granted");
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    })();
-  };
-
-  useEffect(() => {
-    askForPermission();
-  }, []);
-
   const handleBarCodeScanned = ({ data }) => {
     setScanned(true);
 
     setResultScanQR(data);
   };
 
-  if (hasPermissionQR === null) {
-    return (
-      <View style={styles.screen}>
-        <Text>Requesting for camera permission</Text>
-        <Button title={"Allow camera"} onPress={() => askForPermission()} />
-      </View>
-    );
-  }
-  if (hasPermissionQR === false) {
-    return (
-      <View style={styles.screen}>
-        <Text style={{ margin: 10 }}>No access to camera</Text>
-        <Button
-          title={"You need camera to continue"}
-          onPress={() => askForPermission()}
-        />
-      </View>
-    );
-  }
+  askCameraPermission();
 
   const handleUserTextSubmit = async (userText) => {
     await addUserText(state.userId, userText);
@@ -99,10 +62,7 @@ const QRcodeView = (props) => {
           <Text> {t("scanQR")} </Text>
           <View style={styles.barcodeBox}>
             <Text> Ici doit être Scanner le QR code </Text>
-            <Camera
-              barCodeScannerSettings={{
-                barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
-              }}
+            <BarCodeScanner
               onBarCodeScanned={handleBarCodeScanned}
               style={{ height: 400, width: 400 }}
             />
