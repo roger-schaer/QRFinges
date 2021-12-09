@@ -4,6 +4,9 @@ import {
   doc,
   getFirestore,
   setDoc,
+  getDocs,
+  query,
+  where,
   arrayUnion,
   updateDoc,
   collection,
@@ -117,4 +120,15 @@ export const addImageToUser = async (currentUser, imageStorageUri) => {
     imageDate: new Date(),
     imageId: imageStorageUri,
   });
+};
+export const qrcodeInFirebase = async (url) => {
+  const q = query(collection(firestore, "qrcodes"), where("url", "==", url));
+
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.size >= 1;
+  /* .then(querySnapshot => {
+    querySnapshot.size
+    console.log(querySnapshot.size);
+    console.log(doc.id, " => ", doc.data());
+  }); */
 };
