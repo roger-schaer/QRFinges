@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import ProfileView from "../views/ProfileView";
 import ContactPageView from "../views/ContactPageView";
@@ -9,6 +9,7 @@ import CreateProfilePageView from "../views/CreateProfilePageView";
 import HomeView from "../views/HomeView";
 import WebViewer from "../views/InternWebViewer";
 import CameraView from "../views/PhotoView";
+import UserCommentView from "../views/UserCommentView";
 import { styles } from "../component/styles";
 import {
   createDrawerNavigator,
@@ -17,7 +18,7 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { AntDesign } from "@expo/vector-icons";
-import { Switch, View, Text, Button } from "react-native";
+import { Switch, View, Text, Button, Pressable } from "react-native";
 import { useTranslation } from "react-i18next";
 import { handleSignOut } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
@@ -30,12 +31,40 @@ import {
   QR_CODE_KEY,
   SUBSCRIBE_KEY,
   WEBVIEW_KEY,
-  PHOTO_KEY,
+  PHOTO_KEY, USER_COMMENT, DEFAULT_LANGUAGE,
 } from "../constant/contants";
 import { ScreenStackHeaderBackButtonImage } from "react-native-screens";
 import { Icon } from "react-native-elements/dist/icons/Icon";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 
 const Drawer = createDrawerNavigator();
+const StackNav = createNativeStackNavigator();
+
+
+const Navigation = () => {
+  return (
+
+        <StackNav.Navigator>
+          <StackNav.Screen name="home" component={HomeView} options={{ headerRight: () => (
+                <Button
+                    onPress={() => alert('This is a button!')}
+                    title="Info"
+                    color="#fff"
+                />),}}/>
+          <StackNav.Screen name="connect" component={LoginPageView}/>
+          <StackNav.Screen name="subscribe" component={CreateProfilePageView} />
+          <StackNav.Screen name="faq" component={ FAQView}/>
+          <StackNav.Screen name="profile" component={ProfileView} />
+          <StackNav.Screen name="scanQR" component={QRcodeView}/>
+          <StackNav.Screen name="contact" component={ContactPageView}/>
+          <StackNav.Screen name="webViewer" component={WebViewer}/>
+          <StackNav.Screen name="camera" component={CameraView}/>
+          <StackNav.Screen name="user_comment" component={UserCommentView}/>
+        </StackNav.Navigator>
+
+  );
+};
 
 const drawerUrls = [
   {
@@ -118,10 +147,52 @@ const drawerUrls = [
     displayWhenLogged: false,
     displayWhenNotLogged: true,
   },
+  {
+    antIcon: "filetext1",
+    pageKey: USER_COMMENT,
+
+    navigationScreen : UserCommentView,
+    translateKey: "user_comment",
+    displayWhenLogged: true,
+    displayWhenNotLogged: false,
+
+  },
 ];
+
+function BackButton() {
+  const navigation = useNavigation();
+
+  return (
+      <AntDesign
+          style={styles.iconContainer}
+          name={"arrowleft"}
+          size={25}
+          onPress={() => {
+            navigation.goBack();
+          }}
+      />
+  );
+}
+
+function HamburgerMenu() {
+  const navigation = useNavigation();
+
+  return (
+      <AntDesign
+          style={styles.iconContainer}
+          name={"menufold"}
+          size={25}
+          onPress={
+            () => navigation.openDrawer()
+          }
+      />
+  );
+}
 
 const CustomDrawerView = (props) => {
   const { state, dispatch } = useUserContext();
+  const { t, i18n } = useTranslation();
+  const [currentLanguage,setLanguage] =useState(DEFAULT_LANGUAGE);
 
   const out = async () => {
     handleSignOut();
@@ -135,7 +206,12 @@ const CustomDrawerView = (props) => {
     out();
   };
 
-  const { t, i18n } = useTranslation();
+  const changeLanguage = value => {
+    i18n
+        .changeLanguage(value)
+        .then(() => setLanguage(value))
+        .catch(err => console.log(err));
+  };
 
   return (
     <DrawerContentScrollView {...props}>
@@ -146,16 +222,22 @@ const CustomDrawerView = (props) => {
         }}
         label={() => (
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.textMenu}>{i18n.language}</Text>
-            <Switch
-              trackColor={{ false: "#43a047", true: "#00695c" }}
-              thumbColor={i18n.language == "FR" ? "#43a047" : "#00695c"}
-              ios_backgroundColor="#3e3e3e"
-              value={i18n.language === "FR"}
-              onChange={() => {
-                i18n.changeLanguage(i18n.language == "FR" ? "EN" : "FR");
-              }}
-            />
+            <Pressable
+                onPress={() => changeLanguage('FR')}
+                >
+              <Text style={styles.textMenu}>{i18n.language === "FR" ?
+                  <Text style={styles.languageUnderline}>{t("fr")}</Text> :
+                  "changer en FR"}
+              </Text>
+            </Pressable>
+            <Pressable
+                onPress={() => changeLanguage('EN')}
+                >
+              <Text style={styles.textMenu}>{i18n.language === "EN" ?
+                  <Text style={styles.languageUnderline}>{t("en")}</Text> :
+                  "change to EN"}
+              </Text>
+            </Pressable>
           </View>
         )}
       />
@@ -192,12 +274,19 @@ const OverMenu = () => {
       (drawer.displayWhenLogged == state.isLoggedIn ||
         drawer.displayWhenNotLogged == !state.isLoggedIn)
     );
+
   };
   return (
     <Drawer.Navigator
       initialRouteName="Home"
       drawerContent={(props) => <CustomDrawerView {...props} />}
-      screenOptions={{ headerShown: true }}
+      screenOptions={{
+        headerShown: true,
+        headerLeft : () =>
+            <BackButton/>,
+        headerRight : () =>
+           <HamburgerMenu/>,
+      }}
     >
       {drawerUrls.map((drawer) => (
         <Drawer.Screen
@@ -205,20 +294,21 @@ const OverMenu = () => {
           name={drawer.pageKey}
           component={drawer.navigationScreen}
           options={{
+            drawerPosition : "right",
             drawerItemStyle: {
               display: isDrawerButtonDisplayed(drawer) ? "flex" : "none",
             },
             headerTitle: t(drawer.translateKey),
             drawerLabel: () =>
-              isDrawerButtonDisplayed(drawer) ? (
+                isDrawerButtonDisplayed(drawer) ? (
                 <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.textMenu}>{t(drawer.translateKey)}</Text>
                   <AntDesign
                     // @ts-ignore
                     name={drawer.antIcon}
                     style={styles.iconContainer}
                     size={15}
                   />
-                  <Text style={styles.textMenu}>{t(drawer.translateKey)}</Text>
                 </View>
               ) : null,
           }}

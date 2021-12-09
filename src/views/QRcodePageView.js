@@ -1,19 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   Button,
   TouchableOpacity,
-  Alert,
-  TextInput,
   ScrollView,
 } from "react-native";
 import { styles } from "../component/styles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { Camera } from "expo-camera";
 import { useIsFocused } from "@react-navigation/native";
-import { PROFILE_KEY, WEBVIEW_KEY } from "../constant/contants";
+import {PHOTO_KEY, USER_COMMENT, WEBVIEW_KEY} from "../constant/contants";
 import { useTranslation } from "react-i18next";
 import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
 import { addRecordQRCode, addUserText } from "../services/firebase";
@@ -27,7 +24,7 @@ const QRcodeView = (props) => {
   const [hasPermissionQR, setHasPermissionQR] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [resultScanQR, setResultScanQR] = useState("");
-  const [userText, setUserText] = useState("");
+
 
   const onPressText = () => {
     setScanned(false);
@@ -50,16 +47,12 @@ const QRcodeView = (props) => {
 
   askCameraPermission();
 
-  const handleUserTextSubmit = async (userText) => {
-    await addUserText(state.userId, userText);
-    setUserText("");
-  };
 
   return (
     <ScrollView>
       <View style={styles.screen}>
-        <View style={styles.content}>
-          <Text> {t("scanQR")} </Text>
+
+          <Text style={styles.title}> {t("scanQR")} </Text>
           <View style={styles.barcodeBox}>
             <Text> Ici doit être Scanner le QR code </Text>
             <BarCodeScanner
@@ -84,42 +77,18 @@ const QRcodeView = (props) => {
               />
             </View>
           )}
-        </View>
+
         <MaterialIcons
           name="add-a-photo"
-          size={24}
+          size={34}
           style={styles.iconContainer}
+          onPress={()=> props.navigation.navigate(PHOTO_KEY)}
         />
-        <TextInput
-          value={userText}
-          onChangeText={(text) => setUserText(text)}
-          placeholder={t("userText")}
-          placeholderTextColor={"darkgreen"}
-          style={styles.input}
-        />
-        <CustomButtonNoBorders
-          onPress={(event) => {
-            if (userText == "") {
-              Alert.alert(t("titleDialog"), t("addComment"), [
-                {
-                  text: t("ok"),
-                  onPress: () => console.log("OK pressed"),
-                },
-              ]);
-            } else {
-              handleUserTextSubmit(userText).then(() => {
-                Alert.alert(t("titleDialogTextSend"), " ", [
-                  {
-                    text: t("ok"),
-                    onPress: () => props.navigation.navigate(PROFILE_KEY),
-                  },
-                ]);
-              });
-            }
-          }}
-        >
-          {t("ok")}
-        </CustomButtonNoBorders>
+      <CustomButtonNoBorders
+          onPress={(event) => props.navigation.navigate(USER_COMMENT)}
+      >
+        {t("titleDialog")}
+      </CustomButtonNoBorders>
       </View>
     </ScrollView>
   );

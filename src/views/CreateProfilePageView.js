@@ -4,6 +4,7 @@ import { handleSignup } from "../services/firebase";
 import { CustomButton } from "../component/CustomButton";
 import { t } from "i18next";
 import { PROFILE_KEY } from "../constant/contants";
+import {useTranslation} from "react-i18next";
 
 const CreateProfilePageView = (props) => {
   const [email, setEmail] = useState("");
@@ -12,6 +13,7 @@ const CreateProfilePageView = (props) => {
   const [name, setName] = useState("");
   const [firstname, setFirstname] = useState("");
   const [error, setError] = useState("");
+  const { t } = useTranslation();
 
   return (
     <ScrollView>

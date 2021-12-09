@@ -12,10 +12,11 @@ import {
   PROFILE_KEY,
   SUBSCRIBE_KEY,
 } from "../constant/contants";
+import {useTranslation} from "react-i18next";
 
 const LoginPageView = (props) => {
   const { state, dispatch } = useUserContext();
-
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");

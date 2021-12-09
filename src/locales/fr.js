@@ -75,4 +75,6 @@ export const TranslationFR = {
   welcomeInstruction: "Entrez votre login ",
   welcomePhrase: "Bienvenue !",
   wrongPass: "Votre e-mail ou le mot de pass ne sont pas correct",
+  user_comment : "Votre commentaire",
+  fr : "FR",
 };

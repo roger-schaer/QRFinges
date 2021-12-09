@@ -5,6 +5,9 @@ import { styles } from "../component/styles";
 import { LOCALSTORAGE_USER_ID, LOGIN_KEY } from "../constant/contants";
 import { getStorageData } from "../services/storage";
 import { useUserContext } from "../services/user-context";
+import ProfileView from "./ProfileView";
+import LoginPageView from "./LogInPageView";
+import CreateProfilePageView from "./CreateProfilePageView";
 
 const HomeView = (props) => {
   const { state, dispatch } = useUserContext();
@@ -22,19 +25,9 @@ const HomeView = (props) => {
     });
   }, []);
 
+
   return (
-    <View style={styles.container}>
-      <View style={{ marginBottom: 50 }}>
-        <Logo />
-      </View>
-      <View>
-        <TouchableOpacity onPress={() => props.navigation.navigate(LOGIN_KEY)}>
-          <Text style={styles.buttonText}>Finges</Text>
-          <Text style={styles.buttonText}>Map</Text>
-          <Text style={styles.buttonText}>Experience</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+      state.isLoggedIn ? <ProfileView/> : <LoginPageView/>
   );
 };
 export default HomeView;

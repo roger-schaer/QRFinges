@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { LocationBackgroundView } from "./LocationBackgroundView";
@@ -7,8 +7,10 @@ import { QR_CODE_KEY } from "../constant/contants";
 import { ScrollView } from "react-native-gesture-handler";
 import { useTranslation } from "react-i18next";
 
+
 const ProfileView = (props) => {
   const { t } = useTranslation();
+
   return (
     <ScrollView>
       <View style={stylesProfile.screen}>
