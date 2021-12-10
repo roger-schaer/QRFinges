@@ -3,8 +3,10 @@ import { View, Text, StyleSheet, TextInput, ScrollView } from "react-native";
 import { handleSignup } from "../services/firebase";
 import { CustomButton } from "../component/CustomButton";
 import { t } from "i18next";
-import { PROFILE_KEY } from "../constant/contants";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
+import { useNavigation } from "@react-navigation/native";
+import { HOME_KEY } from "../constant/contants";
 
 const CreateProfilePageView = (props) => {
   const [email, setEmail] = useState("");
@@ -14,6 +16,7 @@ const CreateProfilePageView = (props) => {
   const [firstname, setFirstname] = useState("");
   const [error, setError] = useState("");
   const { t } = useTranslation();
+  const navigation = useNavigation();
 
   return (
     <ScrollView>
@@ -76,7 +79,7 @@ const CreateProfilePageView = (props) => {
               setError("");
               handleSignup(email, password, name, firstname)
                 .then(() => {
-                  props.navigation.navigate(PROFILE_KEY);
+                  props.navigation.navigate(HOME_KEY);
                 })
                 .catch((e) => {
                   var errorCode = e.code;

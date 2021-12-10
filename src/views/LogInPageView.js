@@ -8,11 +8,13 @@ import { handleLogin } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
 import { getStorageData, setStorageData } from "../services/storage";
 import {
+  FAQ_KEY,
+  HOME_KEY,
   LOCALSTORAGE_USER_ID,
   PROFILE_KEY,
   SUBSCRIBE_KEY,
 } from "../constant/contants";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const LoginPageView = (props) => {
   const { state, dispatch } = useUserContext();
@@ -39,8 +41,7 @@ const LoginPageView = (props) => {
       console.log("dispatch successfull");
       console.log(props);
       console.log(state.userId);
-
-      props.navigation.navigate(PROFILE_KEY);
+      // props.navigation.navigate(HOME_KEY);
     } catch (e) {
       dispatch({
         type: "IS_LOGGED_ERROR",
@@ -61,7 +62,6 @@ const LoginPageView = (props) => {
       console.error(e);
     }
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     login();
