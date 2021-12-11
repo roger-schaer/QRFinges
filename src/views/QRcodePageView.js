@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
-  Alert,
-  TextInput,
   ScrollView,
+  TextInput,
+  Alert,
 } from "react-native";
 import { styles } from "../component/styles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { PROFILE_KEY, WEBVIEW_KEY } from "../constant/contants";
+import { HOME_KEY, WEBVIEW_KEY } from "../constant/contants";
 import { useTranslation } from "react-i18next";
 import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
 import {
@@ -212,7 +212,7 @@ const QRcodeView = (props) => {
                 Alert.alert(t("titleDialogTextSend"), " ", [
                   {
                     text: t("ok"),
-                    onPress: () => props.navigation.navigate(PROFILE_KEY),
+                    onPress: () => props.navigation.navigate(HOME_KEY),
                   },
                 ]);
               });

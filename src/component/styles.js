@@ -154,4 +154,9 @@ export const styles = StyleSheet.create({
   scrollView: {
     marginHorizontal: 0,
   },
+
+  languageUnderline : {
+    textDecorationLine: 'underline',
+    color: "darkgreen",
+  },
 });

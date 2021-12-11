@@ -1,40 +1,32 @@
 import React, { useEffect } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
-import { Logo } from "../component/Logo";
-import { styles } from "../component/styles";
-import { LOCALSTORAGE_USER_ID, LOGIN_KEY } from "../constant/contants";
+import {
+  LOCALSTORAGE_USER_EMAIL,
+  LOCALSTORAGE_USER_ID,
+} from "../constant/contants";
 import { getStorageData } from "../services/storage";
 import { useUserContext } from "../services/user-context";
+import ProfileView from "./ProfileView";
+import LoginPageView from "./LogInPageView";
 
-const HomeView = (props) => {
+const HomeView = () => {
   const { state, dispatch } = useUserContext();
 
   useEffect(() => {
     getStorageData(LOCALSTORAGE_USER_ID).then((v) => {
       console.log(v);
       if (v !== null) {
-        dispatch({
-          type: "SET_LOGIN",
-          userId: v,
-          isLoggedIn: true,
+        getStorageData(LOCALSTORAGE_USER_EMAIL).then((email) => {
+          dispatch({
+            type: "SET_LOGIN",
+            userId: v,
+            email: email,
+            isLoggedIn: true,
+          });
         });
       }
     });
   }, []);
 
-  return (
-    <View style={styles.container}>
-      <View style={{ marginBottom: 50 }}>
-        <Logo />
-      </View>
-      <View>
-        <TouchableOpacity onPress={() => props.navigation.navigate(LOGIN_KEY)}>
-          <Text style={styles.buttonText}>Finges</Text>
-          <Text style={styles.buttonText}>Map</Text>
-          <Text style={styles.buttonText}>Experience</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+  return state.isLoggedIn ? <ProfileView /> : <LoginPageView />;
 };
 export default HomeView;

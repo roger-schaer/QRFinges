@@ -8,14 +8,18 @@ import { handleLogin } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
 import { getStorageData, setStorageData } from "../services/storage";
 import {
+  FAQ_KEY,
+  HOME_KEY,
+  LOCALSTORAGE_USER_EMAIL,
   LOCALSTORAGE_USER_ID,
   PROFILE_KEY,
   SUBSCRIBE_KEY,
 } from "../constant/contants";
+import { useTranslation } from "react-i18next";
 
 const LoginPageView = (props) => {
   const { state, dispatch } = useUserContext();
-
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -23,23 +27,19 @@ const LoginPageView = (props) => {
   const login = async () => {
     try {
       let loginData = await handleLogin(email, password);
-      console.log("handleLogin successfull", loginData.user.uid);
       setStorageData(LOCALSTORAGE_USER_ID, loginData.user.uid);
+      setStorageData(LOCALSTORAGE_USER_EMAIL, loginData.user.email);
       console.log(
-        "save to local storage successfull",
+        "Save to local storage successfull",
         getStorageData(LOCALSTORAGE_USER_ID)
       );
 
       dispatch({
         type: "SET_LOGIN",
         userId: loginData.user.uid,
+        email: loginData.user.email,
         isLoggedIn: true,
       });
-      console.log("dispatch successfull");
-      console.log(props);
-      console.log(state.userId);
-
-      props.navigation.navigate(PROFILE_KEY);
     } catch (e) {
       dispatch({
         type: "IS_LOGGED_ERROR",
@@ -60,7 +60,6 @@ const LoginPageView = (props) => {
       console.error(e);
     }
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     login();

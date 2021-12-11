@@ -67,4 +67,6 @@ export const TranslationEN = {
   welcomeInstruction: "Enter your login and password ",
   welcomePhrase: "Welcome !",
   wrongPass: "Your e-mail or password are not correct",
+  user_comment : "Your comment",
+  en : "EN",
 };
