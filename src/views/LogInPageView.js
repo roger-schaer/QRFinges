@@ -8,14 +8,12 @@ import { handleLogin } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
 import { getStorageData, setStorageData } from "../services/storage";
 import {
-  FAQ_KEY,
-  HOME_KEY,
   LOCALSTORAGE_USER_EMAIL,
   LOCALSTORAGE_USER_ID,
-  PROFILE_KEY,
   SUBSCRIBE_KEY,
 } from "../constant/contants";
 import { useTranslation } from "react-i18next";
+import { useNavigation } from "@react-navigation/native";
 
 const LoginPageView = (props) => {
   const { state, dispatch } = useUserContext();
@@ -23,6 +21,7 @@ const LoginPageView = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigation = useNavigation();
 
   const login = async () => {
     try {
@@ -100,7 +99,7 @@ const LoginPageView = (props) => {
         </CustomButton>
 
         <CustomButtonNoBorders
-          onPress={(event) => props.navigation.navigate(SUBSCRIBE_KEY)}
+          onPress={(event) => navigation.navigate(SUBSCRIBE_KEY)}
         >
           {t("subscribe")}
         </CustomButtonNoBorders>

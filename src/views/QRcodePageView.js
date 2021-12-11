@@ -11,6 +11,7 @@ import {
 } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
 import { askCameraPermission } from "../services/cameraPermission";
+import { useNavigation } from "@react-navigation/native";
 
 export const checkIsUrl = (value) => {
   var pattern = new RegExp(
@@ -30,12 +31,13 @@ const QRcodeView = (props) => {
   const { state } = useUserContext();
   const [scanned, setScanned] = useState(false);
   const [resultScanQR, setResultScanQR] = useState("");
-  const [userText, setUserText] = useState("");
   const [isUrl, setIsUrl] = useState(false);
   const [isUrlInFirebase, setIsUrlInFirebase] = useState(false);
   const [origin, setOrigin] = useState(null);
   const [qrcodeSize, setQrcodeSize] = useState(null);
   const [timer, setTimer] = useState(null);
+  const navigation = useNavigation();
+
   askCameraPermission();
 
   const onPressText = () => {
@@ -43,7 +45,7 @@ const QRcodeView = (props) => {
 
     try {
       addRecordQRCode(state.userId, resultScanQR).then(() => {
-        props.navigation.navigate(WEBVIEW_KEY, { uri: resultScanQR });
+        navigation.navigate(WEBVIEW_KEY, { uri: resultScanQR });
         setResultScanQR("");
       });
     } catch (e) {
@@ -74,11 +76,6 @@ const QRcodeView = (props) => {
     const inFirebase = await qrcodeInFirebase(resultScanQR);
     await setIsUrlInFirebase(inFirebase);
     setScanned(false);
-  };
-
-  const handleUserTextSubmit = async (userText) => {
-    await addUserText(state.userId, userText);
-    setUserText("");
   };
 
   const reset = () => {

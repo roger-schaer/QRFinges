@@ -17,7 +17,7 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { AntDesign } from "@expo/vector-icons";
-import { View, Text, Pressable } from "react-native";
+import { View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import { handleSignOut } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
@@ -25,17 +25,17 @@ import {
   CONTACT_KEY,
   FAQ_KEY,
   HOME_KEY,
-  LOGIN_KEY,
   QR_CODE_KEY,
   SUBSCRIBE_KEY,
   WEBVIEW_KEY,
   PHOTO_KEY,
-  DEFAULT_LANGUAGE,
   USER_COMMENT,
 } from "../constant/contants";
 import { useNavigation } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
 const drawerUrls = [
   {
@@ -146,12 +146,13 @@ function HamburgerMenu() {
 const CustomDrawerView = (props) => {
   const { state, dispatch } = useUserContext();
   const { t, i18n } = useTranslation();
+  const navigation = useNavigation();
 
   const out = async () => {
     handleSignOut();
 
     dispatch({ type: "IS_LOGGED_OFF" });
-    props.navigation.navigate(HOME_KEY);
+    navigation.navigate(HOME_KEY);
   };
 
   const logout = (e) => {
@@ -183,23 +184,6 @@ const CustomDrawerView = (props) => {
                 </Text>
               </View>
             ))}
-
-            {/* <Text style={styles.textMenu}>
-              {i18n.language === "FR" ? (
-                <Text style={styles.languageUnderline}>{t("fr")}</Text>
-              ) : (
-                "changer en FR"
-              )}
-            </Text>
-            <Pressable onPress={() => changeLanguage("EN")}>
-              <Text style={styles.textMenu}>
-                {i18n.language === "EN" ? (
-                  <Text style={styles.languageUnderline}>{t("en")}</Text>
-                ) : (
-                  "change to EN"
-                )}
-              </Text>
-            </Pressable> */}
           </View>
         )}
       />

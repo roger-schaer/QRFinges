@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { HOME_KEY, LOCALSTORAGE_USER_ID } from "../constant/contants";
 import { setStorageData } from "../services/storage";
 import { useUserContext } from "../services/user-context";
+import { useNavigation } from "@react-navigation/native";
 
 const CreateProfilePageView = (props) => {
   const [email, setEmail] = useState("");
@@ -16,6 +17,7 @@ const CreateProfilePageView = (props) => {
   const [error, setError] = useState("");
   const { t } = useTranslation();
   const { state, dispatch } = useUserContext();
+  const navigation = useNavigation();
 
   return (
     <ScrollView>
@@ -84,7 +86,7 @@ const CreateProfilePageView = (props) => {
                     userId: res.user.uid,
                     isLoggedIn: true,
                   });
-                  props.navigation.navigate(HOME_KEY);
+                  navigation.navigate(HOME_KEY);
                 })
                 .catch((e) => {
                   var errorCode = e.code;

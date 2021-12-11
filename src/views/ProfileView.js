@@ -2,14 +2,16 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { LocationBackgroundView } from "./LocationBackgroundView";
-import { QR_CODE_KEY, COMMENTS_KEY, PHOTO_KEY } from "../constant/contants";
+import { QR_CODE_KEY, PHOTO_KEY, USER_COMMENT } from "../constant/contants";
 import { useTranslation } from "react-i18next";
 import { useUserContext } from "../services/user-context";
 import { CustomButton } from "../component/CustomButton";
+import { useNavigation } from "@react-navigation/native";
+import { StackActions } from "react-navigation";
 
 const ProfileView = (props) => {
   const { state } = useUserContext();
-
+  const navigation = useNavigation();
   const { t } = useTranslation();
 
   return (
@@ -37,21 +39,17 @@ const ProfileView = (props) => {
             {t("interact")}
           </Text>
           <View style={{ width: 320 }}>
-            <CustomButton
-              onPress={() => props.navigation.navigate(QR_CODE_KEY)}
-            >
+            <CustomButton onPress={() => navigation.navigate(QR_CODE_KEY)}>
               <AntDesign name={"qrcode"} size={15} />
               <View style={{ width: 5 }}></View>
               <Text style={{ marginRight: 8 }}>{t("scanQr")}</Text>
             </CustomButton>
-            <CustomButton onPress={() => props.navigation.navigate(PHOTO_KEY)}>
+            <CustomButton onPress={() => navigation.navigate(PHOTO_KEY)}>
               <AntDesign name={"camera"} size={15} />
               <View style={{ width: 5 }}></View>
               <Text>{t("takePic")}</Text>
             </CustomButton>
-            <CustomButton
-              onPress={() => props.navigation.navigate(COMMENTS_KEY)}
-            >
+            <CustomButton onPress={() => navigation.navigate(USER_COMMENT)}>
               <AntDesign name={"filetext1"} size={15} />
               <View style={{ width: 5 }}></View>
               <Text>{t("takeCom")}</Text>
