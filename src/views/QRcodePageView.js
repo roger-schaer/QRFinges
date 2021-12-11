@@ -124,27 +124,7 @@ const QRcodeView = (props) => {
                   borderColor: "green",
                   borderWidth: 5,
                 }}
-              >
-                {/* <View
-                  style={{
-                    position: "absolute",
-                    bottom: -25,
-                    padding: 5,
-                    width: "100%",
-                    backgroundColor: "green",
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "black",
-                      position: "relative",
-                      fontSize: 16,
-                    }}
-                  >
-                    {resultScanQR}
-                  </Text>
-                </View> */}
-              </View>
+              ></View>
             )}
           </BarCodeScanner>
         </View>
