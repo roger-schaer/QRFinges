@@ -32,10 +32,8 @@ import {
   USER_COMMENT,
 } from "../constant/contants";
 import { useNavigation } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 
 const Drawer = createDrawerNavigator();
-const Stack = createStackNavigator();
 
 const drawerUrls = [
   {
