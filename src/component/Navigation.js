@@ -105,7 +105,7 @@ const drawerUrls = [
     pageKey: USER_COMMENT,
 
     navigationScreen: UserCommentView,
-    translateKey: "user_comment",
+    translateKey: "comments",
     displayWhenLogged: true,
     displayWhenNotLogged: false,
   },

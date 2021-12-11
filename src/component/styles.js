@@ -192,4 +192,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     margin: 2,
   },
+  languageUnderline: {
+    textDecorationLine: "underline",
+    color: "darkgreen",
+  },
 });
