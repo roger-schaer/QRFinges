@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Switch, Text, View } from "react-native";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
+import { useTranslation } from "react-i18next";
 import {
   BACKGROUND_LOCATION_UPDATES_TASK,
   LOCALSTORAGE_USER_ID,
@@ -143,8 +144,11 @@ export const LocationBackgroundView = () => {
     getStorageData(START_DATE).then((d) => setStartDate(d));
   };
 
+  const { t } = useTranslation();
+
   return (
     <>
+    {/**<View style={styles.btnloc}>*/}
       <Switch
         trackColor={{ false: "#767577", true: "#81b0ff" }}
         thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
@@ -154,19 +158,30 @@ export const LocationBackgroundView = () => {
       />
 
       <Text>{gpsErrorMsg}</Text>
-      {isEnabled ? (
-        <View style={styles.timerLine}>
-          <View>
-            <Text style={styles.timerText}>Start date: {startDate}</Text>
-            <Text style={styles.timerText}>
-              Current location: {latitude} - {longitude}
-            </Text>
+        {isEnabled ? (
+          <View style={styles.timerLine}>
+            <View>
+              <Text style={{fontWeight: "bold", paddingBottom: 10}}>{t("actualWalk")}</Text>
+              <Text style={styles.timerText}>{t("startTrack")}{startDate}</Text>
+              <Text style={styles.timerText}>
+                {t("locationTrack")} 
+                
+                
+              </Text>
+              <Text style={styles.timerTexts}>
+                latitude :{latitude}
+              </Text>
+              <Text style={styles.timerTexts}>
+                longitude :{longitude}
+              </Text>
+            </View>
           </View>
-        </View>
-      ) : (
-        <Text>Feature desactivée</Text>
-      )}
-      {isEnabled && <LinearProgress color="darkgreen" />}
+        ) : (
+          <Text>{t("feature")}</Text>
+        )}
+        {isEnabled && <LinearProgress color="darkgreen"/>}
+        
+    {/*</View>*/}
     </>
   );
 };
@@ -203,3 +218,4 @@ TaskManager.defineTask(
     }
   }
 );
+

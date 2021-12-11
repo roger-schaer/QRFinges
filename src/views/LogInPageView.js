@@ -55,7 +55,7 @@ const LoginPageView = (props) => {
           setError(t("wrongPass"));
           break;
         default:
-          setError("An error occurred");
+          setError(t("errorOccurred"));
       }
       console.error(e);
     }

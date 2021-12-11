@@ -1,18 +1,9 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  TextInput,
-  Alert,
-} from "react-native";
-import { styles } from "../component/styles";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { HOME_KEY, WEBVIEW_KEY } from "../constant/contants";
+import { WEBVIEW_KEY } from "../constant/contants";
 import { useTranslation } from "react-i18next";
-import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
 import {
   addRecordQRCode,
   addUserText,
@@ -189,38 +180,6 @@ const QRcodeView = (props) => {
             )}
           </View>
         )}
-      </View>
-      <View style={styles.content}>
-        <TextInput
-          value={userText}
-          onChangeText={(text) => setUserText(text)}
-          placeholder={t("userText")}
-          placeholderTextColor={"darkgreen"}
-          style={styles.input}
-        />
-        <CustomButtonNoBorders
-          onPress={(event) => {
-            if (userText == "") {
-              Alert.alert(t("titleDialog"), t("addComment"), [
-                {
-                  text: t("ok"),
-                  onPress: () => console.log("OK pressed"),
-                },
-              ]);
-            } else {
-              handleUserTextSubmit(userText).then(() => {
-                Alert.alert(t("titleDialogTextSend"), " ", [
-                  {
-                    text: t("ok"),
-                    onPress: () => props.navigation.navigate(HOME_KEY),
-                  },
-                ]);
-              });
-            }
-          }}
-        >
-          {t("ok")}
-        </CustomButtonNoBorders>
       </View>
     </ScrollView>
   );

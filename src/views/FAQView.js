@@ -35,10 +35,6 @@ const FAQView = (props) => {
         <Text style={styles.title}>{t("faq_title_deleteAccount")}</Text>
         <Text style={styles.content}>{t("faq_content_deleteAccount")}</Text>
 
-        <CustomButton onPress={() => props.navigation.navigate(SUBSCRIBE_KEY)}>
-          {t("acceptButton")}
-        </CustomButton>
-
         <CustomButton onPress={() => props.navigation.navigate(CONTACT_KEY)}>
           {t("refusalButton")}
         </CustomButton>

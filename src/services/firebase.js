@@ -41,12 +41,13 @@ export const handleSignup = async (email, password, name, firstname) => {
   const user = await createUserWithEmailAndPassword(auth, email, password);
   console.log("user id:", user.user.uid);
 
-  return setDoc(doc(firestore, "users", user.user.uid), {
+  setDoc(doc(firestore, "users", user.user.uid), {
     email: email,
     isAdmin: false,
     name: name,
     firstname: firstname,
   });
+  return user;
 };
 
 export const handleLogin = async (email, password) => {

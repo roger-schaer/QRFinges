@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput, ScrollView } from "react-native";
 import { handleSignup } from "../services/firebase";
 import { CustomButton } from "../component/CustomButton";
-import { t } from "i18next";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router";
-import { useNavigation } from "@react-navigation/native";
-import { HOME_KEY } from "../constant/contants";
+import { HOME_KEY, LOCALSTORAGE_USER_ID } from "../constant/contants";
+import { setStorageData } from "../services/storage";
+import { useUserContext } from "../services/user-context";
 
 const CreateProfilePageView = (props) => {
   const [email, setEmail] = useState("");
@@ -16,7 +15,7 @@ const CreateProfilePageView = (props) => {
   const [firstname, setFirstname] = useState("");
   const [error, setError] = useState("");
   const { t } = useTranslation();
-  const navigation = useNavigation();
+  const { state, dispatch } = useUserContext();
 
   return (
     <ScrollView>
@@ -78,7 +77,13 @@ const CreateProfilePageView = (props) => {
               }
               setError("");
               handleSignup(email, password, name, firstname)
-                .then(() => {
+                .then((res) => {
+                  setStorageData(LOCALSTORAGE_USER_ID, res.user.uid);
+                  dispatch({
+                    type: "SET_LOGIN",
+                    userId: res.user.uid,
+                    isLoggedIn: true,
+                  });
                   props.navigation.navigate(HOME_KEY);
                 })
                 .catch((e) => {
@@ -94,7 +99,7 @@ const CreateProfilePageView = (props) => {
                       setError(t("invalidEmail"));
                       break;
                     default:
-                      setError("An error occurred");
+                      setError(t("errorOccurred"));
                   }
                   console.log(e);
                 });
