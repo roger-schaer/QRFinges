@@ -1,24 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { View, Alert, TextInput, ScrollView } from "react-native";
 import { styles } from "../component/styles";
-import { useTranslation } from "react-i18next";
 import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
 import { addUserText } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
-import { useNavigation } from "@react-navigation/native";
 import { HOME_KEY } from "../constant/contants";
+import { t } from "i18next";
+import {
+  requestForegroundPermissions,
+  GetInstantLocation,
+} from "../services/location";
+import { askLocalisationPermission } from "../services/permissions";
 
 const UserCommentView = (props) => {
-  const { t } = useTranslation();
   const { state } = useUserContext();
   const [userText, setUserText] = useState("");
-  const navigation = useNavigation();
+  const [location, setLocation] = useState(null);
+
+  askLocalisationPermission();
+  // requestForegroundPermissions();
 
   const handleUserTextSubmit = async (userText) => {
-    await addUserText(state.userId, userText);
-    setUserText("");
+    instantLocation();
+    addUserText(state.userId, userText, location.toString()).then(() => {
+      reset();
+      props.navigation.navigate(HOME_KEY);
+    });
   };
 
+  const instantLocation = async () => {
+    setLocation(await GetInstantLocation());
+  };
+
+  const reset = () => {
+    setUserText("");
+    setLocation(null);
+  };
   return (
     <ScrollView>
       <View style={styles.screen}>
@@ -44,7 +61,7 @@ const UserCommentView = (props) => {
                   Alert.alert(t("titleDialogTextSend"), " ", [
                     {
                       text: t("ok"),
-                      onPress: () => navigation.navigate(HOME_KEY),
+                      onPress: () => props.navigation.navigate(HOME_KEY),
                     },
                   ]);
                 });

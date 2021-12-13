@@ -8,12 +8,16 @@ import {
 } from "@expo/vector-icons";
 import { styles } from "../component/styles";
 import { Camera } from "expo-camera";
-import { askCameraPermission } from "../services/cameraPermission";
+import {
+  askCameraPermission,
+  askLocalisationPermission,
+} from "../services/permissions";
 import { useUserContext } from "../services/user-context";
 import { t } from "i18next";
 import { storage, addImageToUser } from "../services/firebase";
 import { ref, uploadBytes } from "@firebase/storage";
 import LinearProgress from "react-native-elements/dist/linearProgress/LinearProgress";
+import { GetInstantLocation } from "../services/location";
 
 const CameraView = (props) => {
   const { state } = useUserContext();
@@ -23,22 +27,32 @@ const CameraView = (props) => {
   const [isUploading, setIsUploading] = useState(false);
   const [photo, setPhoto] = useState(null);
   const isFocused = useIsFocused();
+  const [location, setLocation] = useState(null);
   let camera;
   let p;
   let date;
   let uri;
+
   askCameraPermission();
+  askLocalisationPermission();
+
   const takePicture = async () => {
     p = null;
     if (camera) {
-      const options = { quality: 0.5 };
+      const options = {
+        quality: 0.5,
+        zoom: 0,
+        autofocus: Camera.Constants.AutoFocus.on,
+        whiteBalance: Camera.Constants.WhiteBalance.auto,
+      };
       p = await camera.takePictureAsync(options);
     }
-    console.log(" photo ", p.uri);
+
     if (p) {
       setPicture(p.uri);
       setPhoto(p);
       setIsPicked(true);
+      instantLocation();
     }
   };
 
@@ -55,11 +69,14 @@ const CameraView = (props) => {
 
     const storageRef = ref(storage, "Photos/" + uri);
 
-    /* addRefPicture(state.id, uri, date); */
-
     uploadBytes(storageRef, blob)
       .then(() => {
-        addImageToUser(state.userId, storageRef.name);
+        addImageToUser(
+          state.userId,
+          storageRef.name,
+          date,
+          location.toString()
+        );
         blob = null;
         console.log("Image uploaded!");
         newPicture();
@@ -68,8 +85,6 @@ const CameraView = (props) => {
         console.log(e);
         newPicture();
       });
-
-    //  addRefPicture(state.id, storageRef, date);
   };
 
   const newPicture = () => {
@@ -78,6 +93,12 @@ const CameraView = (props) => {
     setPhoto(null);
     setPicture(null);
     setIsUploading(false);
+    setLocation(null);
+  };
+
+  const instantLocation = async () => {
+    setLocation(await GetInstantLocation());
+    console.log("takePicture location " + location.toString());
   };
 
   return (

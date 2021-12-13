@@ -3,14 +3,10 @@ import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { WEBVIEW_KEY } from "../constant/contants";
-import { useTranslation } from "react-i18next";
-import {
-  addRecordQRCode,
-  addUserText,
-  qrcodeInFirebase,
-} from "../services/firebase";
+import { t } from "i18next";
+import { qrcodeInFirebase, addRecordQRCode } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
-import { askCameraPermission } from "../services/cameraPermission";
+import { askCameraPermission } from "../services/permissions";
 import { useNavigation } from "@react-navigation/native";
 
 export const checkIsUrl = (value) => {
@@ -27,7 +23,6 @@ export const checkIsUrl = (value) => {
 };
 
 const QRcodeView = (props) => {
-  const { t } = useTranslation();
   const { state } = useUserContext();
   const [scanned, setScanned] = useState(false);
   const [resultScanQR, setResultScanQR] = useState("");
@@ -45,7 +40,7 @@ const QRcodeView = (props) => {
 
     try {
       addRecordQRCode(state.userId, resultScanQR).then(() => {
-        navigation.navigate(WEBVIEW_KEY, { uri: resultScanQR });
+        props.navigation.navigate(WEBVIEW_KEY, { uri: resultScanQR });
         setResultScanQR("");
       });
     } catch (e) {

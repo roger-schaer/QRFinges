@@ -178,7 +178,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   cameraButton: {
-    flex: 0.1,
+    flex: 1,
     alignSelf: "flex-end",
     alignItems: "center",
   },

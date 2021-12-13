@@ -1,7 +1,8 @@
 export const TranslationFR = {
   acceptButton: "Je crée mon compte",
   allFieldRequired: "Veuillez remplir tous les champs",
-  askCameraPermission: "Authorisez-vous l'utilisation de la caméra ?",
+  allowCamera: "Auttoriser la caméra",
+  allowLocation: "Auttoriser la localisation",
   confirmPass: "Confirmez votre mot de pass ",
   connect: "Se connecter",
   contact: "Contact",
@@ -29,6 +30,7 @@ export const TranslationFR = {
   myAccount: "Gestion de mon compte",
   name: "Nom",
   needCameraPermission: "Vous avez besoin de la camera pour continuer",
+  needLocationPermission: "Vous avez besoin de la localisation pour continuer",
   newPicture: "Changer la photo",
   noInternetToWebView:
     "Pas de réseau internet ! Redirection vers la page Profile",

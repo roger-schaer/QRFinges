@@ -87,11 +87,12 @@ export const startRecordLocations = async (currentUser) => {
   );
 };
 
-export const addUserText = async (currentUser, userText) => {
+export const addUserText = async (currentUser, userText, location) => {
   return await addDoc(
-    collection(firestore, "users", currentUser, "userTexts"),
+    collection(firestore, "users", currentUser, "userTexts", location),
     {
-      date: new Date(),
+      textDate: new Date(),
+      textLocation: location,
       userText: userText,
     }
   );
@@ -116,11 +117,20 @@ export const addRecordQRCode = async (currentUser, QRCode) => {
   );
 };
 
-export const addImageToUser = async (currentUser, imageStorageUri) => {
-  return await addDoc(collection(firestore, "users", currentUser, "images"), {
-    imageDate: new Date(),
-    imageId: imageStorageUri,
-  });
+export const addImageToUser = async (
+  currentUser,
+  imageStorageUri,
+  date,
+  location
+) => {
+  return await addDoc(
+    collection(firestore, "users", currentUser, "images", date, location),
+    {
+      imageDate: date,
+      ImageLocation: location,
+      imageId: imageStorageUri,
+    }
+  );
 };
 export const qrcodeInFirebase = async (url) => {
   const q = query(collection(firestore, "qrcodes"), where("url", "==", url));
