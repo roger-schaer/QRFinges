@@ -96,7 +96,7 @@ export const addRecordQRCode = async (currentUser, QRCode) => {
 };
 
 export const addImageToUser = async (currentUser, imageStorageUri, date, location) => {
-  return await addDoc(collection(firestore, "users", currentUser, "images", date), {
+  return await addDoc(collection(firestore, "users", currentUser, "images"), {
     imageDate: date,
     ImageLocation: location,
     imageId: imageStorageUri,

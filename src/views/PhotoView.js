@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import { View, Text, TouchableOpacity, Image } from "react-native";
-import {
-  MaterialCommunityIcons,
-  MaterialIcons,
-  Ionicons,
-} from "@expo/vector-icons";
+import { View, Text, TouchableOpacity, Image, ActivityIndicator } from "react-native";
+import { MaterialCommunityIcons, MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { styles } from "../component/styles";
 import { Camera } from "expo-camera";
-import {
-  askCameraPermission,
-  askLocalisationPermission,
-} from "../services/permissions";
+import { askCameraPermission, askLocalisationPermission } from "../services/permissions";
 import { useUserContext } from "../services/user-context";
 import { t } from "i18next";
 import { storage, addImageToUser } from "../services/firebase";
@@ -27,7 +20,7 @@ const CameraView = (props) => {
   const [isUploading, setIsUploading] = useState(false);
   const [photo, setPhoto] = useState(null);
   const isFocused = useIsFocused();
-  const [location, setLocation] = useState(null);
+  const [waiting, setWaiting] = useState(false);
   let camera;
   let p;
   let date;
@@ -52,31 +45,23 @@ const CameraView = (props) => {
       setPicture(p.uri);
       setPhoto(p);
       setIsPicked(true);
-      instantLocation();
     }
   };
 
   const savePicture = async () => {
+    setWaiting(true);
     setIsUploading(true);
     const response = await fetch(picture);
     let blob = await response.blob();
 
     date = new Date();
-    uri =
-      date.toISOString().toLocaleLowerCase("fr-CH") +
-      "_" +
-      picture.substring(picture.lastIndexOf("/") + 1);
+    uri = date.toISOString().toLocaleLowerCase("fr-CH") + "_" + picture.substring(picture.lastIndexOf("/") + 1);
 
     const storageRef = ref(storage, "Photos/" + uri);
 
     uploadBytes(storageRef, blob)
-      .then(() => {
-        addImageToUser(
-          state.userId,
-          storageRef.name,
-          date,
-          location.toString()
-        );
+      .then(async () => {
+        addImageToUser(state.userId, storageRef.name, date, await GetInstantLocation());
         blob = null;
         console.log("Image uploaded!");
         newPicture();
@@ -93,66 +78,65 @@ const CameraView = (props) => {
     setPhoto(null);
     setPicture(null);
     setIsUploading(false);
-    setLocation(null);
-  };
-
-  const instantLocation = async () => {
-    setLocation(await GetInstantLocation());
-    console.log("takePicture location " + location.toString());
+    setWaiting(false);
   };
 
   return (
     <>
-      {!isPicked ? (
-        <Camera
-          style={styles.camera}
-          type={type}
-          ref={(refs) => {
-            camera = refs;
-          }}
-        >
-          <View style={styles.cameraButtonContainer}>
-            <Ionicons
-              name="camera-reverse"
-              style={styles.cameraButton}
-              size={40}
-              color="green"
-              onPress={() => {
-                setType(
-                  type === Camera.Constants.Type.back
-                    ? Camera.Constants.Type.front
-                    : Camera.Constants.Type.back
-                );
-              }}
-            />
-            <MaterialIcons
-              name="enhance-photo-translate"
-              style={styles.cameraButton}
-              size={60}
-              color="green"
-              onPress={takePicture}
-            />
-          </View>
-        </Camera>
+      {waiting ? (
+        <View style={{ flex: 3, paddingTop: 50 }}>
+          <ActivityIndicator size={"small"} />
+          <Text style={{ textAlign: "center", marginTop: 10 }}>{t("message_downloading_image")}</Text>
+        </View>
       ) : (
         <>
-          {isUploading ? <LinearProgress color="darkgreen" /> : null}
-          <Image style={styles.camera} source={{ uri: picture }} />
-          {!isUploading && (
+          {!isPicked ? (
+            <Camera
+              style={styles.camera}
+              type={type}
+              ref={(refs) => {
+                camera = refs;
+              }}
+            >
+              <View style={styles.cameraButtonContainer}>
+                <Ionicons
+                  name="camera-reverse"
+                  style={styles.cameraButton}
+                  size={40}
+                  color="green"
+                  onPress={() => {
+                    setType(
+                      type === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back
+                    );
+                  }}
+                />
+                <MaterialIcons
+                  name="enhance-photo-translate"
+                  style={styles.cameraButton}
+                  size={60}
+                  color="green"
+                  onPress={takePicture}
+                />
+              </View>
+            </Camera>
+          ) : (
             <>
-              <TouchableOpacity
-                style={styles.customBtnGreen}
-                onPress={newPicture}
-              >
-                <Text style={{ color: "cornsilk" }}>{t("newPicture")}</Text>
-              </TouchableOpacity>
-              <MaterialCommunityIcons
-                name="content-save-move"
-                style={styles.cameraButton}
-                size={40}
-                color="green"
-                onPress={savePicture}
-              />
+              {isUploading ? <LinearProgress color="darkgreen" /> : null}
+              <Image style={styles.camera} source={{ uri: picture }} />
+              {!isUploading && (
+                <>
+                  <TouchableOpacity style={styles.customBtnGreen} onPress={newPicture}>
+                    <Text style={{ color: "cornsilk" }}>{t("newPicture")}</Text>
+                  </TouchableOpacity>
+                  <MaterialCommunityIcons
+                    name="content-save-move"
+                    style={styles.cameraButton}
+                    size={40}
+                    color="green"
+                    onPress={savePicture}
+                  />
+                </>
+              )}
             </>
           )}
         </>

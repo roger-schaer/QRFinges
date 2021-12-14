@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Alert, TextInput, ScrollView, ActivityIndicator } from "react-native";
+import { View, Alert, TextInput, ScrollView, ActivityIndicator, Text } from "react-native";
 import { styles } from "../component/styles";
 import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
 import { addUserText } from "../services/firebase";
@@ -43,6 +43,7 @@ const UserCommentView = () => {
       {waiting ? (
         <View style={{ flex: 3, paddingTop: 50 }}>
           <ActivityIndicator size={"small"} />
+          <Text style={{ textAlign: "center", marginTop: 10 }}>{t("message_downloading_text")}</Text>
         </View>
       ) : (
         <View style={styles.screen}>

@@ -81,4 +81,6 @@ export const TranslationEN = {
   scanQr: "Scan a QR-Code",
   takePic: "Take a photo",
   takeCom: "Submit a comment",
+  message_downloading_image: "Downloading image",
+  message_downloading_text: "Downloading text",
 };

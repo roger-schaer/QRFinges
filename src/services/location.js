@@ -39,7 +39,7 @@ export const GetInstantLocation = async () => {
     console.log("background permission granted");
   }
   try {
-    location = await Location.getCurrentPositionAsync({});
+    location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
     return { latitude: location.coords.latitude, longitude: location.coords.longitude };
   } catch (e) {
     console.log(e);

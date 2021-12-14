@@ -32,8 +32,7 @@ export const TranslationFR = {
   needCameraPermission: "Vous avez besoin de la camera pour continuer",
   needLocationPermission: "Vous avez besoin de la localisation pour continuer",
   newPicture: "Changer la photo",
-  noInternetToWebView:
-    "Pas de réseau internet ! Redirection vers la page Profile",
+  noInternetToWebView: "Pas de réseau internet ! Redirection vers la page Profile",
   ok: "OK",
   pass: "Mot de passe",
   passwordDoNotMatch: "Les mots de passe sont différents",
@@ -88,4 +87,6 @@ export const TranslationFR = {
   scanQr: "Scanner un QR-Code",
   takePic: "Envoyer une photo",
   takeCom: "Envoyer un commentaire",
+  message_downloading_image: "Téléchargement de l'image",
+  message_downloading_text: "Téléchargement du text",
 };
