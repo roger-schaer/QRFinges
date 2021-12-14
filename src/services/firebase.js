@@ -13,11 +13,7 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { getStorage, ref } from "firebase/storage";
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBKKBamDhPsS4DBxZ_Na1aCWybXwLPthPU",
@@ -62,75 +58,48 @@ export const handleSignOut = async () => {
   }
 };
 
-export const addRecordLocations = async (
-  location,
-  currentUser,
-  currentWalkRecord
-) => {
-  return /* await */ updateDoc(
-    doc(firestore, "users", currentUser, "walkRecord", currentWalkRecord),
-    {
-      startDate: new Date(),
-      locations: arrayUnion({ location }),
-    }
-  );
+export const addRecordLocations = async (location, currentUser, currentWalkRecord) => {
+  return /* await */ updateDoc(doc(firestore, "users", currentUser, "walkRecord", currentWalkRecord), {
+    startDate: new Date(),
+    locations: arrayUnion({ location }),
+  });
 };
 
 export const startRecordLocations = async (currentUser) => {
-  return /* await */ addDoc(
-    collection(firestore, "users", currentUser, "walkRecord"),
-    {
-      startDate: new Date(),
-      endDate: null,
-      locations: null,
-    }
-  );
+  return /* await */ addDoc(collection(firestore, "users", currentUser, "walkRecord"), {
+    startDate: new Date(),
+    endDate: null,
+    locations: null,
+  });
 };
 
 export const addUserText = async (currentUser, userText, location) => {
-  return await addDoc(
-    collection(firestore, "users", currentUser, "userTexts", location),
-    {
-      textDate: new Date(),
-      textLocation: location,
-      userText: userText,
-    }
-  );
+  return await addDoc(collection(firestore, "users", currentUser, "userTexts"), {
+    textDate: new Date(),
+    textLocation: location,
+    userText: userText,
+  });
 };
 
 export const stopRecordLocations = async (currentUser, currentWalkRecord) => {
-  return await updateDoc(
-    doc(firestore, "users", currentUser, "walkRecord", currentWalkRecord),
-    {
-      endDate: new Date(),
-    }
-  );
+  return await updateDoc(doc(firestore, "users", currentUser, "walkRecord", currentWalkRecord), {
+    endDate: new Date(),
+  });
 };
 
 export const addRecordQRCode = async (currentUser, QRCode) => {
-  return await addDoc(
-    collection(firestore, "users", currentUser, "scannedQRCodes"),
-    {
-      QRCodeDate: new Date(),
-      QRCodeUrl: QRCode,
-    }
-  );
+  return await addDoc(collection(firestore, "users", currentUser, "scannedQRCodes"), {
+    QRCodeDate: new Date(),
+    QRCodeUrl: QRCode,
+  });
 };
 
-export const addImageToUser = async (
-  currentUser,
-  imageStorageUri,
-  date,
-  location
-) => {
-  return await addDoc(
-    collection(firestore, "users", currentUser, "images", date, location),
-    {
-      imageDate: date,
-      ImageLocation: location,
-      imageId: imageStorageUri,
-    }
-  );
+export const addImageToUser = async (currentUser, imageStorageUri, date, location) => {
+  return await addDoc(collection(firestore, "users", currentUser, "images", date), {
+    imageDate: date,
+    ImageLocation: location,
+    imageId: imageStorageUri,
+  });
 };
 export const qrcodeInFirebase = async (url) => {
   const q = query(collection(firestore, "qrcodes"), where("url", "==", url));
