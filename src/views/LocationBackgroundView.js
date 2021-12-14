@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Switch, Text, View } from "react-native";
+import { Alert, Switch, Text, View } from "react-native";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
 import { useTranslation } from "react-i18next";
-import {
-  BACKGROUND_LOCATION_UPDATES_TASK,
-  LOCALSTORAGE_USER_ID,
-} from "../constant/contants";
+import { BACKGROUND_LOCATION_UPDATES_TASK, LOCALSTORAGE_USER_ID } from "../constant/contants";
 
-import {
-  addRecordLocations,
-  startRecordLocations,
-  stopRecordLocations,
-} from "../services/firebase";
+import { addRecordLocations, startRecordLocations, stopRecordLocations } from "../services/firebase";
+import { GetInstantLocation } from "../services/location";
 import { getStorageData, setStorageData } from "../services/storage";
 import { useUserContext } from "../services/user-context";
 import { LinearProgress } from "react-native-elements";
@@ -30,13 +24,13 @@ export const LocationBackgroundView = () => {
   const [startDate, setStartDate] = useState(null);
   const [gpsErrorMsg, setGpsErrorMsg] = useState(null);
   const [currentWalkRecord, setCurrentWalkRecord] = useState(null);
+  const [refreshTimer, setRefreshTimer] = useState(0);
   const [isEnabled, setIsEnabled] = useState(false);
-
+  let timer;
   const { state } = useUserContext();
 
   const resetCurrentWalkRecord = () => {
-    currentWalkRecord !== null &&
-      stopRecordLocations(state.userId, currentWalkRecord);
+    currentWalkRecord !== null && stopRecordLocations(state.userId, currentWalkRecord);
     setCurrentWalkRecord(null);
     setStorageData(WALK_RECORD_KEY, null);
     setStorageData(CURRENT_LAT, null);
@@ -45,6 +39,7 @@ export const LocationBackgroundView = () => {
     setLatitude(null);
     setLongitude(null);
     setStartDate(null);
+    timer && clearTimeout(timer);
     Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_UPDATES_TASK);
   };
 
@@ -55,20 +50,16 @@ export const LocationBackgroundView = () => {
   }, []);
 
   useEffect(() => {
-    console.log("useEffect/isEnabled", currentWalkRecord, isEnabled);
-
     getStorageData(WALK_RECORD_KEY)
       .then((walkRecord) => {
         if (isEnabled) {
-          console.log("before permissions", walkRecord, isEnabled);
           setCurrentWalkRecord(walkRecord);
 
-          foregroundLocationFetch();
+          /* foregroundLocationFetch(); */
           backgroundLocationFetch();
         } else {
           resetCurrentWalkRecord();
         }
-        console.log(walkRecord, isEnabled);
       })
       .catch((e) => {
         resetCurrentWalkRecord();
@@ -81,10 +72,7 @@ export const LocationBackgroundView = () => {
     if (currentWalkRecord == null && isEnabled) {
       startRecordLocations(state.userId)
         .then((walkRecord) => {
-          setStorageData(
-            START_DATE,
-            moment(new Date()).format("DD/MM/YYYY LTS")
-          );
+          setStorageData(START_DATE, moment(new Date()).format("DD/MM/YYYY LTS"));
           setStorageData(WALK_RECORD_KEY, walkRecord.id);
           setCurrentWalkRecord(walkRecord.id);
         })
@@ -94,15 +82,16 @@ export const LocationBackgroundView = () => {
     } else if (currentWalkRecord != null && isEnabled) {
       const interval = setInterval(() => {
         uploadData();
-      }, 5000);
+      }, 3000);
       return () => clearInterval(interval);
     }
   }, [currentWalkRecord, isEnabled]);
 
   const backgroundLocationFetch = async () => {
-    Location.requestBackgroundPermissionsAsync()
+    await Location.requestBackgroundPermissionsAsync()
       .then((r) => {
         console.log("Background permission: " + r.status);
+        console.log("ici");
         if (r.status !== "granted") {
           setGpsErrorMsg("Background permission to access location was denied");
           throw Error();
@@ -118,10 +107,40 @@ export const LocationBackgroundView = () => {
             notificationBody: "Live Tracker is on.",
           },
         });
+      })
+      .catch(async () => {
+        setRefreshTimer(1);
+        Alert.alert(t("alert_location_background_issue"), " ", [
+          {
+            text: t("ok"),
+          },
+        ]);
       });
   };
+  useEffect(() => {
+    if (refreshTimer !== 0 && isEnabled) {
+      timer = setTimeout(async () => {
+        const loc = await GetInstantLocation();
+        console.log(loc);
+        setStorageData(CURRENT_LAT, "" + loc.latitude);
+        setStorageData(CURRENT_LON, "" + loc.longitude);
+        setRefreshTimer(refreshTimer + 1);
+        getStorageData(WALK_RECORD_KEY).then((walkRecord) => {
+          addRecordLocations(
+            {
+              latitude: loc.latitude,
+              longitude: loc.longitude,
+            },
+            state.userId,
+            walkRecord
+          );
+        });
 
-  const foregroundLocationFetch = () => {
+        timer && clearTimeout(timer);
+      }, 10000);
+    }
+  }, [refreshTimer]);
+  /* const foregroundLocationFetch = () => {
     Location.requestForegroundPermissionsAsync()
       .then((r) => {
         console.log("Foreground permission: " + r.status);
@@ -132,7 +151,7 @@ export const LocationBackgroundView = () => {
       .catch((e) => {
         console.log(e);
       });
-  };
+  }; */
 
   const uploadData = async () => {
     getGPSPosition();
@@ -148,7 +167,6 @@ export const LocationBackgroundView = () => {
 
   return (
     <>
-    {/**<View style={styles.btnloc}>*/}
       <Switch
         trackColor={{ false: "#767577", true: "#81b0ff" }}
         thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
@@ -158,64 +176,53 @@ export const LocationBackgroundView = () => {
       />
 
       <Text>{gpsErrorMsg}</Text>
-        {isEnabled ? (
-          <View style={styles.timerLine}>
-            <View>
-              <Text style={{fontWeight: "bold", paddingBottom: 10}}>{t("actualWalk")}</Text>
-              <Text style={styles.timerText}>{t("startTrack")}{startDate}</Text>
-              <Text style={styles.timerText}>
-                {t("locationTrack")} 
-                
-                
-              </Text>
-              <Text style={styles.timerTexts}>
-                latitude :{latitude}
-              </Text>
-              <Text style={styles.timerTexts}>
-                longitude :{longitude}
-              </Text>
-            </View>
+      {isEnabled ? (
+        <View style={styles.timerLine}>
+          <View>
+            <Text style={{ fontWeight: "bold", paddingBottom: 10 }}>{t("actualWalk")}</Text>
+            <Text style={styles.timerText}>
+              {t("startTrack")}
+              {startDate}
+            </Text>
+            <Text style={styles.timerText}>{t("locationTrack")}</Text>
+            <Text style={styles.timerTexts}>latitude :{latitude}</Text>
+            <Text style={styles.timerTexts}>longitude :{longitude}</Text>
           </View>
-        ) : (
-          <Text>{t("feature")}</Text>
-        )}
-        {isEnabled && <LinearProgress color="darkgreen"/>}
-        
-    {/*</View>*/}
+        </View>
+      ) : (
+        <Text>{t("feature")}</Text>
+      )}
+      {isEnabled && <LinearProgress color="darkgreen" />}
     </>
   );
 };
 
-TaskManager.defineTask(
-  BACKGROUND_LOCATION_UPDATES_TASK,
-  async ({ data, error }) => {
-    if (error) {
-      console.log("Background error", error);
-      return;
-    }
-    if (data) {
-      const { locations } = data;
-      setStorageData(CURRENT_LAT, "" + locations[0].coords.latitude);
-      setStorageData(CURRENT_LON, "" + locations[0].coords.longitude);
-      getStorageData("walkRecord").then((wr) => {
-        if (wr !== null) {
-          console.log(
-            `Background -> latitude: ${locations[0].coords.latitude} - longitude: ${locations[0].coords.longitude}`,
+TaskManager.defineTask(BACKGROUND_LOCATION_UPDATES_TASK, async ({ data, error }) => {
+  if (error) {
+    console.log("Background error", error);
+    return;
+  }
+  if (data) {
+    const { locations } = data;
+    setStorageData(CURRENT_LAT, "" + locations[0].coords.latitude);
+    setStorageData(CURRENT_LON, "" + locations[0].coords.longitude);
+    getStorageData("walkRecord").then((wr) => {
+      if (wr !== null) {
+        console.log(
+          `Background -> latitude: ${locations[0].coords.latitude} - longitude: ${locations[0].coords.longitude}`,
+          wr
+        );
+        getStorageData(LOCALSTORAGE_USER_ID).then((user_id) => {
+          addRecordLocations(
+            {
+              latitude: locations[0].coords.latitude,
+              longitude: locations[0].coords.longitude,
+            },
+            user_id,
             wr
           );
-          getStorageData(LOCALSTORAGE_USER_ID).then((user_id) => {
-            addRecordLocations(
-              {
-                latitude: locations[0].coords.latitude,
-                longitude: locations[0].coords.longitude,
-              },
-              user_id,
-              wr
-            );
-          });
-        }
-      });
-    }
+        });
+      }
+    });
   }
-);
-
+});

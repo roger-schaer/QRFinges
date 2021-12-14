@@ -37,6 +37,8 @@ export const GetInstantLocation = async () => {
 
   if (status === "granted") {
     console.log("background permission granted");
+  } else {
+    return {};
   }
   try {
     location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });

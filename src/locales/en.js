@@ -83,4 +83,6 @@ export const TranslationEN = {
   takeCom: "Submit a comment",
   message_downloading_image: "Downloading image",
   message_downloading_text: "Downloading text",
+  alert_location_background_issue:
+    "There is an issue with background location. You are now using foreground location with limited features. Please active background localization service to use full featured application.",
 };
