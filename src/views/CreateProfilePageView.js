@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput, ScrollView } from "react-native";
 import { handleSignup } from "../services/firebase";
 import { CustomButton } from "../component/CustomButton";
-import { t } from "i18next";
-import { PROFILE_KEY } from "../constant/contants";
+import { useTranslation } from "react-i18next";
+import { HOME_KEY, LOCALSTORAGE_USER_ID } from "../constant/contants";
+import { setStorageData } from "../services/storage";
+import { useUserContext } from "../services/user-context";
+import { useNavigation } from "@react-navigation/native";
 
 const CreateProfilePageView = (props) => {
   const [email, setEmail] = useState("");
@@ -12,9 +15,12 @@ const CreateProfilePageView = (props) => {
   const [name, setName] = useState("");
   const [firstname, setFirstname] = useState("");
   const [error, setError] = useState("");
+  const { t } = useTranslation();
+  const { state, dispatch } = useUserContext();
+  const navigation = useNavigation();
 
   return (
-    <ScrollView>
+    <ScrollView keyboardShouldPersistTaps="handled">
       <View>
         <View style={styles.screen}>
           <Text style={styles.title}>{t("createAccount")}</Text>
@@ -60,12 +66,7 @@ const CreateProfilePageView = (props) => {
           {error ? <Text style={styles.errors}> {error}</Text> : null}
           <CustomButton
             onPress={(event) => {
-              if (
-                firstname == "" ||
-                name == "" ||
-                email == "" ||
-                password == ""
-              ) {
+              if (firstname == "" || name == "" || email == "" || password == "") {
                 return setError(t("allFieldRequired"));
               }
               if (password !== confirmPassword) {
@@ -73,8 +74,14 @@ const CreateProfilePageView = (props) => {
               }
               setError("");
               handleSignup(email, password, name, firstname)
-                .then(() => {
-                  props.navigation.navigate(PROFILE_KEY);
+                .then((res) => {
+                  setStorageData(LOCALSTORAGE_USER_ID, res.user.uid);
+                  dispatch({
+                    type: "SET_LOGIN",
+                    userId: res.user.uid,
+                    isLoggedIn: true,
+                  });
+                  navigation.navigate(HOME_KEY);
                 })
                 .catch((e) => {
                   var errorCode = e.code;
@@ -89,7 +96,7 @@ const CreateProfilePageView = (props) => {
                       setError(t("invalidEmail"));
                       break;
                     default:
-                      setError("An error occurred");
+                      setError(t("errorOccurred"));
                   }
                   console.log(e);
                 });

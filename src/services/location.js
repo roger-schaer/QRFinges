@@ -30,3 +30,21 @@ export const requestBackgroundPermissions = async () => {
     console.log("error with background permissions");
   }
 };
+
+export const GetInstantLocation = async () => {
+  let location;
+  let { status } = await Location.requestForegroundPermissionsAsync();
+
+  if (status === "granted") {
+    console.log("background permission granted");
+  } else {
+    return {};
+  }
+  try {
+    location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+    return { latitude: location.coords.latitude, longitude: location.coords.longitude };
+  } catch (e) {
+    console.log(e);
+    return {};
+  }
+};

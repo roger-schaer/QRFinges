@@ -7,39 +7,31 @@ import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
 import { handleLogin } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
 import { getStorageData, setStorageData } from "../services/storage";
-import {
-  LOCALSTORAGE_USER_ID,
-  PROFILE_KEY,
-  SUBSCRIBE_KEY,
-} from "../constant/contants";
+import { LOCALSTORAGE_USER_EMAIL, LOCALSTORAGE_USER_ID, SUBSCRIBE_KEY } from "../constant/contants";
+import { useTranslation } from "react-i18next";
+import { useNavigation } from "@react-navigation/native";
 
 const LoginPageView = (props) => {
   const { state, dispatch } = useUserContext();
-
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigation = useNavigation();
 
   const login = async () => {
     try {
       let loginData = await handleLogin(email, password);
-      console.log("handleLogin successfull", loginData.user.uid);
       setStorageData(LOCALSTORAGE_USER_ID, loginData.user.uid);
-      console.log(
-        "save to local storage successfull",
-        getStorageData(LOCALSTORAGE_USER_ID)
-      );
+      setStorageData(LOCALSTORAGE_USER_EMAIL, loginData.user.email);
+      console.log("Save to local storage successfull", getStorageData(LOCALSTORAGE_USER_ID));
 
       dispatch({
         type: "SET_LOGIN",
         userId: loginData.user.uid,
+        email: loginData.user.email,
         isLoggedIn: true,
       });
-      console.log("dispatch successfull");
-      console.log(props);
-      console.log(state.userId);
-
-      props.navigation.navigate(PROFILE_KEY);
     } catch (e) {
       dispatch({
         type: "IS_LOGGED_ERROR",
@@ -55,19 +47,18 @@ const LoginPageView = (props) => {
           setError(t("wrongPass"));
           break;
         default:
-          setError("An error occurred");
+          setError(t("errorOccurred"));
       }
       console.error(e);
     }
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     login();
   };
 
   return (
-    <ScrollView>
+    <ScrollView keyboardShouldPersistTaps="handled">
       <View style={styles.screen}>
         <Logo style={styles.logoContainer} />
         <Text style={styles.text}>{t("welcomePhrase")}</Text>
@@ -100,9 +91,7 @@ const LoginPageView = (props) => {
           {t("connect")}
         </CustomButton>
 
-        <CustomButtonNoBorders
-          onPress={(event) => props.navigation.navigate(SUBSCRIBE_KEY)}
-        >
+        <CustomButtonNoBorders onPress={(event) => navigation.navigate(SUBSCRIBE_KEY)}>
           {t("subscribe")}
         </CustomButtonNoBorders>
       </View>

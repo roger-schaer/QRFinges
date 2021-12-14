@@ -33,6 +33,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingLeft: 20,
     paddingRight: 20,
+    textAlign: "justify",
   },
 
   logoContainer: {
@@ -49,9 +50,31 @@ export const styles = StyleSheet.create({
     paddingRight: 20,
   },
 
+  secondtitle: {
+    color: "darkgreen",
+    fontSize: 20,
+    paddingBottom: 40,
+    paddingTop: 10,
+    paddingLeft: 90,
+  },
+
+  thirdtitle: {
+    color: "darkgreen",
+    fontSize: 20,
+    paddingBottom: 20,
+    paddingTop: 10,
+    paddingLeft: 30,
+  },
+
   iconContainer: {
     color: "darkgreen",
     padding: 10,
+  },
+
+  iconContainerProfile: {
+    color: "darkgreen",
+    padding: 10,
+    paddingLeft: 150,
   },
 
   input: {
@@ -60,6 +83,11 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginVertical: 10,
     marginBottom: 20,
+  },
+
+  btnloc: {
+    alignItems: "center",
+    paddingTop: 10,
   },
 
   container: {
@@ -80,7 +108,8 @@ export const styles = StyleSheet.create({
   iconSyncContainer: {
     color: "darkgreen",
     paddingTop: 20,
-    paddingLeft: 150,
+    paddingLeft: 160,
+    paddingBottom: 100,
     alignItems: "center",
   },
 
@@ -96,10 +125,20 @@ export const styles = StyleSheet.create({
     paddingBottom: 20,
   },
 
+  timerTexts: {
+    fontSize: 14,
+    fontWeight: "400",
+    color: "darkgreen",
+    paddingRight: 30,
+    paddingBottom: 20,
+    paddingLeft: 20,
+  },
+
   timerLine: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingRight: 35,
+    paddingRight: 20,
+    paddingLeft: 10,
   },
 
   startContainer: {
@@ -139,7 +178,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   cameraButton: {
-    flex: 0.1,
+    flex: 1,
     alignSelf: "flex-end",
     alignItems: "center",
   },
@@ -153,7 +192,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     margin: 2,
   },
-  scrollView: {
-    marginHorizontal: 0,
+  languageUnderline: {
+    textDecorationLine: "underline",
+    color: "darkgreen",
   },
 });
