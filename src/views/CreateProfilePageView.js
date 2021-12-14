@@ -20,7 +20,7 @@ const CreateProfilePageView = (props) => {
   const navigation = useNavigation();
 
   return (
-    <ScrollView>
+    <ScrollView keyboardShouldPersistTaps="handled">
       <View>
         <View style={styles.screen}>
           <Text style={styles.title}>{t("createAccount")}</Text>
@@ -66,12 +66,7 @@ const CreateProfilePageView = (props) => {
           {error ? <Text style={styles.errors}> {error}</Text> : null}
           <CustomButton
             onPress={(event) => {
-              if (
-                firstname == "" ||
-                name == "" ||
-                email == "" ||
-                password == ""
-              ) {
+              if (firstname == "" || name == "" || email == "" || password == "") {
                 return setError(t("allFieldRequired"));
               }
               if (password !== confirmPassword) {

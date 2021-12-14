@@ -74,6 +74,7 @@ export const startRecordLocations = async (currentUser) => {
 };
 
 export const addUserText = async (currentUser, userText, location) => {
+  console.log(location);
   return await addDoc(collection(firestore, "users", currentUser, "userTexts"), {
     textDate: new Date(),
     textLocation: location,

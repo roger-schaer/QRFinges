@@ -81,7 +81,7 @@ const QRcodeView = (props) => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView keyboardShouldPersistTaps="handled">
       <View style={{}}>
         <View style={{}}>
           <BarCodeScanner
@@ -128,16 +128,8 @@ const QRcodeView = (props) => {
                   justifyContent: "center",
                 }}
               >
-                {isUrl && (
-                  <MaterialIcons
-                    name="link"
-                    size={16}
-                    style={{ marginRight: 5 }}
-                  />
-                )}
-                <Text style={{ color: "black", fontSize: 16 }}>
-                  {resultScanQR}
-                </Text>
+                {isUrl && <MaterialIcons name="link" size={16} style={{ marginRight: 5 }} />}
+                <Text style={{ color: "black", fontSize: 16 }}>{resultScanQR}</Text>
 
                 <MaterialIcons
                   name="close"

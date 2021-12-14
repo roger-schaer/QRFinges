@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  ScrollView,
-  TextInput,
-  Alert,
-} from "react-native";
+import { View, Text, Button, StyleSheet, ScrollView, TextInput, Alert } from "react-native";
 import { useTranslation } from "react-i18next";
 import { styles } from "../component/styles";
 import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
@@ -15,20 +7,25 @@ import { addUserText } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
 import { HOME_KEY } from "../constant/contants";
 import { useNavigation } from "@react-navigation/native";
+import { GetInstantLocation } from "../services/location";
 
 const ContactPageView = () => {
   const [userText, setUserText] = useState("");
+  const [location, setLocation] = useState("");
   const { state } = useUserContext();
   const { t } = useTranslation();
   const navigation = useNavigation();
 
   const handleUserTextSubmit = async (userText) => {
+    instantLocation();
     await addUserText(state.userId, userText);
     setUserText("");
   };
-
+  const instantLocation = async () => {
+    setLocation(await GetInstantLocation());
+  };
   return (
-    <ScrollView>
+    <ScrollView keyboardShouldPersistTaps="handled">
       <View style={styles.screen}>
         <TextInput
           value={userText}

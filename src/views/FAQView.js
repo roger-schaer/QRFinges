@@ -11,19 +11,13 @@ const FAQView = (props) => {
   const navigation = useNavigation();
 
   return (
-    <ScrollView style={styles.scrollView} scrollIndicatorInsets={{ left: 1 }}>
+    <ScrollView keyboardShouldPersistTaps="handled" style={styles.scrollView} scrollIndicatorInsets={{ left: 1 }}>
       <View>
         <Text style={styles.title}>{t("faq_title_projectExplanation")}</Text>
-        <Text style={styles.content}>
-          {t("faq_content_projectExplanation")}
-        </Text>
+        <Text style={styles.content}>{t("faq_content_projectExplanation")}</Text>
 
-        <Text style={styles.title}>
-          {t("faq_title_participationExplanation")}
-        </Text>
-        <Text style={styles.content}>
-          {t("faq_content_participationExplanation")}
-        </Text>
+        <Text style={styles.title}>{t("faq_title_participationExplanation")}</Text>
+        <Text style={styles.content}>{t("faq_content_participationExplanation")}</Text>
 
         <Text style={styles.title}>{t("faq_title_accountCreation")}</Text>
         <Text style={styles.content}>{t("faq_content_accountCreation")}</Text>
@@ -37,9 +31,7 @@ const FAQView = (props) => {
         <Text style={styles.title}>{t("faq_title_deleteAccount")}</Text>
         <Text style={styles.content}>{t("faq_content_deleteAccount")}</Text>
 
-        <CustomButton onPress={() => navigation.navigate(CONTACT_KEY)}>
-          {t("refusalButton")}
-        </CustomButton>
+        <CustomButton onPress={() => navigation.navigate(CONTACT_KEY)}>{t("refusalButton")}</CustomButton>
       </View>
     </ScrollView>
   );

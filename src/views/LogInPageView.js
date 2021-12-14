@@ -7,11 +7,7 @@ import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
 import { handleLogin } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
 import { getStorageData, setStorageData } from "../services/storage";
-import {
-  LOCALSTORAGE_USER_EMAIL,
-  LOCALSTORAGE_USER_ID,
-  SUBSCRIBE_KEY,
-} from "../constant/contants";
+import { LOCALSTORAGE_USER_EMAIL, LOCALSTORAGE_USER_ID, SUBSCRIBE_KEY } from "../constant/contants";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 
@@ -28,10 +24,7 @@ const LoginPageView = (props) => {
       let loginData = await handleLogin(email, password);
       setStorageData(LOCALSTORAGE_USER_ID, loginData.user.uid);
       setStorageData(LOCALSTORAGE_USER_EMAIL, loginData.user.email);
-      console.log(
-        "Save to local storage successfull",
-        getStorageData(LOCALSTORAGE_USER_ID)
-      );
+      console.log("Save to local storage successfull", getStorageData(LOCALSTORAGE_USER_ID));
 
       dispatch({
         type: "SET_LOGIN",
@@ -65,7 +58,7 @@ const LoginPageView = (props) => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView keyboardShouldPersistTaps="handled">
       <View style={styles.screen}>
         <Logo style={styles.logoContainer} />
         <Text style={styles.text}>{t("welcomePhrase")}</Text>
@@ -98,9 +91,7 @@ const LoginPageView = (props) => {
           {t("connect")}
         </CustomButton>
 
-        <CustomButtonNoBorders
-          onPress={(event) => navigation.navigate(SUBSCRIBE_KEY)}
-        >
+        <CustomButtonNoBorders onPress={(event) => navigation.navigate(SUBSCRIBE_KEY)}>
           {t("subscribe")}
         </CustomButtonNoBorders>
       </View>
