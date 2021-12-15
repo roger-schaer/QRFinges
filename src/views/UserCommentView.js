@@ -5,14 +5,15 @@ import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
 import { addUserText } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
 import { HOME_KEY } from "../constant/contants";
-import { t } from "i18next";
 import { GetInstantLocation } from "../services/location";
 import { askLocalisationPermission } from "../services/permissions";
+import { useTranslation } from "react-i18next";
 
 const UserCommentView = () => {
   const { state } = useUserContext();
   const [userText, setUserText] = useState("");
   const [waiting, setWaiting] = useState(false);
+  const { t } = useTranslation();
   askLocalisationPermission();
   // requestForegroundPermissions();
 

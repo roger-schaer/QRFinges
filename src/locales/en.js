@@ -85,4 +85,6 @@ export const TranslationEN = {
   message_downloading_text: "Downloading text",
   alert_location_background_issue:
     "There is an issue with background location. You are now using foreground location with limited features. Please active background localization service to use full featured application.",
+  navigate_external: "Open link - External browser",
+  navigate_internal: "Open link - Internal browser",
 };

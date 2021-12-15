@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Linking } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { WEBVIEW_KEY } from "../constant/contants";
@@ -40,7 +40,7 @@ const QRcodeView = (props) => {
 
     try {
       addRecordQRCode(state.userId, resultScanQR).then(() => {
-        props.navigation.navigate(WEBVIEW_KEY, { uri: resultScanQR });
+        isUrlInFirebase ? navigation.navigate(WEBVIEW_KEY, { uri: resultScanQR }) : Linking.openURL(resultScanQR);
         setResultScanQR("");
       });
     } catch (e) {
@@ -158,7 +158,7 @@ const QRcodeView = (props) => {
                     alignItems: "center",
                   }}
                 >
-                  Navigate {isUrlInFirebase ? "webview" : "external"}
+                  {t(`navigate_${isUrlInFirebase ? "internal" : "external"}`)}
                 </Text>
               </TouchableOpacity>
             )}
