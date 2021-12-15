@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Alert, Switch, Text, View } from "react-native";
+import { ActivityIndicator, Alert, Switch, Text, View } from "react-native";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
 import { useTranslation } from "react-i18next";
@@ -185,8 +185,14 @@ export const LocationBackgroundView = () => {
               {startDate}
             </Text>
             <Text style={styles.timerText}>{t("locationTrack")}</Text>
-            <Text style={styles.timerTexts}>latitude :{latitude}</Text>
-            <Text style={styles.timerTexts}>longitude :{longitude}</Text>
+            {latitude && longitude ? (
+              <>
+                <Text style={styles.timerTexts}>latitude :{latitude}</Text>
+                <Text style={styles.timerTexts}>longitude :{longitude}</Text>
+              </>
+            ) : (
+              <ActivityIndicator style={{ marginBottom: 15 }} />
+            )}
           </View>
         </View>
       ) : (
