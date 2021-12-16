@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useUserContext } from "../services/user-context";
 import { CustomButton } from "../component/CustomButton";
 import { useNavigation } from "@react-navigation/native";
+import { styles } from "../component/styles";
 import { StackActions } from "react-navigation";
 
 const ProfileView = (props) => {
@@ -42,17 +43,17 @@ const ProfileView = (props) => {
             <CustomButton onPress={() => navigation.navigate(QR_CODE_KEY)}>
               <AntDesign name={"qrcode"} size={15} />
               <View style={{ width: 5 }}></View>
-              <Text style={{ marginRight: 8 }}>{t("scanQr")}</Text>
+              <Text style={styles.buttonText}>{t("scanQr")}</Text>
             </CustomButton>
             <CustomButton onPress={() => navigation.navigate(PHOTO_KEY)}>
               <AntDesign name={"camera"} size={15} />
               <View style={{ width: 5 }}></View>
-              <Text>{t("takePic")}</Text>
+              <Text style={styles.buttonText}>{t("takePic")}</Text>
             </CustomButton>
             <CustomButton onPress={() => navigation.navigate(USER_COMMENT)}>
               <AntDesign name={"filetext1"} size={15} />
               <View style={{ width: 5 }}></View>
-              <Text>{t("takeCom")}</Text>
+              <Text style={styles.buttonText}>{t("takeCom")}</Text>
             </CustomButton>
           </View>
         </View>
