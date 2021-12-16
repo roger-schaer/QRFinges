@@ -34,11 +34,12 @@ export const styles = StyleSheet.create({
   contentTextField: {
     fontSize: 14,
     color: "darkgreen",
-    paddingTop: 40,
+    paddingTop: 100,
     alignContent: "center",
     //  paddingLeft: 20,
     //  paddingRight: 20,
     textAlign: "justify",
+    alignItems: "center",
   },
   logoContainer: {
     marginBottom: 20,
@@ -52,6 +53,7 @@ export const styles = StyleSheet.create({
     paddingTop: 10,
     paddingLeft: 20,
     paddingRight: 20,
+    alignItems: "center",
   },
 
   secondtitle: {
