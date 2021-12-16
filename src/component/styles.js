@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   screen: {
@@ -33,6 +33,16 @@ export const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingLeft: 20,
     paddingRight: 20,
+    textAlign: "justify",
+  },
+
+  contentTextField: {
+    fontSize: 14,
+    color: "darkgreen",
+    paddingTop: 40,
+    alignContent: "center",
+    //  paddingLeft: 20,
+    //  paddingRight: 20,
     textAlign: "justify",
   },
 
@@ -99,9 +109,8 @@ export const styles = StyleSheet.create({
   },
 
   buttonText: {
-    fontSize: 40,
-    color: "#087940",
-    textDecorationLine: "underline",
+    fontSize: 16,
+    color: "darkgreen",
     textAlign: "center",
   },
 
@@ -148,6 +157,7 @@ export const styles = StyleSheet.create({
     padding: 10,
     paddingBottom: 70,
   },
+
   barcodeBox: {
     marginVertical: 50,
     marginBottom: 20,
@@ -177,16 +187,28 @@ export const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 10,
   },
-  cameraButton: {
+  cameraButtonLeft: {
     flex: 1,
+    alignSelf: "flex-end",
+    justifyContent: "flex-start",
+  },
+  cameraButtonCenter: {
     alignSelf: "flex-end",
     alignItems: "center",
   },
+
+  cameraButtonSave: {
+    alignItems: "center",
+    marginBottom: Platform.OS == "ios" ? 15 : 0,
+  },
+
   cameraButtonContainer: {
     flex: 1,
     backgroundColor: "transparent",
     flexDirection: "row",
-    margin: 20,
+    marginBottom: 10,
+    marginLeft: 15,
+    marginRight: 15,
   },
   camera: {
     flex: 1,

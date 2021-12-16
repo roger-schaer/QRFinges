@@ -44,11 +44,11 @@ const UserCommentView = () => {
       {waiting ? (
         <View style={{ flex: 3, paddingTop: 50 }}>
           <ActivityIndicator size={"small"} />
-          <Text style={{ textAlign: "center", marginTop: 10 }}>{t("message_downloading_text")}</Text>
+          <Text style={{ textAlign: "center", marginTop: 20 }}>{t("message_downloading_text")}</Text>
         </View>
       ) : (
         <View style={styles.screen}>
-          <View style={styles.content}>
+          <View style={styles.contentTextField}>
             <TextInput
               value={userText}
               onChangeText={(text) => setUserText(text)}
