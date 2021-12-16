@@ -99,24 +99,28 @@ const CameraView = (props) => {
               }}
             >
               <View style={styles.cameraButtonContainer}>
-                <Ionicons
-                  name="camera-reverse"
-                  style={styles.cameraButton}
-                  size={40}
-                  color="green"
-                  onPress={() => {
-                    setType(
-                      type === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back
-                    );
-                  }}
-                />
-                <MaterialIcons
-                  name="enhance-photo-translate"
-                  style={styles.cameraButton}
-                  size={60}
-                  color="green"
-                  onPress={takePicture}
-                />
+                <View style={styles.cameraButtonLeft}>
+                  <Ionicons
+                      name="camera-reverse"
+                      size={40}
+                      color="green"
+                      onPress={() => {
+                        setType(
+                            type === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back
+                        );
+                      }}
+                  />
+                </View>
+
+                <View style={styles.cameraButtonCenter}>
+                  <MaterialIcons
+                      name="enhance-photo-translate"
+                      size={60}
+                      color="green"
+                      onPress={takePicture}
+                  />
+                </View>
+
               </View>
             </Camera>
           ) : (
@@ -128,13 +132,15 @@ const CameraView = (props) => {
                   <TouchableOpacity style={styles.customBtnGreen} onPress={newPicture}>
                     <Text style={{ color: "cornsilk" }}>{t("newPicture")}</Text>
                   </TouchableOpacity>
-                  <MaterialCommunityIcons
-                    name="content-save-move"
-                    style={styles.cameraButton}
-                    size={40}
-                    color="green"
-                    onPress={savePicture}
-                  />
+                  <View style={styles.cameraButtonSave}>
+                    <MaterialCommunityIcons
+                        name="content-save-move"
+                        size={40}
+                        color="green"
+                        onPress={savePicture}
+                    />
+                  </View>
+
                 </>
               )}
             </>
