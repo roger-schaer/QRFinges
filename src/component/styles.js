@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   screen: {
@@ -36,13 +36,13 @@ export const styles = StyleSheet.create({
     textAlign: "justify",
   },
 
-  contentTextField : {
+  contentTextField: {
     fontSize: 14,
     color: "darkgreen",
-    paddingTop : 40,
-    alignContent : "center",
-  //  paddingLeft: 20,
-  //  paddingRight: 20,
+    paddingTop: 40,
+    alignContent: "center",
+    //  paddingLeft: 20,
+    //  paddingRight: 20,
     textAlign: "justify",
   },
 
@@ -190,17 +190,16 @@ export const styles = StyleSheet.create({
   cameraButtonLeft: {
     flex: 1,
     alignSelf: "flex-end",
-    justifyContent : "flex-start",
-
+    justifyContent: "flex-start",
   },
   cameraButtonCenter: {
-
     alignSelf: "flex-end",
-    alignItems : "center",
+    alignItems: "center",
   },
 
   cameraButtonSave: {
-    alignItems : "center",
+    alignItems: "center",
+    marginBottom: Platform.OS == "ios" ? 15 : 0,
   },
 
   cameraButtonContainer: {
@@ -208,7 +207,8 @@ export const styles = StyleSheet.create({
     backgroundColor: "transparent",
     flexDirection: "row",
     marginBottom: 10,
-
+    marginLeft: 15,
+    marginRight: 15,
   },
   camera: {
     flex: 1,
