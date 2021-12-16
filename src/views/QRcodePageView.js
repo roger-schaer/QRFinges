@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Linking } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Linking,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { WEBVIEW_KEY } from "../constant/contants";
@@ -39,10 +45,13 @@ const QRcodeView = (props) => {
     setScanned(false);
 
     try {
-      addRecordQRCode(state.userId, resultScanQR).then(() => {
-        isUrlInFirebase ? navigation.navigate(WEBVIEW_KEY, { uri: resultScanQR }) : Linking.openURL(resultScanQR);
-        setResultScanQR("");
-      });
+      isUrlInFirebase
+        ? addRecordQRCode(state.userId, resultScanQR).then(() => {
+            // isUrlInFirebase ? navigation.navigate(WEBVIEW_KEY, { uri: resultScanQR }) : Linking.openURL(resultScanQR);
+            navigation.navigate(WEBVIEW_KEY, { uri: resultScanQR });
+            setResultScanQR("");
+          })
+        : Linking.openURL(resultScanQR) && setResultScanQR("");
     } catch (e) {
       console.log("Echec !");
     }
@@ -128,8 +137,16 @@ const QRcodeView = (props) => {
                   justifyContent: "center",
                 }}
               >
-                {isUrl && <MaterialIcons name="link" size={16} style={{ marginRight: 5 }} />}
-                <Text style={{ color: "black", fontSize: 16 }}>{resultScanQR}</Text>
+                {isUrl && (
+                  <MaterialIcons
+                    name="link"
+                    size={16}
+                    style={{ marginRight: 5 }}
+                  />
+                )}
+                <Text style={{ color: "black", fontSize: 16 }}>
+                  {resultScanQR}
+                </Text>
 
                 <MaterialIcons
                   name="close"
