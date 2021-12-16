@@ -126,7 +126,7 @@ const CameraView = (props) => {
                   <View style={styles.cameraButtonContainer}>
                     <Ionicons
                       name="camera-reverse"
-                      style={styles.cameraButton}
+                      style={styles.cameraButtonRight}
                       size={40}
                       color="green"
                       onPress={() => {
@@ -139,8 +139,8 @@ const CameraView = (props) => {
                     />
                     <MaterialIcons
                       name="enhance-photo-translate"
-                      style={styles.cameraButton}
-                      size={60}
+                      style={styles.cameraButtonCenter}
+                      size={70}
                       color="green"
                       onPress={takePicture}
                     />
