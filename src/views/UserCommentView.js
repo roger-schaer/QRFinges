@@ -57,7 +57,7 @@ const UserCommentView = () => {
         </View>
       ) : (
         <View style={styles.screen}>
-          <View style={styles.content}>
+          <View style={styles.contentTextField}>
             <TextInput
               value={userText}
               onChangeText={(text) => setUserText(text)}
