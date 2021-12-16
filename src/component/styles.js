@@ -6,19 +6,16 @@ export const styles = StyleSheet.create({
     paddingTop: 0,
     backgroundColor: "#f5f5f5",
   },
-
   text: {
     fontSize: 16,
     fontWeight: "700",
     color: "darkgreen",
     paddingBottom: 15,
   },
-
   errors: {
     paddingBottom: 15,
     color: "red",
   },
-
   textMenu: {
     fontSize: 16,
     color: "darkgreen",
@@ -26,7 +23,6 @@ export const styles = StyleSheet.create({
     paddingRight: 10,
     paddingLeft: 15,
   },
-
   content: {
     fontSize: 14,
     color: "darkgreen",
@@ -35,7 +31,14 @@ export const styles = StyleSheet.create({
     paddingRight: 20,
     textAlign: "justify",
   },
-
+  contentTextField: {
+    fontSize: 20,
+    color: "darkgreen",
+    paddingTop: 100,
+    // alignContent: "center",
+    alignItems: "center",
+    // textAlign: "justify",
+  },
   logoContainer: {
     marginBottom: 20,
     paddingBottom: 30,
@@ -83,6 +86,7 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginVertical: 10,
     marginBottom: 20,
+    fontSize: 18,
   },
 
   btnloc: {
@@ -168,7 +172,6 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
   },
-
   webviewer: {
     flex: 1,
     //flexDirection: "column",
@@ -177,10 +180,24 @@ export const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 10,
   },
-  cameraButton: {
-    flex: 1,
+  cameraButtonLeft: {
+    flex: 0.65,
     alignSelf: "flex-end",
+    flexDirection: "row",
     alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  cameraButtonCenter: {
+    paddingLeft: 10,
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    alignSelf: "flex-end",
+    flexDirection: "row",
+  },
+  cameraButtonSave: {
+    alignItems: "center",
+    marginBottom: Platform.OS == "ios" ? 15 : 0,
   },
   cameraButtonContainer: {
     flex: 1,

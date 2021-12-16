@@ -126,7 +126,7 @@ const CameraView = (props) => {
                   <View style={styles.cameraButtonContainer}>
                     <Ionicons
                       name="camera-reverse"
-                      style={styles.cameraButton}
+                      style={styles.cameraButtonLeft}
                       size={40}
                       color="green"
                       onPress={() => {
@@ -139,7 +139,7 @@ const CameraView = (props) => {
                     />
                     <MaterialIcons
                       name="enhance-photo-translate"
-                      style={styles.cameraButton}
+                      style={styles.cameraButtonCenter}
                       size={60}
                       color="green"
                       onPress={takePicture}
@@ -156,17 +156,23 @@ const CameraView = (props) => {
                         style={styles.customBtnGreen}
                         onPress={newPicture}
                       >
-                        <Text style={{ color: "cornsilk" }}>
+                        <Text
+                          style={{
+                            color: "cornsilk",
+                            textAlign: "center",
+                          }}
+                        >
                           {t("newPicture")}
                         </Text>
                       </TouchableOpacity>
-                      <MaterialCommunityIcons
-                        name="content-save-move"
-                        style={styles.cameraButton}
-                        size={40}
-                        color="green"
-                        onPress={savePicture}
-                      />
+                      <View style={styles.cameraButtonSave}>
+                        <MaterialCommunityIcons
+                          name="content-save-move"
+                          size={60}
+                          color="green"
+                          onPress={savePicture}
+                        />
+                      </View>
                     </>
                   )}
                 </>
