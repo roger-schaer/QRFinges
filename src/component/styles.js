@@ -177,25 +177,15 @@ export const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 10,
   },
-  cameraButtonRight: {
-    flex: 0.65,
-    alignSelf: "flex-end",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  cameraButtonCenter: {
+  cameraButton: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     alignSelf: "flex-end",
-    flexDirection: "row",
+    alignItems: "center",
   },
   cameraButtonContainer: {
     flex: 1,
     backgroundColor: "transparent",
     flexDirection: "row",
-    alignSelf: "flex-end",
     margin: 20,
   },
   camera: {
