@@ -12,8 +12,8 @@ const CreateProfilePageView = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [name, setName] = useState("");
-  const [firstname, setFirstname] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [firstName, setFirstName] = useState("");
   const [error, setError] = useState("");
   const { t } = useTranslation();
   const { state, dispatch } = useUserContext();
@@ -34,19 +34,20 @@ const CreateProfilePageView = (props) => {
           />
 
           <TextInput
-            value={name}
-            onChangeText={(text) => setName(text)}
-            placeholder={t("name")}
+            value={firstName}
+            onChangeText={(text) => setFirstName(text)}
+            placeholder={t("firstName")}
             placeholderTextColor={"darkgreen"}
             style={styles.input}
           />
           <TextInput
-            value={firstname}
-            onChangeText={(text) => setFirstname(text)}
-            placeholder={t("firstname")}
+            value={lastName}
+            onChangeText={(text) => setLastName(text)}
+            placeholder={t("lastName")}
             placeholderTextColor={"darkgreen"}
             style={styles.input}
           />
+
           <TextInput
             value={password}
             onChangeText={(text) => setPassword(text)}
@@ -67,8 +68,8 @@ const CreateProfilePageView = (props) => {
           <CustomButton
             onPress={(event) => {
               if (
-                firstname == "" ||
-                name == "" ||
+                firstName == "" ||
+                lastName == "" ||
                 email == "" ||
                 password == ""
               ) {
@@ -78,7 +79,7 @@ const CreateProfilePageView = (props) => {
                 return setError(t("passwordDoNotMatch"));
               }
               setError("");
-              handleSignup(email, password, name, firstname)
+              handleSignup(email, password, firstName, lastName)
                 .then((res) => {
                   setStorageData(LOCALSTORAGE_USER_ID, res.user.uid);
                   dispatch({

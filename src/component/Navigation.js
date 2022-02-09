@@ -30,8 +30,11 @@ import {
   WEBVIEW_KEY,
   PHOTO_KEY,
   USER_COMMENT,
+  LOCALSTORAGE_USER_ID,
+  LOCALSTORAGE_USER_EMAIL,
 } from "../constant/contants";
 import { useNavigation } from "@react-navigation/native";
+import { setStorageData } from "../services/storage";
 
 const Drawer = createDrawerNavigator();
 
@@ -147,15 +150,18 @@ const CustomDrawerView = (props) => {
   const navigation = useNavigation();
 
   const out = async () => {
-    handleSignOut();
+    await handleSignOut();
+
+    setStorageData(LOCALSTORAGE_USER_ID);
+    setStorageData(LOCALSTORAGE_USER_EMAIL);
 
     dispatch({ type: "IS_LOGGED_OFF" });
     navigation.navigate(HOME_KEY);
   };
 
-  const logout = (e) => {
+  const logout = async (e) => {
     e.preventDefault();
-    out();
+    await out();
   };
 
   return (
@@ -200,8 +206,8 @@ const CustomDrawerView = (props) => {
               </View>
             </View>
           )}
-          onPress={(event) => {
-            logout(event);
+          onPress={async (event) => {
+            await logout(event);
           }}
         />
       )}

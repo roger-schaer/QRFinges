@@ -52,15 +52,15 @@ export const auth = (() => {
 export const storage = getStorage(app);
 export const photoFirebaseStorage = ref(storage, "Photos");
 
-export const handleSignup = async (email, password, name, firstname) => {
+export const handleSignup = async (email, password, firstName, lastName) => {
   const user = await createUserWithEmailAndPassword(auth, email, password);
   console.log("user id:", user.user.uid);
 
   setDoc(doc(firestore, "users", user.user.uid), {
     email: email,
     isAdmin: false,
-    name: name,
-    firstname: firstname,
+    firstName: firstName,
+    lastName: lastName,
   });
   return user;
 };
