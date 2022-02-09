@@ -16,13 +16,10 @@ import { getStorage, ref } from "firebase/storage";
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBKKBamDhPsS4DBxZ_Na1aCWybXwLPthPU",
-  authDomain: "qrfinges.firebaseapp.com",
-  projectId: "qrfinges",
-  storageBucket: "qrfinges.appspot.com",
-  messagingSenderId: "492229251310",
-  appId: "1:492229251310:web:3e07d76e9814bf090123ff",
-  measurementId: "G-MYBSS7VS0G",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET
 };
 
 // Initialize Firebase
