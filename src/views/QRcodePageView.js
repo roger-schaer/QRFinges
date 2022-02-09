@@ -53,7 +53,7 @@ const QRcodeView = (props) => {
           })
         : Linking.openURL(resultScanQR) && setResultScanQR("");
     } catch (e) {
-      console.log("Echec !");
+      console.error("Echec !");
     }
   };
 

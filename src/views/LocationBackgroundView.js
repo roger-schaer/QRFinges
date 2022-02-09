@@ -3,9 +3,16 @@ import { ActivityIndicator, Alert, Switch, Text, View } from "react-native";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
 import { useTranslation } from "react-i18next";
-import { BACKGROUND_LOCATION_UPDATES_TASK, LOCALSTORAGE_USER_ID } from "../constant/contants";
+import {
+  BACKGROUND_LOCATION_UPDATES_TASK,
+  LOCALSTORAGE_USER_ID,
+} from "../constant/contants";
 
-import { addRecordLocations, startRecordLocations, stopRecordLocations } from "../services/firebase";
+import {
+  addRecordLocations,
+  startRecordLocations,
+  stopRecordLocations,
+} from "../services/firebase";
 import { GetInstantLocation } from "../services/location";
 import { getStorageData, setStorageData } from "../services/storage";
 import { useUserContext } from "../services/user-context";
@@ -29,8 +36,9 @@ export const LocationBackgroundView = () => {
   let timer;
   const { state } = useUserContext();
 
-  const resetCurrentWalkRecord = () => {
-    currentWalkRecord !== null && stopRecordLocations(state.userId, currentWalkRecord);
+  const resetCurrentWalkRecord = async () => {
+    currentWalkRecord !== null &&
+      (await stopRecordLocations(state.userId, currentWalkRecord));
     setCurrentWalkRecord(null);
     setStorageData(WALK_RECORD_KEY, null);
     setStorageData(CURRENT_LAT, null);
@@ -40,7 +48,11 @@ export const LocationBackgroundView = () => {
     setLongitude(null);
     setStartDate(null);
     timer && clearTimeout(timer);
-    Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_UPDATES_TASK);
+    let isTaskRegistered = await TaskManager.isTaskRegisteredAsync(
+      BACKGROUND_LOCATION_UPDATES_TASK
+    );
+    if (isTaskRegistered)
+      Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_UPDATES_TASK);
   };
 
   useEffect(() => {
@@ -50,20 +62,24 @@ export const LocationBackgroundView = () => {
   }, []);
 
   useEffect(() => {
-    getStorageData(WALK_RECORD_KEY)
-      .then((walkRecord) => {
-        if (isEnabled) {
-          setCurrentWalkRecord(walkRecord);
+    async function initWalkRecord() {
+      getStorageData(WALK_RECORD_KEY)
+        .then(async (walkRecord) => {
+          if (isEnabled) {
+            setCurrentWalkRecord(walkRecord);
+            /* foregroundLocationFetch(); */
+            backgroundLocationFetch();
+          } else {
+            await resetCurrentWalkRecord();
+          }
+        })
+        .catch(async (e) => {
+          console.error(e);
+          await resetCurrentWalkRecord();
+        });
+    }
 
-          /* foregroundLocationFetch(); */
-          backgroundLocationFetch();
-        } else {
-          resetCurrentWalkRecord();
-        }
-      })
-      .catch((e) => {
-        resetCurrentWalkRecord();
-      });
+    initWalkRecord();
   }, [isEnabled]);
 
   useEffect(() => {
@@ -72,7 +88,10 @@ export const LocationBackgroundView = () => {
     if (currentWalkRecord == null && isEnabled) {
       startRecordLocations(state.userId)
         .then((walkRecord) => {
-          setStorageData(START_DATE, moment(new Date()).format("DD/MM/YYYY LTS"));
+          setStorageData(
+            START_DATE,
+            moment(new Date()).format("DD/MM/YYYY LTS")
+          );
           setStorageData(WALK_RECORD_KEY, walkRecord.id);
           setCurrentWalkRecord(walkRecord.id);
         })
@@ -121,7 +140,7 @@ export const LocationBackgroundView = () => {
     if (refreshTimer !== 0 && isEnabled) {
       timer = setTimeout(async () => {
         const loc = await GetInstantLocation();
-        console.log(loc);
+        console.log("location", loc);
         setStorageData(CURRENT_LAT, "" + loc.latitude);
         setStorageData(CURRENT_LON, "" + loc.longitude);
         setRefreshTimer(refreshTimer + 1);
@@ -179,7 +198,9 @@ export const LocationBackgroundView = () => {
       {isEnabled ? (
         <View style={styles.timerLine}>
           <View>
-            <Text style={{ fontWeight: "bold", paddingBottom: 10 }}>{t("actualWalk")}</Text>
+            <Text style={{ fontWeight: "bold", paddingBottom: 10 }}>
+              {t("actualWalk")}
+            </Text>
             <Text style={styles.timerText}>
               {t("startTrack")}
               {startDate}
@@ -203,32 +224,35 @@ export const LocationBackgroundView = () => {
   );
 };
 
-TaskManager.defineTask(BACKGROUND_LOCATION_UPDATES_TASK, async ({ data, error }) => {
-  if (error) {
-    console.log("Background error", error);
-    return;
-  }
-  if (data) {
-    const { locations } = data;
-    setStorageData(CURRENT_LAT, "" + locations[0].coords.latitude);
-    setStorageData(CURRENT_LON, "" + locations[0].coords.longitude);
-    getStorageData("walkRecord").then((wr) => {
-      if (wr !== null) {
-        console.log(
-          `Background -> latitude: ${locations[0].coords.latitude} - longitude: ${locations[0].coords.longitude}`,
-          wr
-        );
-        getStorageData(LOCALSTORAGE_USER_ID).then((user_id) => {
-          addRecordLocations(
-            {
-              latitude: locations[0].coords.latitude,
-              longitude: locations[0].coords.longitude,
-            },
-            user_id,
+TaskManager.defineTask(
+  BACKGROUND_LOCATION_UPDATES_TASK,
+  async ({ data, error }) => {
+    if (error) {
+      console.log("Background error", error);
+      return;
+    }
+    if (data) {
+      const { locations } = data;
+      setStorageData(CURRENT_LAT, "" + locations[0].coords.latitude);
+      setStorageData(CURRENT_LON, "" + locations[0].coords.longitude);
+      getStorageData("walkRecord").then((wr) => {
+        if (wr !== null) {
+          console.log(
+            `Background -> latitude: ${locations[0].coords.latitude} - longitude: ${locations[0].coords.longitude}`,
             wr
           );
-        });
-      }
-    });
+          getStorageData(LOCALSTORAGE_USER_ID).then((user_id) => {
+            addRecordLocations(
+              {
+                latitude: locations[0].coords.latitude,
+                longitude: locations[0].coords.longitude,
+              },
+              user_id,
+              wr
+            );
+          });
+        }
+      });
+    }
   }
-});
+);

@@ -8,7 +8,6 @@ import { useUserContext } from "../services/user-context";
 import { CustomButton } from "../component/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "../component/styles";
-import { StackActions } from "react-navigation";
 
 const ProfileView = (props) => {
   const { state } = useUserContext();

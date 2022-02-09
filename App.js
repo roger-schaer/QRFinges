@@ -6,8 +6,8 @@ import { UserProvider } from "./src/services/user-context";
 import NavWithMenu from "./src/component/Navigation";
 
 import { LogBox } from "react-native";
-LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
-LogBox.ignoreAllLogs(); //Ignore all log notifications
+
+LogBox.ignoreLogs(["Setting a timer for a long period"]);
 
 const App = () => {
   return (

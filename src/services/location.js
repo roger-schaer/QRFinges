@@ -41,10 +41,15 @@ export const GetInstantLocation = async () => {
     return {};
   }
   try {
-    location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
-    return { latitude: location.coords.latitude, longitude: location.coords.longitude };
+    location = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.Balanced,
+    });
+    return {
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    };
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return {};
   }
 };

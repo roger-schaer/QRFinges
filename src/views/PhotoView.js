@@ -21,7 +21,7 @@ import {
 import { useUserContext } from "../services/user-context";
 import { t } from "i18next";
 import { storage, addImageToUser } from "../services/firebase";
-import { ref, uploadBytes } from "@firebase/storage";
+import { ref, uploadBytes } from "firebase/storage";
 import LinearProgress from "react-native-elements/dist/linearProgress/LinearProgress";
 import { GetInstantLocation } from "../services/location";
 
@@ -88,7 +88,7 @@ const CameraView = (props) => {
         newPicture();
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e);
         newPicture();
       });
   };

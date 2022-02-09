@@ -13,7 +13,7 @@ const HomeView = () => {
 
   useEffect(() => {
     getStorageData(LOCALSTORAGE_USER_ID).then((v) => {
-      console.log(v);
+      console.log("localstorage user id", v);
       if (v !== null) {
         getStorageData(LOCALSTORAGE_USER_EMAIL).then((email) => {
           dispatch({

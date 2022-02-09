@@ -66,7 +66,12 @@ const CreateProfilePageView = (props) => {
           {error ? <Text style={styles.errors}> {error}</Text> : null}
           <CustomButton
             onPress={(event) => {
-              if (firstname == "" || name == "" || email == "" || password == "") {
+              if (
+                firstname == "" ||
+                name == "" ||
+                email == "" ||
+                password == ""
+              ) {
                 return setError(t("allFieldRequired"));
               }
               if (password !== confirmPassword) {
@@ -98,7 +103,7 @@ const CreateProfilePageView = (props) => {
                     default:
                       setError(t("errorOccurred"));
                   }
-                  console.log(e);
+                  console.error(e);
                 });
             }}
           >

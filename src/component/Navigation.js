@@ -16,7 +16,7 @@ import {
   DrawerItem,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import { handleSignOut } from "../services/firebase";
@@ -132,9 +132,9 @@ function HamburgerMenu() {
   const navigation = useNavigation();
 
   return (
-    <AntDesign
+    <MaterialIcons
       style={styles.iconContainer}
-      name={"menufold"}
+      name={"menu"}
       size={25}
       onPress={() => navigation.openDrawer()}
     />
@@ -225,8 +225,7 @@ const OverMenu = () => {
       drawerContent={(props) => <CustomDrawerView {...props} />}
       screenOptions={{
         headerShown: true,
-        headerLeft: () => <BackButton />,
-        headerRight: () => <HamburgerMenu />,
+        headerLeft: () => <HamburgerMenu />,
       }}
     >
       {drawerUrls.map((drawer) => (
@@ -235,7 +234,6 @@ const OverMenu = () => {
           name={drawer.pageKey}
           component={drawer.navigationScreen}
           options={{
-            drawerPosition: "right",
             drawerItemStyle: {
               display: isDrawerButtonDisplayed(drawer) ? "flex" : "none",
             },
