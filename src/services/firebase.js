@@ -130,16 +130,11 @@ export const addRecordQRCode = async (currentUser, QRCode) => {
   );
 };
 
-export const addImageToUser = async (
-  currentUser,
-  imageStorageUri,
-  date,
-  location
-) => {
-  return await addDoc(collection(firestore, "users", currentUser, "images"), {
+export const addImageToUser = async (currentUser, imageURL, date, location) => {
+  return await addDoc(collection(firestore, "users", currentUser, "photos"), {
     date: date,
     location: location,
-    imageURL: imageStorageUri,
+    imageURL: imageURL,
   });
 };
 export const qrcodeInFirebase = async (url) => {

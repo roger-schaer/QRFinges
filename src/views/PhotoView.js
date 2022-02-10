@@ -21,7 +21,7 @@ import {
 import { useUserContext } from "../services/user-context";
 import { t } from "i18next";
 import { storage, addImageToUser } from "../services/firebase";
-import { ref, uploadBytes } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import LinearProgress from "react-native-elements/dist/linearProgress/LinearProgress";
 import { getCurrentPosition } from "../services/location";
 
@@ -76,9 +76,12 @@ const CameraView = (props) => {
 
     try {
       await uploadBytes(storageRef, blob);
+
+      const imageURL = await getDownloadURL(storageRef);
+
       await addImageToUser(
         state.userId,
-        storageRef.name,
+        imageURL,
         date,
         await getCurrentPosition()
       );
