@@ -45,7 +45,7 @@ export const TranslationEN = {
   scan_OK: "Code QR has been scanned ! (click on the Green button to finish)",
   start: " start",
   subscribe: "Sign up",
-  userText: "Add your comment",
+  comment: "Add your comment",
   faq_title_projectExplanation: "What is the project about?",
   faq_content_projectExplanation:
     "QRFinges is an application developed as part of an art project of EDHEA, in collaboration with the Bois de Finges. The application allows you to scan the QR-Codes placed in the Bois de Finges to learn more during your visit. Your GPS data are collected during the visit and will be combined with those of other visitors. Together, these data will allow the creation of a collaborative work of art.",

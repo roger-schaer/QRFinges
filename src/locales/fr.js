@@ -40,7 +40,7 @@ export const TranslationFR = {
   faq: "FAQ",
   syncData: "Vos données sont synchronisées",
   scan_again: "Scanner encore ?",
-  userText: "Ajoutez votre commentaire",
+  comment: "Ajoutez votre commentaire",
   faq_title_projectExplanation: "En quoi le projet consiste le projet ?",
   faq_content_projectExplanation:
     "QRFinges est une application développée dans le cadre d’un projet artistique de l’EDHEA, en collaboration avec le Bois de Finges. L’application vous permet de scanner les QR-Codes disposés dans le Bois de Finges pour en apprendre plus lors de votre visite. Vos données GPS sont récoltées pendant la visite et seront assemblées à celles des autres visiteurs. Ensemble, ces données permettront de créer une œuvre d’art collaborative. ",

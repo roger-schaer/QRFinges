@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { styles } from "../component/styles";
 import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
-import { addUserText } from "../services/firebase";
+import { addComment } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
 import { getCurrentPosition } from "../services/location";
 import { askLocalisationPermission } from "../services/permissions";
@@ -17,16 +17,16 @@ import { useTranslation } from "react-i18next";
 
 const UserCommentView = () => {
   const { state } = useUserContext();
-  const [userText, setUserText] = useState("");
+  const [comment, setComment] = useState("");
   const [waiting, setWaiting] = useState(false);
   const { t } = useTranslation();
   askLocalisationPermission();
   // requestForegroundPermissions();
 
-  const handleUserTextSubmit = async (userText) => {
+  const handleCommentSubmit = async (comment) => {
     setWaiting(true);
     // instantLocation();
-    addUserText(state.userId, userText, await getCurrentPosition())
+    addComment(state.userId, comment, await getCurrentPosition())
       .then(() => {
         Alert.alert(t("titleDialogTextSend"), " ", [
           {
@@ -45,7 +45,7 @@ const UserCommentView = () => {
   };
 
   const reset = () => {
-    setUserText("");
+    setComment("");
     setWaiting(false);
   };
   return (
@@ -61,22 +61,22 @@ const UserCommentView = () => {
         <View style={styles.screen}>
           <View style={styles.contentTextField}>
             <TextInput
-              value={userText}
-              onChangeText={(text) => setUserText(text)}
-              placeholder={t("userText")}
+              value={comment}
+              onChangeText={(text) => setComment(text)}
+              placeholder={t("comment")}
               placeholderTextColor={"darkgreen"}
               style={styles.input}
             />
             <CustomButtonNoBorders
               onPress={async (event) => {
-                if (userText === "") {
+                if (comment === "") {
                   Alert.alert(t("titleDialog"), t("addComment"), [
                     {
                       text: t("ok"),
                     },
                   ]);
                 } else {
-                  await handleUserTextSubmit(userText);
+                  await handleCommentSubmit(comment);
                 }
               }}
             >
