@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Alert,
@@ -11,8 +11,7 @@ import { styles } from "../component/styles";
 import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
 import { addUserText } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
-import { HOME_KEY } from "../constant/contants";
-import { GetInstantLocation } from "../services/location";
+import { getCurrentPosition } from "../services/location";
 import { askLocalisationPermission } from "../services/permissions";
 import { useTranslation } from "react-i18next";
 
@@ -27,7 +26,7 @@ const UserCommentView = () => {
   const handleUserTextSubmit = async (userText) => {
     setWaiting(true);
     // instantLocation();
-    addUserText(state.userId, userText, await GetInstantLocation())
+    addUserText(state.userId, userText, await getCurrentPosition())
       .then(() => {
         Alert.alert(t("titleDialogTextSend"), " ", [
           {
@@ -38,7 +37,10 @@ const UserCommentView = () => {
       .then(() => {
         reset();
       })
-      .catch(() => reset())
+      .catch((e) => {
+        console.error(e);
+        reset();
+      })
       .finally(() => reset());
   };
 
@@ -66,15 +68,15 @@ const UserCommentView = () => {
               style={styles.input}
             />
             <CustomButtonNoBorders
-              onPress={(event) => {
-                if (userText == "") {
+              onPress={async (event) => {
+                if (userText === "") {
                   Alert.alert(t("titleDialog"), t("addComment"), [
                     {
                       text: t("ok"),
                     },
                   ]);
                 } else {
-                  handleUserTextSubmit(userText);
+                  await handleUserTextSubmit(userText);
                 }
               }}
             >

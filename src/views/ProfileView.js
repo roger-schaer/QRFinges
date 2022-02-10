@@ -1,18 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { LocationBackgroundView } from "./LocationBackgroundView";
-import { QR_CODE_KEY, PHOTO_KEY, USER_COMMENT } from "../constant/contants";
+import { QR_CODE_KEY, PHOTO_KEY, USER_COMMENT } from "../constant/constants";
 import { useTranslation } from "react-i18next";
-import { useUserContext } from "../services/user-context";
 import { CustomButton } from "../component/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "../component/styles";
+import * as Location from "expo-location";
 
 const ProfileView = (props) => {
-  const { state } = useUserContext();
   const navigation = useNavigation();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    async function getLocation() {
+      console.log("ooook, let's see where we are");
+
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.error("Permission to access location was denied");
+        return;
+      } else {
+        console.log("Well we got the permission for the location, wtf");
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      console.log("location received", location);
+    }
+
+    getLocation();
+  }, []);
 
   return (
     <View

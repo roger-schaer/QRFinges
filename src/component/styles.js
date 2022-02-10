@@ -200,7 +200,7 @@ export const styles = StyleSheet.create({
   },
   cameraButtonSave: {
     alignItems: "center",
-    marginBottom: Platform.OS == "ios" ? 15 : 0,
+    marginBottom: Platform.OS === "ios" ? 15 : 0,
   },
   cameraButtonContainer: {
     flex: 1,
@@ -211,11 +211,15 @@ export const styles = StyleSheet.create({
     marginRight: 15,
   },
   camera: {
-    flex: 1,
+    flex: 8,
     margin: 2,
   },
   languageUnderline: {
     textDecorationLine: "underline",
     color: "darkgreen",
+  },
+  flexContainer: {
+    display: "flex",
+    flex: 1,
   },
 });

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { WEBVIEW_KEY } from "../constant/contants";
+import { WEBVIEW_KEY } from "../constant/constants";
 import { t } from "i18next";
 import { qrcodeInFirebase, addRecordQRCode } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
@@ -16,7 +16,7 @@ import { askCameraPermission } from "../services/permissions";
 import { useNavigation } from "@react-navigation/native";
 
 export const checkIsUrl = (value) => {
-  var pattern = new RegExp(
+  const pattern = new RegExp(
     "^(https?:\\/\\/)?" + // protocol
       "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
       "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address

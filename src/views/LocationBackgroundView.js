@@ -6,14 +6,14 @@ import { useTranslation } from "react-i18next";
 import {
   BACKGROUND_LOCATION_UPDATES_TASK,
   LOCALSTORAGE_USER_ID,
-} from "../constant/contants";
+} from "../constant/constants";
 
 import {
   addRecordLocations,
   startRecordLocations,
   stopRecordLocations,
 } from "../services/firebase";
-import { GetInstantLocation } from "../services/location";
+import { getCurrentPosition } from "../services/location";
 import { getStorageData, setStorageData } from "../services/storage";
 import { useUserContext } from "../services/user-context";
 import { LinearProgress } from "react-native-elements";
@@ -52,7 +52,7 @@ export const LocationBackgroundView = () => {
       BACKGROUND_LOCATION_UPDATES_TASK
     );
     if (isTaskRegistered)
-      Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_UPDATES_TASK);
+      await Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_UPDATES_TASK);
   };
 
   useEffect(() => {
@@ -68,7 +68,7 @@ export const LocationBackgroundView = () => {
           if (isEnabled) {
             setCurrentWalkRecord(walkRecord);
             /* foregroundLocationFetch(); */
-            backgroundLocationFetch();
+            await backgroundLocationFetch();
           } else {
             await resetCurrentWalkRecord();
           }
@@ -95,12 +95,13 @@ export const LocationBackgroundView = () => {
           setStorageData(WALK_RECORD_KEY, walkRecord.id);
           setCurrentWalkRecord(walkRecord.id);
         })
-        .then((d) => {
-          uploadData();
+        .then(async (d) => {
+          await uploadData();
         });
     } else if (currentWalkRecord != null && isEnabled) {
-      const interval = setInterval(() => {
-        uploadData();
+      // TODO - Check if this is the best way to handle this!
+      const interval = setInterval(async () => {
+        await uploadData();
       }, 3000);
       return () => clearInterval(interval);
     }
@@ -139,7 +140,7 @@ export const LocationBackgroundView = () => {
   useEffect(() => {
     if (refreshTimer !== 0 && isEnabled) {
       timer = setTimeout(async () => {
-        const loc = await GetInstantLocation();
+        const loc = await getCurrentPosition();
         console.log("location", loc);
         setStorageData(CURRENT_LAT, "" + loc.latitude);
         setStorageData(CURRENT_LON, "" + loc.longitude);
@@ -173,7 +174,7 @@ export const LocationBackgroundView = () => {
   }; */
 
   const uploadData = async () => {
-    getGPSPosition();
+    await getGPSPosition();
   };
 
   const getGPSPosition = async () => {

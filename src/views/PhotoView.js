@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import {
   View,
@@ -23,7 +23,7 @@ import { t } from "i18next";
 import { storage, addImageToUser } from "../services/firebase";
 import { ref, uploadBytes } from "firebase/storage";
 import LinearProgress from "react-native-elements/dist/linearProgress/LinearProgress";
-import { GetInstantLocation } from "../services/location";
+import { getCurrentPosition } from "../services/location";
 
 const CameraView = (props) => {
   const { state } = useUserContext();
@@ -68,29 +68,28 @@ const CameraView = (props) => {
     let blob = await response.blob();
 
     date = new Date();
-    uri =
-      date.toISOString().toLocaleLowerCase("fr-CH") +
-      "_" +
-      picture.substring(picture.lastIndexOf("/") + 1);
+    uri = `${date.toISOString().toLocaleLowerCase("fr-CH")}_${picture.substring(
+      picture.lastIndexOf("/") + 1
+    )}`;
 
     const storageRef = ref(storage, "Photos/" + uri);
 
-    uploadBytes(storageRef, blob)
-      .then(async () => {
-        addImageToUser(
-          state.userId,
-          storageRef.name,
-          date,
-          await GetInstantLocation()
-        );
-        blob = null;
-        console.log("Image uploaded!");
-        newPicture();
-      })
-      .catch((e) => {
-        console.error(e);
-        newPicture();
-      });
+    try {
+      await uploadBytes(storageRef, blob);
+      await addImageToUser(
+        state.userId,
+        storageRef.name,
+        date,
+        await getCurrentPosition()
+      );
+
+      blob = null;
+      console.log("Image uploaded!");
+      newPicture();
+    } catch (e) {
+      console.error(e);
+      newPicture();
+    }
   };
 
   const newPicture = () => {
@@ -116,19 +115,16 @@ const CameraView = (props) => {
           {isFocused ? (
             <>
               {!isPicked ? (
-                <Camera
-                  style={styles.camera}
-                  type={type}
-                  ref={(refs) => {
-                    camera = refs;
-                  }}
-                >
+                <View style={styles.flexContainer}>
+                  <Camera
+                    style={styles.camera}
+                    type={type}
+                    ref={(refs) => {
+                      camera = refs;
+                    }}
+                  />
                   <View style={styles.cameraButtonContainer}>
-                    <Ionicons
-                      name="camera-reverse"
-                      style={styles.cameraButtonLeft}
-                      size={40}
-                      color="green"
+                    <TouchableOpacity
                       onPress={() => {
                         setType(
                           type === Camera.Constants.Type.back
@@ -136,16 +132,22 @@ const CameraView = (props) => {
                             : Camera.Constants.Type.back
                         );
                       }}
-                    />
-                    <MaterialIcons
-                      name="enhance-photo-translate"
-                      style={styles.cameraButtonCenter}
-                      size={60}
-                      color="green"
+                      style={styles.cameraButtonLeft}
+                    >
+                      <Ionicons name="camera-reverse" size={40} color="green" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
                       onPress={takePicture}
-                    />
+                      style={styles.cameraButtonCenter}
+                    >
+                      <MaterialIcons
+                        name="enhance-photo-translate"
+                        size={60}
+                        color="green"
+                      />
+                    </TouchableOpacity>
                   </View>
-                </Camera>
+                </View>
               ) : (
                 <>
                   {isUploading ? <LinearProgress color="darkgreen" /> : null}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, Image, Text } from "react-native";
+import { Image } from "react-native";
 
 export const Logo = () => {
   return (

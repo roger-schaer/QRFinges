@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextInput, ScrollView } from "react-native";
 import { handleSignup } from "../services/firebase";
 import { CustomButton } from "../component/CustomButton";
 import { useTranslation } from "react-i18next";
-import { HOME_KEY, LOCALSTORAGE_USER_ID } from "../constant/contants";
+import { HOME_KEY, LOCALSTORAGE_USER_ID } from "../constant/constants";
 import { setStorageData } from "../services/storage";
 import { useUserContext } from "../services/user-context";
 import { useNavigation } from "@react-navigation/native";
@@ -16,7 +16,7 @@ const CreateProfilePageView = (props) => {
   const [firstName, setFirstName] = useState("");
   const [error, setError] = useState("");
   const { t } = useTranslation();
-  const { state, dispatch } = useUserContext();
+  const { dispatch } = useUserContext();
   const navigation = useNavigation();
 
   return (
@@ -68,10 +68,10 @@ const CreateProfilePageView = (props) => {
           <CustomButton
             onPress={(event) => {
               if (
-                firstName == "" ||
-                lastName == "" ||
-                email == "" ||
-                password == ""
+                firstName === "" ||
+                lastName === "" ||
+                email === "" ||
+                password === ""
               ) {
                 return setError(t("allFieldRequired"));
               }
@@ -90,7 +90,7 @@ const CreateProfilePageView = (props) => {
                   navigation.navigate(HOME_KEY);
                 })
                 .catch((e) => {
-                  var errorCode = e.code;
+                  const errorCode = e.code;
                   switch (errorCode) {
                     case "auth/email-already-in-use":
                       setError(t("emailAlreadyInUse"));

@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import ContactPageView from "../views/ContactPageView";
 import FAQView from "../views/FAQView";
-import LoginPageView from "../views/LogInPageView";
 import QRcodeView from "../views/QRcodePageView";
 import CreateProfilePageView from "../views/CreateProfilePageView";
 import HomeView from "../views/HomeView";
 import WebViewer from "../views/InternWebViewer";
 import CameraView from "../views/PhotoView";
 import UserCommentView from "../views/UserCommentView";
-import { styles } from "../component/styles";
+import { styles } from "./styles";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -32,7 +31,7 @@ import {
   USER_COMMENT,
   LOCALSTORAGE_USER_ID,
   LOCALSTORAGE_USER_EMAIL,
-} from "../constant/contants";
+} from "../constant/constants";
 import { useNavigation } from "@react-navigation/native";
 import { setStorageData } from "../services/storage";
 
@@ -175,11 +174,11 @@ const CustomDrawerView = (props) => {
               <View key={`drawer-item-language-link-${l}`}>
                 <Text
                   style={styles.textMenu}
-                  onPress={() => {
-                    i18n.changeLanguage(l);
+                  onPress={async () => {
+                    await i18n.changeLanguage(l);
                   }}
                 >
-                  {i18n.language == l && (
+                  {i18n.language === l && (
                     <Text style={styles.languageUnderline}>
                       {l.toUpperCase()}
                     </Text>
@@ -216,13 +215,13 @@ const CustomDrawerView = (props) => {
 };
 
 const OverMenu = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { state } = useUserContext();
   const isDrawerButtonDisplayed = (drawer) => {
     return (
       (drawer.displayWhenLogged || drawer.displayWhenNotLogged) &&
-      (drawer.displayWhenLogged == state.isLoggedIn ||
-        drawer.displayWhenNotLogged == !state.isLoggedIn)
+      (drawer.displayWhenLogged === state.isLoggedIn ||
+        drawer.displayWhenNotLogged === !state.isLoggedIn)
     );
   };
   return (

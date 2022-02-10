@@ -89,7 +89,7 @@ export const TranslationFR = {
   takePic: "Envoyer une photo",
   takeCom: "Envoyer un commentaire",
   message_downloading_image: "Téléchargement de l'image",
-  message_downloading_text: "Téléchargement du text",
+  message_downloading_text: "Téléchargement du texte",
   alert_location_background_issue:
     "Il y a un problème avec la localisation d'arrière-plan. Vous utilisez actuellement la localisation d'avant-plan avec des fonctionnalités limitées. Veuillez activer le service de localisation d'arrière-plan pour utiliser l'application complète.",
   navigate_external: "Ouvrir lien - Navigateur externe",

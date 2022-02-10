@@ -3,21 +3,31 @@ import { View, Text, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import { styles } from "../component/styles";
 import { CustomButton } from "../component/CustomButton";
-import { CONTACT_KEY } from "../constant/contants";
+import { CONTACT_KEY } from "../constant/constants";
 import { useNavigation } from "@react-navigation/native";
 
 const FAQView = (props) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigation = useNavigation();
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" style={styles.scrollView} scrollIndicatorInsets={{ left: 1 }}>
+    <ScrollView
+      keyboardShouldPersistTaps="handled"
+      style={styles.scrollView}
+      scrollIndicatorInsets={{ left: 1 }}
+    >
       <View>
         <Text style={styles.title}>{t("faq_title_projectExplanation")}</Text>
-        <Text style={styles.content}>{t("faq_content_projectExplanation")}</Text>
+        <Text style={styles.content}>
+          {t("faq_content_projectExplanation")}
+        </Text>
 
-        <Text style={styles.title}>{t("faq_title_participationExplanation")}</Text>
-        <Text style={styles.content}>{t("faq_content_participationExplanation")}</Text>
+        <Text style={styles.title}>
+          {t("faq_title_participationExplanation")}
+        </Text>
+        <Text style={styles.content}>
+          {t("faq_content_participationExplanation")}
+        </Text>
 
         <Text style={styles.title}>{t("faq_title_accountCreation")}</Text>
         <Text style={styles.content}>{t("faq_content_accountCreation")}</Text>
@@ -31,7 +41,9 @@ const FAQView = (props) => {
         <Text style={styles.title}>{t("faq_title_deleteAccount")}</Text>
         <Text style={styles.content}>{t("faq_content_deleteAccount")}</Text>
 
-        <CustomButton onPress={() => navigation.navigate(CONTACT_KEY)}>{t("refusalButton")}</CustomButton>
+        <CustomButton onPress={() => navigation.navigate(CONTACT_KEY)}>
+          {t("refusalButton")}
+        </CustomButton>
       </View>
     </ScrollView>
   );

@@ -15,7 +15,7 @@ export function askCameraPermission() {
         setHasPermission(status === "granted");
 
         if (status === "granted") {
-          console.log("permission granted");
+          console.log("camera permission granted");
         }
       } catch (e) {
         console.error(e);
@@ -55,7 +55,7 @@ export function askLocalisationPermission() {
         setHasPermission(status === "granted");
 
         if (status === "granted") {
-          console.log("permission granted");
+          console.log("location permission granted");
         }
       } catch (e) {
         console.error(e);
