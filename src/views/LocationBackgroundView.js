@@ -3,10 +3,13 @@ import { ActivityIndicator, Alert, Switch, Text, View } from "react-native";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
 import { useTranslation } from "react-i18next";
-import { BACKGROUND_LOCATION_UPDATES_TASK } from "../constant/constants";
+import {
+  BACKGROUND_LOCATION_UPDATES_TASK,
+  FIRESTORE_WALK_HISTORY_KEY,
+} from "../constant/constants";
 
 import {
-  addRecordLocations,
+  addWalkLocations,
   startRecordLocations,
   stopRecordLocations,
 } from "../services/firebase";
@@ -18,7 +21,6 @@ import { styles } from "../component/styles";
 import moment from "moment";
 import { auth } from "../services/firebase";
 
-const WALK_RECORD_KEY = "walkRecord";
 const START_DATE = "startDate";
 const CURRENT_LAT = "currentLatitude";
 const CURRENT_LON = "currentLongitude";
@@ -28,17 +30,17 @@ export const LocationBackgroundView = () => {
   const [longitude, setLongitude] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [gpsErrorMsg, setGpsErrorMsg] = useState(null);
-  const [currentWalkRecord, setCurrentWalkRecord] = useState(null);
+  const [currentWalk, setCurrentWalk] = useState(null);
   const [refreshTimer, setRefreshTimer] = useState(0);
   const [isEnabled, setIsEnabled] = useState(false);
   let timer;
   const { state } = useUserContext();
 
-  const resetCurrentWalkRecord = async () => {
-    currentWalkRecord !== null &&
-      (await stopRecordLocations(state.userId, currentWalkRecord));
-    setCurrentWalkRecord(null);
-    setStorageData(WALK_RECORD_KEY, null);
+  const resetCurrentWalk = async () => {
+    currentWalk !== null &&
+      (await stopRecordLocations(state.userId, currentWalk));
+    setCurrentWalk(null);
+    setStorageData(FIRESTORE_WALK_HISTORY_KEY, null);
     setStorageData(CURRENT_LAT, null);
     setStorageData(CURRENT_LON, null);
     setStorageData(START_DATE, null);
@@ -54,56 +56,56 @@ export const LocationBackgroundView = () => {
   };
 
   useEffect(() => {
-    getStorageData(WALK_RECORD_KEY).then((walkRecord) => {
-      walkRecord == null ? setIsEnabled(false) : setIsEnabled(true);
+    getStorageData(FIRESTORE_WALK_HISTORY_KEY).then((walk) => {
+      walk == null ? setIsEnabled(false) : setIsEnabled(true);
     });
   }, []);
 
   useEffect(() => {
-    async function initWalkRecord() {
-      getStorageData(WALK_RECORD_KEY)
-        .then(async (walkRecord) => {
+    async function initWalk() {
+      getStorageData(FIRESTORE_WALK_HISTORY_KEY)
+        .then(async (walk) => {
           if (isEnabled) {
-            setCurrentWalkRecord(walkRecord);
+            setCurrentWalk(walk);
             /* foregroundLocationFetch(); */
             await backgroundLocationFetch();
           } else {
-            await resetCurrentWalkRecord();
+            await resetCurrentWalk();
           }
         })
         .catch(async (e) => {
           console.error(e);
-          await resetCurrentWalkRecord();
+          await resetCurrentWalk();
         });
     }
 
-    initWalkRecord();
+    initWalk();
   }, [isEnabled]);
 
   useEffect(() => {
-    console.log("useEffect/currentWalkRecord", currentWalkRecord, isEnabled);
+    console.log("useEffect/currentWalk", currentWalk, isEnabled);
 
-    if (currentWalkRecord == null && isEnabled) {
+    if (currentWalk == null && isEnabled) {
       startRecordLocations(state.userId)
-        .then((walkRecord) => {
+        .then((walk) => {
           setStorageData(
             START_DATE,
             moment(new Date()).format("DD/MM/YYYY LTS")
           );
-          setStorageData(WALK_RECORD_KEY, walkRecord.id);
-          setCurrentWalkRecord(walkRecord.id);
+          setStorageData(FIRESTORE_WALK_HISTORY_KEY, walk.id);
+          setCurrentWalk(walk.id);
         })
         .then(async (d) => {
           await uploadData();
         });
-    } else if (currentWalkRecord != null && isEnabled) {
+    } else if (currentWalk != null && isEnabled) {
       // TODO - Check if this is the best way to handle this!
       const interval = setInterval(async () => {
         await uploadData();
       }, 3000);
       return () => clearInterval(interval);
     }
-  }, [currentWalkRecord, isEnabled]);
+  }, [currentWalk, isEnabled]);
 
   const backgroundLocationFetch = async () => {
     await Location.requestBackgroundPermissionsAsync()
@@ -135,41 +137,6 @@ export const LocationBackgroundView = () => {
         ]);
       });
   };
-  useEffect(() => {
-    if (refreshTimer !== 0 && isEnabled) {
-      timer = setTimeout(async () => {
-        const loc = await getCurrentPosition();
-        console.log("location", loc);
-        setStorageData(CURRENT_LAT, "" + loc.latitude);
-        setStorageData(CURRENT_LON, "" + loc.longitude);
-        setRefreshTimer(refreshTimer + 1);
-        getStorageData(WALK_RECORD_KEY).then((walkRecord) => {
-          addRecordLocations(
-            {
-              latitude: loc.latitude,
-              longitude: loc.longitude,
-            },
-            state.userId,
-            walkRecord
-          );
-        });
-
-        timer && clearTimeout(timer);
-      }, 10000);
-    }
-  }, [refreshTimer]);
-  /* const foregroundLocationFetch = () => {
-    Location.requestForegroundPermissionsAsync()
-      .then((r) => {
-        console.log("Foreground permission: " + r.status);
-        if (r.status !== "granted") {
-          setGpsErrorMsg("Foreground permission to access location was denied");
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }; */
 
   const uploadData = async () => {
     await getGPSPosition();
@@ -233,24 +200,28 @@ TaskManager.defineTask(
 
     if (data) {
       const { locations } = data;
+
+      console.log(`Got ${locations.length} new locations`);
+
       setStorageData(CURRENT_LAT, "" + locations[0].coords.latitude);
       setStorageData(CURRENT_LON, "" + locations[0].coords.longitude);
-      getStorageData("walkRecord").then(async (wr) => {
-        if (wr !== null) {
+      getStorageData(FIRESTORE_WALK_HISTORY_KEY).then(async (walk) => {
+        if (walk !== null) {
           console.log(
             `Background -> latitude: ${locations[0].coords.latitude} - longitude: ${locations[0].coords.longitude}`,
-            wr
+            walk
           );
 
           let userID = auth.currentUser.uid;
 
-          await addRecordLocations(
+          await addWalkLocations(
             {
+              date: new Date(locations[0].timestamp),
               latitude: locations[0].coords.latitude,
               longitude: locations[0].coords.longitude,
             },
             userID,
-            wr
+            walk
           );
         }
       });

@@ -27,6 +27,15 @@ import {
   FIREBASE_STORAGE_BUCKET,
 } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  FIREBASE_STORAGE_PHOTOS_FOLDER,
+  FIRESTORE_COMMENTS_KEY,
+  FIRESTORE_PHOTOS_KEY,
+  FIRESTORE_POIS_KEY,
+  FIRESTORE_USERS_KEY,
+  FIRESTORE_VISITED_POIS_KEY,
+  FIRESTORE_WALK_HISTORY_KEY,
+} from "../constant/constants";
 
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
@@ -50,13 +59,16 @@ export const auth = (() => {
   }
 })();
 export const storage = getStorage(app);
-export const photoFirebaseStorage = ref(storage, "Photos");
+export const photoFirebaseStorage = ref(
+  storage,
+  FIREBASE_STORAGE_PHOTOS_FOLDER
+);
 
 export const handleSignup = async (email, password, firstName, lastName) => {
   const user = await createUserWithEmailAndPassword(auth, email, password);
   console.log("user id:", user.user.uid);
 
-  await setDoc(doc(firestore, "users", user.user.uid), {
+  await setDoc(doc(firestore, FIRESTORE_USERS_KEY, user.user.uid), {
     email: email,
     isAdmin: false,
     firstName: firstName,
@@ -78,13 +90,15 @@ export const handleSignOut = async () => {
   }
 };
 
-export const addRecordLocations = async (
-  location,
-  currentUser,
-  currentWalkRecord
-) => {
+export const addWalkLocations = async (location, currentUser, currentWalk) => {
   return /* await */ updateDoc(
-    doc(firestore, "users", currentUser, "walkRecord", currentWalkRecord),
+    doc(
+      firestore,
+      FIRESTORE_USERS_KEY,
+      currentUser,
+      FIRESTORE_WALK_HISTORY_KEY,
+      currentWalk
+    ),
     {
       startDate: new Date(),
       locations: arrayUnion({ location }),
@@ -94,7 +108,12 @@ export const addRecordLocations = async (
 
 export const startRecordLocations = async (currentUser) => {
   return /* await */ addDoc(
-    collection(firestore, "users", currentUser, "walkRecord"),
+    collection(
+      firestore,
+      FIRESTORE_USERS_KEY,
+      currentUser,
+      FIRESTORE_WALK_HISTORY_KEY
+    ),
     {
       startDate: new Date(),
       endDate: null,
@@ -104,16 +123,30 @@ export const startRecordLocations = async (currentUser) => {
 };
 
 export const addComment = async (currentUser, comment, location) => {
-  return addDoc(collection(firestore, "users", currentUser, "comments"), {
-    date: new Date(),
-    location: location,
-    comment: comment,
-  });
+  return addDoc(
+    collection(
+      firestore,
+      FIRESTORE_USERS_KEY,
+      currentUser,
+      FIRESTORE_COMMENTS_KEY
+    ),
+    {
+      date: new Date(),
+      location: location,
+      comment: comment,
+    }
+  );
 };
 
-export const stopRecordLocations = async (currentUser, currentWalkRecord) => {
+export const stopRecordLocations = async (currentUser, currentWalk) => {
   return await updateDoc(
-    doc(firestore, "users", currentUser, "walkRecord", currentWalkRecord),
+    doc(
+      firestore,
+      FIRESTORE_USERS_KEY,
+      currentUser,
+      FIRESTORE_WALK_HISTORY_KEY,
+      currentWalk
+    ),
     {
       endDate: new Date(),
     }
@@ -122,7 +155,12 @@ export const stopRecordLocations = async (currentUser, currentWalkRecord) => {
 
 export const addRecordQRCode = async (currentUser, QRCode) => {
   return await addDoc(
-    collection(firestore, "users", currentUser, "scannedQRCodes"),
+    collection(
+      firestore,
+      FIRESTORE_USERS_KEY,
+      currentUser,
+      FIRESTORE_VISITED_POIS_KEY
+    ),
     {
       QRCodeDate: new Date(),
       QRCodeUrl: QRCode,
@@ -131,14 +169,25 @@ export const addRecordQRCode = async (currentUser, QRCode) => {
 };
 
 export const addImageToUser = async (currentUser, imageURL, date, location) => {
-  return await addDoc(collection(firestore, "users", currentUser, "photos"), {
-    date: date,
-    location: location,
-    imageURL: imageURL,
-  });
+  return await addDoc(
+    collection(
+      firestore,
+      FIRESTORE_USERS_KEY,
+      currentUser,
+      FIRESTORE_PHOTOS_KEY
+    ),
+    {
+      date: date,
+      location: location,
+      imageURL: imageURL,
+    }
+  );
 };
 export const qrcodeInFirebase = async (url) => {
-  const q = query(collection(firestore, "qrcodes"), where("url", "==", url));
+  const q = query(
+    collection(firestore, FIRESTORE_POIS_KEY),
+    where("url", "==", url)
+  );
 
   const querySnapshot = await getDocs(q);
   return querySnapshot.size >= 1;
