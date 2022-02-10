@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextInput, ScrollView } from "react-native";
 import { handleSignup } from "../services/firebase";
 import { CustomButton } from "../component/CustomButton";
 import { useTranslation } from "react-i18next";
-import { HOME_KEY, LOCALSTORAGE_USER_ID } from "../constant/constants";
+import { HOME_KEY } from "../constant/constants";
 import { setStorageData } from "../services/storage";
 import { useUserContext } from "../services/user-context";
 import { useNavigation } from "@react-navigation/native";
@@ -66,7 +66,7 @@ const CreateProfilePageView = (props) => {
           />
           {error ? <Text style={styles.errors}> {error}</Text> : null}
           <CustomButton
-            onPress={(event) => {
+            onPress={async (event) => {
               if (
                 firstName === "" ||
                 lastName === "" ||
@@ -79,33 +79,26 @@ const CreateProfilePageView = (props) => {
                 return setError(t("passwordDoNotMatch"));
               }
               setError("");
-              handleSignup(email, password, firstName, lastName)
-                .then((res) => {
-                  setStorageData(LOCALSTORAGE_USER_ID, res.user.uid);
-                  dispatch({
-                    type: "SET_LOGIN",
-                    userId: res.user.uid,
-                    isLoggedIn: true,
-                  });
-                  navigation.navigate(HOME_KEY);
-                })
-                .catch((e) => {
-                  const errorCode = e.code;
-                  switch (errorCode) {
-                    case "auth/email-already-in-use":
-                      setError(t("emailAlreadyInUse"));
-                      break;
-                    case "auth/weak-password":
-                      setError(t("weakPassword"));
-                      break;
-                    case "auth/invalid-email":
-                      setError(t("invalidEmail"));
-                      break;
-                    default:
-                      setError(t("errorOccurred"));
-                  }
-                  console.error(e);
-                });
+
+              try {
+                await handleSignup(email, password, firstName, lastName);
+                navigation.navigate(HOME_KEY);
+              } catch (e) {
+                const errorCode = e.code;
+                switch (errorCode) {
+                  case "auth/email-already-in-use":
+                    setError(t("emailAlreadyInUse"));
+                    break;
+                  case "auth/weak-password":
+                    setError(t("weakPassword"));
+                    break;
+                  case "auth/invalid-email":
+                    setError(t("invalidEmail"));
+                    break;
+                  default:
+                    setError(t("errorOccurred"));
+                }
+              }
             }}
           >
             {t("create")}

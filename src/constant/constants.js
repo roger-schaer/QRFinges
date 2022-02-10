@@ -1,9 +1,6 @@
 export const DEFAULT_LANGUAGE = "FR";
 export const BACKGROUND_LOCATION_UPDATES_TASK = "START_LOCATION";
 
-export const LOCALSTORAGE_USER_ID = "userId";
-export const LOCALSTORAGE_USER_EMAIL = "userEmail";
-
 export const QR_CODE_KEY = "SCAN_QR";
 export const LOGIN_KEY = "LOGIN";
 export const CONTACT_KEY = "CONTACT";

@@ -67,7 +67,7 @@ export const handleSignup = async (email, password, firstName, lastName) => {
 };
 
 export const handleLogin = async (email, password) => {
-  return /* await */ signInWithEmailAndPassword(auth, email, password);
+  return signInWithEmailAndPassword(auth, email, password);
 };
 
 export const handleSignOut = async () => {

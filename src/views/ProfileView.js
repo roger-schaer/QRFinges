@@ -13,25 +13,6 @@ const ProfileView = (props) => {
   const navigation = useNavigation();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    async function getLocation() {
-      console.log("ooook, let's see where we are");
-
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.error("Permission to access location was denied");
-        return;
-      } else {
-        console.log("Well we got the permission for the location, wtf");
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      console.log("location received", location);
-    }
-
-    getLocation();
-  }, []);
-
   return (
     <View
       style={[

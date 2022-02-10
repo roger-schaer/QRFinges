@@ -6,11 +6,7 @@ import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
 import { handleLogin } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
 import { getStorageData, setStorageData } from "../services/storage";
-import {
-  LOCALSTORAGE_USER_EMAIL,
-  LOCALSTORAGE_USER_ID,
-  SUBSCRIBE_KEY,
-} from "../constant/constants";
+import { SUBSCRIBE_KEY } from "../constant/constants";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 
@@ -24,20 +20,7 @@ const LoginPageView = (props) => {
 
   const login = async () => {
     try {
-      let loginData = await handleLogin(email, password);
-      setStorageData(LOCALSTORAGE_USER_ID, loginData.user.uid);
-      setStorageData(LOCALSTORAGE_USER_EMAIL, loginData.user.email);
-      console.log(
-        "Save to local storage successfull",
-        getStorageData(LOCALSTORAGE_USER_ID)
-      );
-
-      dispatch({
-        type: "SET_LOGIN",
-        userId: loginData.user.uid,
-        email: loginData.user.email,
-        isLoggedIn: true,
-      });
+      await handleLogin(email, password);
     } catch (e) {
       dispatch({
         type: "IS_LOGGED_ERROR",
@@ -55,7 +38,6 @@ const LoginPageView = (props) => {
         default:
           setError(t("errorOccurred"));
       }
-      console.error(e);
     }
   };
 

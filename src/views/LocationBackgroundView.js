@@ -3,10 +3,7 @@ import { ActivityIndicator, Alert, Switch, Text, View } from "react-native";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
 import { useTranslation } from "react-i18next";
-import {
-  BACKGROUND_LOCATION_UPDATES_TASK,
-  LOCALSTORAGE_USER_ID,
-} from "../constant/constants";
+import { BACKGROUND_LOCATION_UPDATES_TASK } from "../constant/constants";
 
 import {
   addRecordLocations,
@@ -236,22 +233,24 @@ TaskManager.defineTask(
       const { locations } = data;
       setStorageData(CURRENT_LAT, "" + locations[0].coords.latitude);
       setStorageData(CURRENT_LON, "" + locations[0].coords.longitude);
-      getStorageData("walkRecord").then((wr) => {
+      getStorageData("walkRecord").then(async (wr) => {
         if (wr !== null) {
           console.log(
             `Background -> latitude: ${locations[0].coords.latitude} - longitude: ${locations[0].coords.longitude}`,
             wr
           );
-          getStorageData(LOCALSTORAGE_USER_ID).then((user_id) => {
-            addRecordLocations(
-              {
-                latitude: locations[0].coords.latitude,
-                longitude: locations[0].coords.longitude,
-              },
-              user_id,
-              wr
-            );
-          });
+
+          // TODO - Use auth to determine current user ID
+          let userID = "something";
+
+          await addRecordLocations(
+            {
+              latitude: locations[0].coords.latitude,
+              longitude: locations[0].coords.longitude,
+            },
+            userID,
+            wr
+          );
         }
       });
     }
