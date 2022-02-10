@@ -16,6 +16,7 @@ import { useUserContext } from "../services/user-context";
 import { LinearProgress } from "react-native-elements";
 import { styles } from "../component/styles";
 import moment from "moment";
+import { auth } from "../services/firebase";
 
 const WALK_RECORD_KEY = "walkRecord";
 const START_DATE = "startDate";
@@ -185,8 +186,8 @@ export const LocationBackgroundView = () => {
   return (
     <>
       <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+        trackColor={{ false: "#767577", true: "#767577" }}
+        thumbColor={isEnabled ? "#006400" : "#f4f3f4"}
         ios_backgroundColor="#3e3e3e"
         onValueChange={setIsEnabled}
         value={isEnabled}
@@ -229,6 +230,7 @@ TaskManager.defineTask(
       console.log("Background error", error);
       return;
     }
+
     if (data) {
       const { locations } = data;
       setStorageData(CURRENT_LAT, "" + locations[0].coords.latitude);
@@ -240,8 +242,7 @@ TaskManager.defineTask(
             wr
           );
 
-          // TODO - Use auth to determine current user ID
-          let userID = "something";
+          let userID = auth.currentUser.uid;
 
           await addRecordLocations(
             {
