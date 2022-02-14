@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import { t } from "i18next";
 import { qrcodeInFirebase, addRecordQRCode } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
 import { askCameraPermission } from "../services/permissions";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 export const checkIsUrl = (value) => {
   const pattern = new RegExp(
@@ -36,10 +36,14 @@ const QRCodeScanView = (props) => {
   const [isUrlInFirebase, setIsUrlInFirebase] = useState(false);
   const [origin, setOrigin] = useState(null);
   const [qrcodeSize, setQrcodeSize] = useState(null);
-  const [timer, setTimer] = useState(null);
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   askCameraPermission();
+
+  useEffect(() => {
+    console.log("Scanned", scanned.toString());
+  }, [scanned]);
 
   const onPressText = () => {
     setScanned(false);
@@ -61,25 +65,17 @@ const QRCodeScanView = (props) => {
 
   const handleBarCodeScanned = async (barcode) => {
     const { data } = barcode;
-    timer && clearInterval(timer);
     setScanned(true);
     setOrigin(barcode.bounds.origin);
     setQrcodeSize(barcode.bounds.size);
-    setResultScanQR(data);
-    setIsUrl(checkIsUrl(data));
-    setTimer(
-      setInterval(() => {
-        setOrigin(null);
-        setQrcodeSize(null);
-      }, 300)
-    );
-    if (!isUrl) {
-      setScanned(false);
-      return false;
-    }
-    const inFirebase = await qrcodeInFirebase(resultScanQR);
-    await setIsUrlInFirebase(inFirebase);
-    setScanned(false);
+    setTimeout(async () => {
+      setOrigin(null);
+      setQrcodeSize(null);
+      setResultScanQR(data);
+      setIsUrl(checkIsUrl(data));
+      const inFirebase = await qrcodeInFirebase(data);
+      setIsUrlInFirebase(inFirebase);
+    }, 300);
   };
 
   const reset = () => {
@@ -90,17 +86,15 @@ const QRCodeScanView = (props) => {
   };
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled">
-      <View style={{}}>
-        <View style={{}}>
+    <View style={{ flexGrow: 1 }}>
+      {isFocused && resultScanQR === "" && (
+        <View style={{ flexGrow: 1, justifyContent: "center" }}>
           <BarCodeScanner
-            onBarCodeScanned={!scanned && handleBarCodeScanned}
-            style={{ height: 400, width: "100%", padding: 50 }}
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            style={{ padding: 50 }}
           >
             <View
               style={{
-                borderColor: "red",
-                borderWidth: 2,
                 height: "100%",
                 width: "100%",
               }}
@@ -120,69 +114,56 @@ const QRCodeScanView = (props) => {
             )}
           </BarCodeScanner>
         </View>
+      )}
 
-        {resultScanQR !== "" && (
-          <View style={{}}>
+      {resultScanQR !== "" && (
+        <View
+          style={{
+            flexGrow: 1,
+            justifyContent: "center",
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              marginVertical: 20,
+            }}
+          >
+            {isUrl && (
+              <MaterialIcons name="link" size={32} style={{ flex: 0.1 }} />
+            )}
+            <Text style={{ flex: 0.8, color: "black", fontSize: 16 }}>
+              {resultScanQR}
+            </Text>
+            <TouchableOpacity onPress={reset} style={{ flex: 0.1 }}>
+              <MaterialIcons name="close" size={32} />
+            </TouchableOpacity>
+          </View>
+          {isUrl && (
             <TouchableOpacity
               style={{
-                paddingHorizontal: 30,
-                paddingVertical: 10,
+                backgroundColor: "darkgreen",
                 alignItems: "center",
               }}
+              onPress={onPressText}
             >
-              <View
+              <Text
                 style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "center",
-                }}
-              >
-                {isUrl && (
-                  <MaterialIcons
-                    name="link"
-                    size={16}
-                    style={{ marginRight: 5 }}
-                  />
-                )}
-                <Text style={{ color: "black", fontSize: 16 }}>
-                  {resultScanQR}
-                </Text>
-
-                <MaterialIcons
-                  name="close"
-                  size={16}
-                  onPress={() => {
-                    reset();
-                  }}
-                />
-              </View>
-            </TouchableOpacity>
-            {isUrl && (
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "darkgreen",
+                  color: "white",
+                  paddingHorizontal: 30,
+                  paddingVertical: 10,
+                  fontSize: 18,
+                  fontWeight: "700",
                   alignItems: "center",
                 }}
-                onPress={onPressText}
               >
-                <Text
-                  style={{
-                    color: "white",
-                    paddingHorizontal: 30,
-                    paddingVertical: 10,
-                    fontSize: 18,
-                    fontWeight: "700",
-                    alignItems: "center",
-                  }}
-                >
-                  {t(`navigate_${isUrlInFirebase ? "internal" : "external"}`)}
-                </Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        )}
-      </View>
-    </ScrollView>
+                {t(`navigate_${isUrlInFirebase ? "internal" : "external"}`)}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
+    </View>
   );
 };
 

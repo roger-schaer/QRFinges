@@ -162,8 +162,8 @@ export const addRecordQRCode = async (currentUser, QRCode) => {
       FIRESTORE_VISITED_POIS_KEY
     ),
     {
-      QRCodeDate: new Date(),
-      QRCodeUrl: QRCode,
+      date: new Date(),
+      url: QRCode,
     }
   );
 };
@@ -183,7 +183,10 @@ export const addImageToUser = async (currentUser, imageURL, date, location) => {
     }
   );
 };
+
 export const qrcodeInFirebase = async (url) => {
+  console.log(`Looking for URL ${url} in Firestore`);
+
   const q = query(
     collection(firestore, FIRESTORE_POIS_KEY),
     where("url", "==", url)
