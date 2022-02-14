@@ -2,7 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import ContactPageView from "../views/ContactPageView";
 import FAQView from "../views/FAQView";
-import QRcodeView from "../views/QRcodePageView";
+import QRCodeScanView from "../views/QRCodeScanView";
 import CreateProfilePageView from "../views/CreateProfilePageView";
 import HomeView from "../views/HomeView";
 import WebViewer from "../views/InternWebViewer";
@@ -83,7 +83,7 @@ const drawerUrls = [
     antIcon: "qrcode",
     pageKey: QR_CODE_KEY,
 
-    navigationScreen: QRcodeView,
+    navigationScreen: QRCodeScanView,
     translateKey: "scanQR",
     displayWhenLogged: true,
     displayWhenNotLogged: false,

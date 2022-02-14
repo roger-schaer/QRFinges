@@ -28,7 +28,7 @@ export const checkIsUrl = (value) => {
   return !!pattern.test(value);
 };
 
-const QRcodeView = (props) => {
+const QRCodeScanView = (props) => {
   const { state } = useUserContext();
   const [scanned, setScanned] = useState(false);
   const [resultScanQR, setResultScanQR] = useState("");
@@ -186,4 +186,4 @@ const QRcodeView = (props) => {
   );
 };
 
-export default QRcodeView;
+export default QRCodeScanView;
