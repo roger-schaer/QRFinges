@@ -153,7 +153,7 @@ export const stopRecordLocations = async (currentUser, currentWalk) => {
   );
 };
 
-export const addRecordQRCode = async (currentUser, QRCode) => {
+export const addVisitedPoi = async (currentUser, poiId) => {
   return await addDoc(
     collection(
       firestore,
@@ -162,8 +162,8 @@ export const addRecordQRCode = async (currentUser, QRCode) => {
       FIRESTORE_VISITED_POIS_KEY
     ),
     {
+      poiId: poiId,
       date: new Date(),
-      url: QRCode,
     }
   );
 };
@@ -184,14 +184,18 @@ export const addImageToUser = async (currentUser, imageURL, date, location) => {
   );
 };
 
-export const qrcodeInFirebase = async (url) => {
-  console.log(`Looking for URL ${url} in Firestore`);
-
+export const findPoiByUrl = async (url) => {
   const q = query(
     collection(firestore, FIRESTORE_POIS_KEY),
     where("url", "==", url)
   );
 
   const querySnapshot = await getDocs(q);
-  return querySnapshot.size >= 1;
+
+  if (querySnapshot.size > 0) {
+    let poi = querySnapshot.docs[0];
+    return poi.id;
+  }
+
+  return null;
 };

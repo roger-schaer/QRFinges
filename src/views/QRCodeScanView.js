@@ -10,7 +10,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { WEBVIEW_KEY } from "../constant/constants";
 import { t } from "i18next";
-import { qrcodeInFirebase, addRecordQRCode } from "../services/firebase";
+import { findPoiByUrl, addVisitedPoi } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
 import { askCameraPermission } from "../services/permissions";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
@@ -33,7 +33,7 @@ const QRCodeScanView = (props) => {
   const [scanned, setScanned] = useState(false);
   const [resultScanQR, setResultScanQR] = useState("");
   const [isUrl, setIsUrl] = useState(false);
-  const [isUrlInFirebase, setIsUrlInFirebase] = useState(false);
+  const [scannedPoiID, setScannedPoiID] = useState(null);
   const [origin, setOrigin] = useState(null);
   const [qrcodeSize, setQrcodeSize] = useState(null);
   const navigation = useNavigation();
@@ -45,23 +45,22 @@ const QRCodeScanView = (props) => {
     console.log("Scanned", scanned.toString());
   }, [scanned]);
 
-  const onPressText = () => {
+  const onPressText = async () => {
     setScanned(false);
 
     try {
-      isUrlInFirebase
-        ? addRecordQRCode(state.userId, resultScanQR).then(() => {
-            // isUrlInFirebase ? navigation.navigate(WEBVIEW_KEY, { uri: resultScanQR }) : Linking.openURL(resultScanQR);
-            navigation.navigate(WEBVIEW_KEY, { uri: resultScanQR });
-            setResultScanQR("");
-          })
-        : Linking.openURL(resultScanQR) && setResultScanQR("");
+      if (scannedPoiID !== null) {
+        await addVisitedPoi(state.userId, scannedPoiID);
+        navigation.navigate(WEBVIEW_KEY, { uri: resultScanQR });
+        setResultScanQR("");
+      } else {
+        await Linking.openURL(resultScanQR);
+        setResultScanQR("");
+      }
     } catch (e) {
       console.error("Echec !");
     }
   };
-
-  /* useEffect(() => {}, [origin, qrcodeSize]); */
 
   const handleBarCodeScanned = async (barcode) => {
     const { data } = barcode;
@@ -73,8 +72,8 @@ const QRCodeScanView = (props) => {
       setQrcodeSize(null);
       setResultScanQR(data);
       setIsUrl(checkIsUrl(data));
-      const inFirebase = await qrcodeInFirebase(data);
-      setIsUrlInFirebase(inFirebase);
+      const poiID = await findPoiByUrl(data);
+      setScannedPoiID(poiID);
     }, 300);
   };
 
@@ -82,7 +81,7 @@ const QRCodeScanView = (props) => {
     setIsUrl(false);
     setResultScanQR("");
     setScanned(false);
-    setIsUrlInFirebase(false);
+    setScannedPoiID(false);
   };
 
   return (
@@ -157,7 +156,7 @@ const QRCodeScanView = (props) => {
                   alignItems: "center",
                 }}
               >
-                {t(`navigate_${isUrlInFirebase ? "internal" : "external"}`)}
+                {t(`navigate_${scannedPoiID ? "internal" : "external"}`)}
               </Text>
             </TouchableOpacity>
           )}
