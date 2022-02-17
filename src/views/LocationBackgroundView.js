@@ -119,9 +119,8 @@ export const LocationBackgroundView = () => {
       })
       .then(() => {
         Location.startLocationUpdatesAsync(BACKGROUND_LOCATION_UPDATES_TASK, {
-          accuracy: Location.Accuracy.Balanced,
-          timeInterval: 10000,
-          distanceInterval: 5,
+          accuracy: Location.Accuracy.High,
+          distanceInterval: 50,
           foregroundService: {
             notificationTitle: "Live Tracker",
             notificationBody: "Live Tracker is on.",
