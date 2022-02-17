@@ -100,7 +100,6 @@ export const addWalkLocations = async (location, currentUser, currentWalk) => {
       currentWalk
     ),
     {
-      startDate: new Date(),
       locations: arrayUnion({ location }),
     }
   );
