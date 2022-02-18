@@ -34,7 +34,7 @@ import {
 } from "../constant/constants";
 
 const firebaseConfig = {
-  apiKey: FIREBASE_API_KEY ? FIREBASE_API_KEY : process.env.FIREBASE_API_KEY,
+  apiKey: FIREBASE_API_KEY,
   authDomain: Constants.manifest.extra.firebaseAuthDomain,
   projectId: Constants.manifest.extra.firebaseProjectID,
   storageBucket: Constants.manifest.extra.firebaseStorageBucket,
