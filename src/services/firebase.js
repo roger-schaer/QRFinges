@@ -1,4 +1,5 @@
 // Import the functions you need from the SDKs you need
+import Constants from "expo-constants";
 import { initializeApp } from "firebase/app";
 import {
   doc,
@@ -20,12 +21,7 @@ import {
   initializeAuth,
 } from "firebase/auth";
 import { getReactNativePersistence } from "firebase/auth/react-native";
-import {
-  FIREBASE_API_KEY,
-  FIREBASE_AUTH_DOMAIN,
-  FIREBASE_PROJECT_ID,
-  FIREBASE_STORAGE_BUCKET,
-} from "@env";
+import { FIREBASE_API_KEY } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   FIREBASE_STORAGE_PHOTOS_FOLDER,
@@ -38,10 +34,10 @@ import {
 } from "../constant/constants";
 
 const firebaseConfig = {
-  apiKey: FIREBASE_API_KEY,
-  authDomain: FIREBASE_AUTH_DOMAIN,
-  projectId: FIREBASE_PROJECT_ID,
-  storageBucket: FIREBASE_STORAGE_BUCKET,
+  apiKey: FIREBASE_API_KEY ? FIREBASE_API_KEY : process.env.FIREBASE_API_KEY,
+  authDomain: Constants.manifest.extra.firebaseAuthDomain,
+  projectId: Constants.manifest.extra.firebaseProjectID,
+  storageBucket: Constants.manifest.extra.firebaseStorageBucket,
 };
 
 // Initialize Firebase
