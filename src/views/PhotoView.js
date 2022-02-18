@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  useWindowDimensions,
 } from "react-native";
 import {
   MaterialCommunityIcons,
@@ -34,6 +35,7 @@ const CameraView = (props) => {
   const [photo, setPhoto] = useState(null);
   const isFocused = useIsFocused();
   const [waiting, setWaiting] = useState(false);
+  const windowWidth = useWindowDimensions().width;
   let camera;
   let p;
   let date;
@@ -119,13 +121,19 @@ const CameraView = (props) => {
             <>
               {!isPicked ? (
                 <View style={styles.flexContainer}>
-                  <Camera
-                    style={styles.camera}
-                    type={type}
-                    ref={(refs) => {
-                      camera = refs;
-                    }}
-                  />
+                  <View style={styles.cameraContainer}>
+                    <Camera
+                      style={{
+                        width: windowWidth,
+                        height: windowWidth * (4 / 3),
+                      }}
+                      ratio="4:3"
+                      type={type}
+                      ref={(refs) => {
+                        camera = refs;
+                      }}
+                    />
+                  </View>
                   <View style={styles.cameraButtonContainer}>
                     <TouchableOpacity
                       onPress={() => {

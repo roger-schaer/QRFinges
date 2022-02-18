@@ -210,9 +210,10 @@ export const styles = StyleSheet.create({
     marginLeft: 15,
     marginRight: 15,
   },
-  camera: {
+  cameraContainer: {
     flex: 8,
     margin: 2,
+    justifyContent: "center",
   },
   languageUnderline: {
     textDecorationLine: "underline",
