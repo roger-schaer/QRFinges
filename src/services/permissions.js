@@ -11,14 +11,14 @@ export function askCameraPermission() {
   const askForPermission = () => {
     (async () => {
       try {
-        const { status } = await Camera.requestPermissionsAsync();
+        const { status } = await Camera.requestCameraPermissionsAsync();
         setHasPermission(status === "granted");
 
         if (status === "granted") {
-          console.log("permission granted");
+          console.log("camera permission granted");
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     })();
   };
@@ -55,10 +55,10 @@ export function askLocalisationPermission() {
         setHasPermission(status === "granted");
 
         if (status === "granted") {
-          console.log("permission granted");
+          console.log("location permission granted");
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     })();
   };

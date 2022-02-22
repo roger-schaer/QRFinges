@@ -1,22 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import ContactPageView from "../views/ContactPageView";
 import FAQView from "../views/FAQView";
-import LoginPageView from "../views/LogInPageView";
-import QRcodeView from "../views/QRcodePageView";
+import QRCodeScanView from "../views/QRCodeScanView";
 import CreateProfilePageView from "../views/CreateProfilePageView";
 import HomeView from "../views/HomeView";
 import WebViewer from "../views/InternWebViewer";
 import CameraView from "../views/PhotoView";
 import UserCommentView from "../views/UserCommentView";
-import { styles } from "../component/styles";
+import { styles } from "./styles";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItem,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import { handleSignOut } from "../services/firebase";
@@ -30,7 +29,7 @@ import {
   WEBVIEW_KEY,
   PHOTO_KEY,
   USER_COMMENT,
-} from "../constant/contants";
+} from "../constant/constants";
 import { useNavigation } from "@react-navigation/native";
 
 const Drawer = createDrawerNavigator();
@@ -84,7 +83,7 @@ const drawerUrls = [
     antIcon: "qrcode",
     pageKey: QR_CODE_KEY,
 
-    navigationScreen: QRcodeView,
+    navigationScreen: QRCodeScanView,
     translateKey: "scanQR",
     displayWhenLogged: true,
     displayWhenNotLogged: false,
@@ -132,9 +131,9 @@ function HamburgerMenu() {
   const navigation = useNavigation();
 
   return (
-    <AntDesign
+    <MaterialIcons
       style={styles.iconContainer}
-      name={"menufold"}
+      name={"menu"}
       size={25}
       onPress={() => navigation.openDrawer()}
     />
@@ -147,15 +146,17 @@ const CustomDrawerView = (props) => {
   const navigation = useNavigation();
 
   const out = async () => {
-    handleSignOut();
+    await handleSignOut();
 
-    dispatch({ type: "IS_LOGGED_OFF" });
-    navigation.navigate(HOME_KEY);
+    navigation.reset({
+      index: 0,
+      routes: [{ name: HOME_KEY }],
+    });
   };
 
-  const logout = (e) => {
+  const logout = async (e) => {
     e.preventDefault();
-    out();
+    await out();
   };
 
   return (
@@ -169,11 +170,11 @@ const CustomDrawerView = (props) => {
               <View key={`drawer-item-language-link-${l}`}>
                 <Text
                   style={styles.textMenu}
-                  onPress={() => {
-                    i18n.changeLanguage(l);
+                  onPress={async () => {
+                    await i18n.changeLanguage(l);
                   }}
                 >
-                  {i18n.language == l && (
+                  {i18n.language === l && (
                     <Text style={styles.languageUnderline}>
                       {l.toUpperCase()}
                     </Text>
@@ -200,8 +201,8 @@ const CustomDrawerView = (props) => {
               </View>
             </View>
           )}
-          onPress={(event) => {
-            logout(event);
+          onPress={async (event) => {
+            await logout(event);
           }}
         />
       )}
@@ -210,13 +211,13 @@ const CustomDrawerView = (props) => {
 };
 
 const OverMenu = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { state } = useUserContext();
   const isDrawerButtonDisplayed = (drawer) => {
     return (
       (drawer.displayWhenLogged || drawer.displayWhenNotLogged) &&
-      (drawer.displayWhenLogged == state.isLoggedIn ||
-        drawer.displayWhenNotLogged == !state.isLoggedIn)
+      (drawer.displayWhenLogged === state.isLoggedIn ||
+        drawer.displayWhenNotLogged === !state.isLoggedIn)
     );
   };
   return (
@@ -225,8 +226,7 @@ const OverMenu = () => {
       drawerContent={(props) => <CustomDrawerView {...props} />}
       screenOptions={{
         headerShown: true,
-        headerLeft: () => <BackButton />,
-        headerRight: () => <HamburgerMenu />,
+        headerLeft: () => <HamburgerMenu />,
       }}
     >
       {drawerUrls.map((drawer) => (
@@ -235,7 +235,6 @@ const OverMenu = () => {
           name={drawer.pageKey}
           component={drawer.navigationScreen}
           options={{
-            drawerPosition: "right",
             drawerItemStyle: {
               display: isDrawerButtonDisplayed(drawer) ? "flex" : "none",
             },

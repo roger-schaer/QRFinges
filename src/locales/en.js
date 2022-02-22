@@ -16,7 +16,7 @@ export const TranslationEN = {
   scanQR: "QR code",
   sendWalk: "Send my walk",
   refusalButton: "I still have questions",
-  firstname: "Firstname",
+  firstName: "First Name",
   followTuto: "Follow our instructions",
   forgotPass: "Forgotten ?",
   helpCenterHead: "Help center",
@@ -29,7 +29,7 @@ export const TranslationEN = {
   logout: "Logout",
   main_title: "QRFinges title in english",
   myAccount: "My account",
-  name: "Lastname",
+  lastName: "Last Name",
   needCameraPermission: "App needs to allow camera access",
   needLocationPermission: "App needs to allow location access",
   newPicture: "New Picture",
@@ -45,7 +45,7 @@ export const TranslationEN = {
   scan_OK: "Code QR has been scanned ! (click on the Green button to finish)",
   start: " start",
   subscribe: "Sign up",
-  userText: "Add your comment",
+  comment: "Add your comment",
   faq_title_projectExplanation: "What is the project about?",
   faq_content_projectExplanation:
     "QRFinges is an application developed as part of an art project of EDHEA, in collaboration with the Bois de Finges. The application allows you to scan the QR-Codes placed in the Bois de Finges to learn more during your visit. Your GPS data are collected during the visit and will be combined with those of other visitors. Together, these data will allow the creation of a collaborative work of art.",
@@ -87,4 +87,5 @@ export const TranslationEN = {
     "There is an issue with background location. You are now using foreground location with limited features. Please active background localization service to use full featured application.",
   navigate_external: "Open link - External browser",
   navigate_internal: "Open link - Internal browser",
+  webViewer: "Web Viewer",
 };

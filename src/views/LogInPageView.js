@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, ScrollView } from "react-native";
-import { t } from "i18next";
 import { Logo } from "../component/Logo";
 import { CustomButton } from "../component/CustomButton";
 import { CustomButtonNoBorders } from "../component/CustomButtonNoBorders";
 import { handleLogin } from "../services/firebase";
 import { useUserContext } from "../services/user-context";
 import { getStorageData, setStorageData } from "../services/storage";
-import { LOCALSTORAGE_USER_EMAIL, LOCALSTORAGE_USER_ID, SUBSCRIBE_KEY } from "../constant/contants";
+import { SUBSCRIBE_KEY } from "../constant/constants";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 
 const LoginPageView = (props) => {
-  const { state, dispatch } = useUserContext();
+  const { dispatch } = useUserContext();
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,23 +20,13 @@ const LoginPageView = (props) => {
 
   const login = async () => {
     try {
-      let loginData = await handleLogin(email, password);
-      setStorageData(LOCALSTORAGE_USER_ID, loginData.user.uid);
-      setStorageData(LOCALSTORAGE_USER_EMAIL, loginData.user.email);
-      console.log("Save to local storage successfull", getStorageData(LOCALSTORAGE_USER_ID));
-
-      dispatch({
-        type: "SET_LOGIN",
-        userId: loginData.user.uid,
-        email: loginData.user.email,
-        isLoggedIn: true,
-      });
+      await handleLogin(email, password);
     } catch (e) {
       dispatch({
         type: "IS_LOGGED_ERROR",
         error: "Error with API on login",
       });
-      var errorCode = e.code;
+      const errorCode = e.code;
       switch (errorCode) {
         case "auth/invalid-email":
           setError(t("invalidEmail"));
@@ -49,12 +38,12 @@ const LoginPageView = (props) => {
         default:
           setError(t("errorOccurred"));
       }
-      console.error(e);
     }
   };
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    login();
+    await login();
   };
 
   return (
@@ -82,7 +71,7 @@ const LoginPageView = (props) => {
 
         <CustomButton
           onPress={(event) => {
-            if (email == "" || password == "") {
+            if (email === "" || password === "") {
               return setError(t("allFieldRequired"));
             }
             handleSubmit(event);
@@ -91,7 +80,9 @@ const LoginPageView = (props) => {
           {t("connect")}
         </CustomButton>
 
-        <CustomButtonNoBorders onPress={(event) => navigation.navigate(SUBSCRIBE_KEY)}>
+        <CustomButtonNoBorders
+          onPress={(event) => navigation.navigate(SUBSCRIBE_KEY)}
+        >
           {t("subscribe")}
         </CustomButtonNoBorders>
       </View>

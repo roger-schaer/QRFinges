@@ -1,4 +1,8 @@
-import React, { createContext } from "react";
+import React, { createContext, useEffect, useReducer } from "react";
+
+import { onAuthStateChanged } from "firebase/auth";
+
+import { auth } from "./firebase";
 
 // attention au null
 
@@ -37,12 +41,35 @@ function loginReducer(state, action) {
 
 function UserProvider({ children }) {
   const initialState = {
-    isLoggedIn: false,
+    isLoggedIn: null,
     userId: "",
     email: "",
   };
 
-  const [state, dispatch] = React.useReducer(loginReducer, initialState);
+  const [state, dispatch] = useReducer(loginReducer, initialState);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        if (userAuth !== null) {
+          dispatch({
+            type: "SET_LOGIN",
+            userId: userAuth.uid,
+            email: userAuth.email,
+            isLoggedIn: true,
+          });
+        } else {
+          dispatch({ type: "IS_LOGGED_OFF" });
+        }
+
+        return () => unsubscribe();
+      },
+      (e) => {
+        console.log("ERROR ON AUTH STATE CHANGE", e);
+      }
+    );
+  }, []);
 
   const value = { state, dispatch };
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

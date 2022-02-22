@@ -1,21 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Platform } from "react-native";
 import { ref, uploadBytes } from "firebase/storage";
-import { photoFirebaseStorage, storage, addImage } from "../services/firebase";
-import { useUserContext } from "../services/user-context";
-
-let imageDestination;
+import { photoFirebaseStorage } from "./firebase";
+import { useUserContext } from "./user-context";
 
 export const pictureToFirebaseStorage = async (picture) => {
   const { state } = useUserContext();
   const [image, setImage] = useState(null);
-  const [transferred, setTransferred] = useState(false);
-
-  // let imageDestination;
 
   setImage(picture);
 
-  if (image == null || image == undefined) {
+  if (image === null || image === undefined) {
     console.log("NO PICTURE !!!!!");
     return;
   }

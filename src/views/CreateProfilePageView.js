@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextInput, ScrollView } from "react-native";
 import { handleSignup } from "../services/firebase";
 import { CustomButton } from "../component/CustomButton";
 import { useTranslation } from "react-i18next";
-import { HOME_KEY, LOCALSTORAGE_USER_ID } from "../constant/contants";
+import { HOME_KEY } from "../constant/constants";
 import { setStorageData } from "../services/storage";
 import { useUserContext } from "../services/user-context";
 import { useNavigation } from "@react-navigation/native";
@@ -12,11 +12,11 @@ const CreateProfilePageView = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [name, setName] = useState("");
-  const [firstname, setFirstname] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [firstName, setFirstName] = useState("");
   const [error, setError] = useState("");
   const { t } = useTranslation();
-  const { state, dispatch } = useUserContext();
+  const { dispatch } = useUserContext();
   const navigation = useNavigation();
 
   return (
@@ -34,19 +34,20 @@ const CreateProfilePageView = (props) => {
           />
 
           <TextInput
-            value={name}
-            onChangeText={(text) => setName(text)}
-            placeholder={t("name")}
+            value={firstName}
+            onChangeText={(text) => setFirstName(text)}
+            placeholder={t("firstName")}
             placeholderTextColor={"darkgreen"}
             style={styles.input}
           />
           <TextInput
-            value={firstname}
-            onChangeText={(text) => setFirstname(text)}
-            placeholder={t("firstname")}
+            value={lastName}
+            onChangeText={(text) => setLastName(text)}
+            placeholder={t("lastName")}
             placeholderTextColor={"darkgreen"}
             style={styles.input}
           />
+
           <TextInput
             value={password}
             onChangeText={(text) => setPassword(text)}
@@ -65,41 +66,39 @@ const CreateProfilePageView = (props) => {
           />
           {error ? <Text style={styles.errors}> {error}</Text> : null}
           <CustomButton
-            onPress={(event) => {
-              if (firstname == "" || name == "" || email == "" || password == "") {
+            onPress={async (event) => {
+              if (
+                firstName === "" ||
+                lastName === "" ||
+                email === "" ||
+                password === ""
+              ) {
                 return setError(t("allFieldRequired"));
               }
               if (password !== confirmPassword) {
                 return setError(t("passwordDoNotMatch"));
               }
               setError("");
-              handleSignup(email, password, name, firstname)
-                .then((res) => {
-                  setStorageData(LOCALSTORAGE_USER_ID, res.user.uid);
-                  dispatch({
-                    type: "SET_LOGIN",
-                    userId: res.user.uid,
-                    isLoggedIn: true,
-                  });
-                  navigation.navigate(HOME_KEY);
-                })
-                .catch((e) => {
-                  var errorCode = e.code;
-                  switch (errorCode) {
-                    case "auth/email-already-in-use":
-                      setError(t("emailAlreadyInUse"));
-                      break;
-                    case "auth/weak-password":
-                      setError(t("weakPassword"));
-                      break;
-                    case "auth/invalid-email":
-                      setError(t("invalidEmail"));
-                      break;
-                    default:
-                      setError(t("errorOccurred"));
-                  }
-                  console.log(e);
-                });
+
+              try {
+                await handleSignup(email, password, firstName, lastName);
+                navigation.navigate(HOME_KEY);
+              } catch (e) {
+                const errorCode = e.code;
+                switch (errorCode) {
+                  case "auth/email-already-in-use":
+                    setError(t("emailAlreadyInUse"));
+                    break;
+                  case "auth/weak-password":
+                    setError(t("weakPassword"));
+                    break;
+                  case "auth/invalid-email":
+                    setError(t("invalidEmail"));
+                    break;
+                  default:
+                    setError(t("errorOccurred"));
+                }
+              }
             }}
           >
             {t("create")}
