@@ -8,6 +8,7 @@ import Loading from "../component/Loading";
 
 const HomeView = () => {
   const { state } = useUserContext();
+  console.log('home');
 
   return state.isLoggedIn !== null ? (
     state.isLoggedIn === true ? (

@@ -14,7 +14,9 @@
     "expo": "^44.0.0",
     "expo-barcode-scanner": "~11.2.0",
     "expo-camera": "~12.1.2",
+    "expo-constants": "^13.0.2",
     "expo-location": "~14.0.1",
+    "expo-notifications": "^0.14.1",
     "expo-task-manager": "~10.1.0",
     "expo-updates": "~0.11.6",
     "firebase": "^9.6.6",
@@ -30,8 +32,10 @@
     "react-native-reanimated": "~2.3.1",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
+    "react-native-switch": "^1.5.1",
     "react-native-webview": "11.15.0",
-    "react-navigation-header-buttons": "^9.0.1"
+    "react-navigation-header-buttons": "^9.0.1",
+    "react-popup": "^0.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
