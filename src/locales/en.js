@@ -88,4 +88,6 @@ export const TranslationEN = {
   navigate_external: "Open link - External browser",
   navigate_internal: "Open link - Internal browser",
   webViewer: "Web Viewer",
+  start_tracking: "Start the tracking",
+  stop_tracking: "Stop the tracking",
 };

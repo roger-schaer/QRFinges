@@ -95,6 +95,6 @@ export const TranslationFR = {
   navigate_external: "Ouvrir lien - Navigateur externe",
   navigate_internal: "Ouvrir lien - Navigateur interne",
   webViewer: "Navigateur Web",
-  start_tracking:"Activé le tracking",
-  stop_tracking:"Désactiver le tracking"
+  start_tracking: "Démarrer le tracking",
+  stop_tracking: "Arrêter le tracking",
 };
