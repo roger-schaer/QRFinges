@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {ActivityIndicator, Alert, Button, Text, View} from "react-native";
+import { ActivityIndicator, Alert, Button, Text, View } from "react-native";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
 import { useTranslation } from "react-i18next";
@@ -7,21 +7,21 @@ import {
   BACKGROUND_LOCATION_UPDATES_TASK,
   FIRESTORE_WALK_HISTORY_KEY,
 } from "../constant/constants";
-import {Switch} from 'react-native-switch'
+import { Switch } from "react-native-switch";
 
 import {
   addWalkLocations,
   startRecordLocations,
   stopRecordLocations,
 } from "../services/firebase";
-import { getCurrentPosition } from "../services/location";
-import {getStorageData, notifyArrival, setStorageData} from "../services/storage";
+import { isInForest, notifyForestExist } from "../services/location";
+import { getStorageData, setStorageData } from "../services/storage";
 import { useUserContext } from "../services/user-context";
 import { LinearProgress } from "react-native-elements";
 import { styles } from "../component/styles";
 import moment from "moment";
 import { auth } from "../services/firebase";
-import * as Notifications from 'expo-notifications'
+import * as Notifications from "expo-notifications";
 
 const START_DATE = "startDate";
 const CURRENT_LAT = "currentLatitude";
@@ -37,7 +37,6 @@ export const LocationBackgroundView = () => {
   const [isEnabled, setIsEnabled] = useState(false);
   let timer;
   const { state } = useUserContext();
-
 
   const resetCurrentWalk = async () => {
     currentWalk !== null &&
@@ -101,13 +100,6 @@ export const LocationBackgroundView = () => {
         .then(async (d) => {
           await uploadData();
         });
-
-
-
-
-
-
-
     } else if (currentWalk != null && isEnabled) {
       // TODO - Check if this is the best way to handle this!
       const interval = setInterval(async () => {
@@ -117,18 +109,15 @@ export const LocationBackgroundView = () => {
     }
   }, [currentWalk, isEnabled]);
 
-//Listener to get the data of the notification
+  // Listener to get the data of the notification
   useEffect(() => {
     const subscription = Notifications.addNotificationReceivedListener(
-        (notification) => {
-
-          //if the data is tracking, we put the sitch off for the tracking
-          if(notification.request.content.data.tracking === 'tracking')
-          {
-            setIsEnabled(false);
-          }
-
+      (notification) => {
+        // if the data is tracking, we put the switch off for the tracking
+        if (notification.request.content.data.tracking === "tracking") {
+          setIsEnabled(false);
         }
+      }
     );
     return () => subscription.remove();
   }, []);
@@ -175,23 +164,20 @@ export const LocationBackgroundView = () => {
 
   const { t } = useTranslation();
 
-
-
   return (
     <>
       <Switch
-          trackColor={{ false: "#767577", true: "#767577" }}
-          thumbColor={isEnabled ? "#006400" : "#f4f3f4"}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={setIsEnabled}
-          value={isEnabled}
-          activeText={t("stop_tracking")}
-          inActiveText={t("start_tracking")}
-          circleActiveColor={'#30a566'}
-          circleInActiveColor={'#000000'}
-          circleSize={80}
+        trackColor={{ false: "#767577", true: "#767577" }}
+        thumbColor={isEnabled ? "#006400" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={setIsEnabled}
+        value={isEnabled}
+        activeText={t("stop_tracking")}
+        inActiveText={t("start_tracking")}
+        circleActiveColor={"#30a566"}
+        circleInActiveColor={"#000000"}
+        circleSize={80}
       />
-
 
       <Text>{gpsErrorMsg}</Text>
       {isEnabled ? (
@@ -219,15 +205,9 @@ export const LocationBackgroundView = () => {
         <Text>{t("feature")}</Text>
       )}
       {isEnabled && <LinearProgress color="darkgreen" />}
-
-
     </>
   );
 };
-
-{
-
-}
 
 TaskManager.defineTask(
   BACKGROUND_LOCATION_UPDATES_TASK,
@@ -251,20 +231,19 @@ TaskManager.defineTask(
             walk
           );
 
-
           let userID = auth.currentUser.uid;
 
           //Condition for the zone
-          if (locations[0].coords.latitude > 46.31190 || locations[0].coords.latitude < 46.31130)
-          {
-            if (locations[0].coords.longitude > 7.57000 || locations[0].coords.longitude < 7.56960)
-            {
-              console.log("Plus dans la zone des bois de finges");
+          if (
+            !isInForest(
+              locations[0].coords.latitude,
+              locations[0].coords.longitude
+            )
+          ) {
+            console.log("User exited the Finges Forest area");
 
-              //Push the notification if the user is not in the zone
-              await notifyArrival();
-
-            }
+            //Push the notification if the user is not in the zone
+            await notifyForestExist();
           }
 
           await addWalkLocations(
@@ -276,8 +255,6 @@ TaskManager.defineTask(
             userID,
             walk
           );
-
-
         }
       });
     }
