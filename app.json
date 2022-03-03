@@ -1,7 +1,8 @@
 {
   "expo": {
     "name": "QR Finges",
-    "slug": "qr-finges",
+    "slug": "finges-forest",
+    "owner": "hes-so-valais",
     "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,18 +17,18 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.hevsedhea.qrfinges",
+      "bundleIdentifier": "ch.hevs.finges.mobile",
       "buildNumber": "1.0.7",
       "infoPlist": {
         "UIBackgroundModes": ["location", "fetch"],
-        "NSLocationWhenInUseUsageDescription": "App requires geolocation to improve recolting data when in the \"bois de Finges\"",
-        "NSLocationUsageDescription": "App requires geolocation to improve recolting data when in the \"bois de Finges\"",
-        "NSLocationAlwaysUsageDescription": "App requires geolocation to improve recolting data when in the \"bois de Finges\"",
+        "NSLocationWhenInUseUsageDescription": "App requires geolocation to improve data collection when in the \"Bois de Finges\"",
+        "NSLocationUsageDescription": "App requires geolocation to improve data collection when in the \"Bois de Finges\"",
+        "NSLocationAlwaysUsageDescription": "App requires geolocation to improve data collection when in the \"Bois de Finges\"",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "App requires geolocation to improve the quality of the service"
       }
     },
     "android": {
-      "package": "com.hevsedhea.qrfinges",
+      "package": "ch.hevs.finges.mobile",
       "permissions": [
         "ACCESS_BACKGROUND_LOCATION",
         "ACCESS_COARSE_LOCATION",
