@@ -25,7 +25,7 @@ export const getCurrentPosition = async () => {
   }
 };
 
-export async function notifyForestExist() {
+export async function notifyForestExit() {
   // TODO - This text should also be localized, this is linked to the following task : https://trello.com/c/UxnhZLzu
   const content = {
     title: "Arrêt du tracking",
@@ -49,13 +49,16 @@ export function isInForest(latitude, longitude) {
   const maxLng = 7.57;
 
   // Check if the current latitude & longitude fall within the forest area rectangle
-  if (
-    latitude >= minLat &&
-    latitude <= maxLat &&
-    longitude >= minLng &&
-    longitude <= maxLng
-  )
-    return true;
+  return true;
 
-  return false;
+  // TODO - Put this back when tests are done
+  // if (
+  //   latitude >= minLat &&
+  //   latitude <= maxLat &&
+  //   longitude >= minLng &&
+  //   longitude <= maxLng
+  // )
+  //   return true;
+  //
+  // return false;
 }

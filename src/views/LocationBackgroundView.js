@@ -13,7 +13,7 @@ import {
   startRecordLocations,
   stopRecordLocations,
 } from "../services/firebase";
-import { isInForest, notifyForestExist } from "../services/location";
+import { isInForest, notifyForestExit } from "../services/location";
 import { getStorageData, setStorageData } from "../services/storage";
 import { useUserContext } from "../services/user-context";
 import { LinearProgress } from "react-native-elements";
@@ -240,7 +240,7 @@ TaskManager.defineTask(
             console.log("User exited the Finges Forest area");
 
             //Push the notification if the user is not in the zone
-            await notifyForestExist();
+            await notifyForestExit();
           }
 
           await addWalkLocations(
