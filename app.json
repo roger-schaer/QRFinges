@@ -3,7 +3,7 @@
     "name": "QR Finges",
     "slug": "finges-forest",
     "owner": "hes-so-valais",
-    "version": "1.0.8",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -18,7 +18,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "ch.hevs.finges.mobile",
-      "buildNumber": "1.0.8",
+      "buildNumber": "1.1.0",
       "infoPlist": {
         "UIBackgroundModes": ["location", "fetch"],
         "NSLocationWhenInUseUsageDescription": "App requires geolocation to improve data collection when in the \"Bois de Finges\"",
@@ -36,7 +36,7 @@
         "FOREGROUND_SERVICE",
         "CAMERA"
       ],
-      "versionCode": 11,
+      "versionCode": 110,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
