@@ -8,6 +8,7 @@ import { CustomButton } from "../component/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "../component/styles";
 import * as Location from "expo-location";
+import * as Notifications from "expo-notifications";
 
 const ProfileView = (props) => {
   const navigation = useNavigation();
@@ -15,11 +16,18 @@ const ProfileView = (props) => {
 
   useEffect(() => {
     // Request foreground location permission for photos, comments etc.
-    async function requestForegroundPermission() {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+    async function requestPermissions() {
+      await Location.requestForegroundPermissionsAsync();
+      await Notifications.requestPermissionsAsync({
+        ios: {
+          allowAlert: true,
+          allowBadge: true,
+          allowSound: true,
+        },
+      });
     }
 
-    void requestForegroundPermission();
+    void requestPermissions();
   }, []);
 
   return (
