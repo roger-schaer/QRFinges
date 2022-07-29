@@ -25,6 +25,9 @@
         "NSLocationUsageDescription": "App requires geolocation to improve data collection when in the \"Bois de Finges\"",
         "NSLocationAlwaysUsageDescription": "App requires geolocation to improve data collection when in the \"Bois de Finges\"",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "App requires geolocation to improve the quality of the service"
+      },
+      "config": {
+        "usesNonExemptEncryption": false
       }
     },
     "android": {
