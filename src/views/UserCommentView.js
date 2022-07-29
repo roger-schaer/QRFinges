@@ -21,7 +21,6 @@ const UserCommentView = () => {
   const [waiting, setWaiting] = useState(false);
   const { t } = useTranslation();
   askLocalisationPermission();
-  // requestForegroundPermissions();
 
   const handleCommentSubmit = async (comment) => {
     setWaiting(true);

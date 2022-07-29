@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ActivityIndicator, Alert, Button, Text, View } from "react-native";
+import { ActivityIndicator, Alert, Text, View } from "react-native";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
 import { useTranslation } from "react-i18next";
@@ -7,7 +7,6 @@ import {
   BACKGROUND_LOCATION_UPDATES_TASK,
   FIRESTORE_WALK_HISTORY_KEY,
 } from "../constant/constants";
-import { Switch } from "react-native-switch";
 
 import {
   addWalkLocations,
@@ -22,6 +21,7 @@ import { styles } from "../component/styles";
 import moment from "moment";
 import { auth } from "../services/firebase";
 import * as Notifications from "expo-notifications";
+import { Button } from "react-native-paper";
 
 const START_DATE = "startDate";
 const CURRENT_LAT = "currentLatitude";
@@ -166,18 +166,15 @@ export const LocationBackgroundView = () => {
 
   return (
     <>
-      <Switch
-        trackColor={{ false: "#767577", true: "#767577" }}
-        thumbColor={isEnabled ? "#006400" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={setIsEnabled}
-        value={isEnabled}
-        activeText={t("stop_tracking")}
-        inActiveText={t("start_tracking")}
-        circleActiveColor={"#30a566"}
-        circleInActiveColor={"#000000"}
-        circleSize={80}
-      />
+      <Button
+        mode="contained"
+        icon={!isEnabled ? "play" : "stop"}
+        color={!isEnabled ? "green" : "black"}
+        labelStyle={{ fontSize: 20, paddingVertical: 10 }}
+        onPress={() => setIsEnabled((e) => !e)}
+      >
+        {!isEnabled ? t("start_tracking") : t("stop_tracking")}
+      </Button>
 
       <Text>{gpsErrorMsg}</Text>
       {isEnabled ? (

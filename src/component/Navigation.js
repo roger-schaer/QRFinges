@@ -162,6 +162,26 @@ const CustomDrawerView = (props) => {
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
+      {state.isLoggedIn && (
+        <DrawerItem
+          label={() => (
+            <View style={{ flexDirection: "row" }}>
+              <View style={{ flexDirection: "row" }}>
+                <AntDesign
+                  // @ts-ignore
+                  name={"logout"}
+                  style={styles.iconContainer}
+                  size={15}
+                />
+                <Text style={styles.textMenu}>{t("logout")}</Text>
+              </View>
+            </View>
+          )}
+          onPress={async (event) => {
+            await logout(event);
+          }}
+        />
+      )}
       <DrawerItem
         onPress={() => null}
         label={() => (
@@ -186,26 +206,6 @@ const CustomDrawerView = (props) => {
           </View>
         )}
       />
-      {state.isLoggedIn && (
-        <DrawerItem
-          label={() => (
-            <View style={{ flexDirection: "row" }}>
-              <View style={{ flexDirection: "row" }}>
-                <AntDesign
-                  // @ts-ignore
-                  name={"logout"}
-                  style={styles.iconContainer}
-                  size={15}
-                />
-                <Text style={styles.textMenu}>{t("logout")}</Text>
-              </View>
-            </View>
-          )}
-          onPress={async (event) => {
-            await logout(event);
-          }}
-        />
-      )}
     </DrawerContentScrollView>
   );
 };

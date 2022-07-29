@@ -13,6 +13,15 @@ const ProfileView = (props) => {
   const navigation = useNavigation();
   const { t } = useTranslation();
 
+  useEffect(() => {
+    // Request foreground location permission for photos, comments etc.
+    async function requestForegroundPermission() {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+    }
+
+    void requestForegroundPermission();
+  }, []);
+
   return (
     <View
       style={[

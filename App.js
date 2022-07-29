@@ -9,13 +9,17 @@ import { LogBox } from "react-native";
 import * as Notifications from "expo-notifications";
 import { StatusBar } from "expo-status-bar";
 
+import { Provider as PaperProvider } from "react-native-paper";
+
 LogBox.ignoreLogs(["Setting a timer for a long period"]);
 
 const App = () => {
   return (
     <UserProvider>
-      <NavWithMenu />
-      <StatusBar style="auto" />
+      <PaperProvider>
+        <NavWithMenu />
+        <StatusBar style="auto" />
+      </PaperProvider>
     </UserProvider>
   );
 };
